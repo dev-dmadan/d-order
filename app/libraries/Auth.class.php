@@ -5,7 +5,7 @@
 	 * Class Auth
 	 * Library untuk pengecekan Authentikasi yg masuk sistem
 	 */
-	class Auth{
+	class Auth {
 		
 		private $login;
 		private $lockscreen;
@@ -16,12 +16,12 @@
 		 * Jika belum login maka akan diarahkan ke login
          * @param level {string}
 		 */
-		public function checkAuth(){
+		public function checkAuth() {
 			if(!$this->isLogin()){
 				$this->lockscreen = isset($_SESSION['sess_lockscreen']) ? $_SESSION['sess_lockscreen'] : false;
 
 				// cek lockscreen
-				if($this->lockscreen){
+				if($this->lockscreen) {
 					$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 					header('Location: '.BASE_URL.'login/lockscreen/?callback='.$actual_link);
 					die();
@@ -43,13 +43,13 @@
 		 * Method isLogin
 		 * Proses pengecekan status login
 		 */
-		public function isLogin(){
+		public function isLogin() {
 			$this->login = isset($_SESSION['sess_login']) ? $_SESSION['sess_login'] : false;
 			$this->timeout = isset($_SESSION['sess_timeout']) ? strtotime($_SESSION['sess_timeout']) : false;
 
 			if(!$this->login) { return false; }
 			
-			if($this->login && $this->login === true && (time() > $this->timeout)){
+			if($this->login && $this->login === true && (time() > $this->timeout)) {
 				$_SESSION['sess_login'] = false;
 				$_SESSION['sess_lockscreen'] = true;
 				return false;

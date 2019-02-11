@@ -27,7 +27,7 @@
          */
         public function getAllDataTable($config){
             $this->dataTable->set_config($config);
-            $statement = $this->koneksi->prepare($this->dataTable->getDataTable());
+            $statement = $this->connection->prepare($this->dataTable->getDataTable());
             $statement->execute();
             $result = $statement->fetchAll();
             return $result;
@@ -54,6 +54,6 @@
 		 * Close connection to DB
 		 */
 		public function __destruct(){
-			$this->closeConnection($this->koneksi);
+			$this->closeConnection($this->connection);
 		}
 	}

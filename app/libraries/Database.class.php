@@ -3,26 +3,26 @@
 	
 	/**
 	 * Class Database
-	 * Library untuk akses koneksi ke database
+	 * Library untuk akses koneksi ke database, DBMS MySQL dan MariaDB
 	 * Koneksi menggunakan PDO
 	 */
-	class Database{
+	class Database {
 
 		/**
 		 * Method openConnection
 		 * Proses membuka koneksi ke database
 		 * @return connection {object}
 		 */
-		public function openConnection(){
+		public function openConnection() {
 			$dbHost = DB_HOST;
 			$dbName = DB_NAME;
-			try{
+			try {
 				$connection = new PDO("mysql:host=$dbHost;dbname=$dbName", DB_USERNAME, DB_PASSWORD);
 				$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 				return $connection;
 			}
-			catch(PDOException $e){
+			catch(PDOException $e) {
 				// jika ada error
 				die(json_encode(array(
 					'success' => false,
@@ -37,7 +37,7 @@
 		 * Proses menutup koneksi dari database
 		 * @param connection {object}
 		 */
-		public function closeConnection($connection){
+		public function closeConnection($connection) {
 			$connection = null;
 		}
 	}

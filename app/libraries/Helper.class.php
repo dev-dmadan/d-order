@@ -1,16 +1,18 @@
 <?php
-	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
+	Defined("BASE_PATH") or die(ACCESS_DENIED);
 
 	/**
-	* Class helper, berisi function-function pembantu
-	*/
-	class Helper{
+	 * Class helper
+	 * Berisi function-function pembantu
+	 */
+	class Helper
+	{
 
 		/**
 		* Fungsi cetak angka dengan format rupiah
 		* contoh: Rp. 1.590.850,00
 		*/
-		public function cetakRupiah($value){
+		public function cetakRupiah($value) {
 			$rupiah = 'Rp '.number_format($value, 2, ',', '.');
 			return $rupiah;
 		}
@@ -19,7 +21,7 @@
 		* Fungsi cetak angka dengan format standar
 		* contoh: 1.000,00, 10.500,00
 		*/
-		public function cetakAngka($value){
+		public function cetakAngka($value) {
 			$angka = number_format($value, 2, ',', '.');
 			return $angka;
 		}
@@ -34,32 +36,17 @@
 		* 'yyyymmdd' (20180101),
 		* 'full (Senin, 27 Februari 1995)'
 		*/
-		public function cetakTgl($tgl, $format = 'yyyy-mm-dd'){
+		public function cetakTgl($tgl, $format = 'yyyy-mm-dd') {
 			//array hari
 			$arrHari = array(
-				1 => "Senin",
-				2 => "Selasa",
-				3 => "Rabu",
-				4 => "Kamis",
-				5 => "Jumat",
-				6 => "Sabtu",
-				7 => "Minggu",
+				1 => "Senin", 2 => "Selasa", 3 => "Rabu", 4 => "Kamis",
+				5 => "Jumat", 6 => "Sabtu", 7 => "Minggu",
 			);
 
 			// array bulan
 			$arrBulan = array(
-				1 => "Januari",
-				2 => "Februari",
-				3 => "Maret",
-				4 => "April",
-				5 => "Mei",
-				6 => "Juni",
-				7 => "Juli",
-				8 => "Agustus",
-				9 => "September",
-				10 => "Oktober",
-				11 => "November",
-				12 => "Desember",
+				1 => "Januari", 2 => "Februari", 3 => "Maret", 4 => "April", 5 => "Mei", 6 => "Juni",
+				7 => "Juli", 8 => "Agustus", 9 => "September", 10 => "Oktober", 11 => "November", 12 => "Desember",
 			);
 
 			// explode tgl
@@ -97,14 +84,31 @@
 		/**
 		* Fungsi mengganti data yang kosong menjadi '-' (garis strip)
 		*/
-		public function setKosong($data){
+		public function setKosong($data) {
 			$temp = ($data == "" || empty($data)) ? "-" : $data;
 			return $temp;
 		}
 
 		/**
-		*
-		*/
+		 * Method cekArray
+		 * @param data {array}
+		 * 
+		 * Masih tahap pengembangan
+		 */
+		public function cekArray($data) {
+			$check = false;
+			foreach($data as $key => $item) {
+				if(!$item['delete']) { $check = true; }
+			}
+
+			return $check;
+		}
+
+		/**
+		 * Method reArrayFiles
+		 * Proses memformat ulang array untuk files
+		 * @param file_post {array}
+		 */
 		public function reArrayFiles($file_post) {
 		    $file_ary = array();
 		    $file_count = count($file_post['name']);
@@ -120,12 +124,15 @@
 		}
 
 		/**
-		*
-		*/
-		public function rollback_file($file, $array = false){
-			if(!$array) unlink($file);
-			else{
-				foreach($file as $value){
+		 * Method rollback_file
+		 * Proses untuk rollback file yang sudah diupload
+		 * @param file {string} default string, tapi dapat berupa array. Path file yang akan di rollback
+		 * @param array {boolean} default false
+		 */
+		public function rollback_file($file, $array = false) {
+			if(!$array) { unlink($file); }
+			else {
+				foreach($file as $value) {
 					unlink($value);
 				}
 			}

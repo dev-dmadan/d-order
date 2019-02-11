@@ -4,9 +4,9 @@
 
     if(TYPE === 'DEV') {
         // config base url
-        define('BASE_URL', 'http://localhost/iSystemAsia/order/'); // isi path dari web
+        define('BASE_URL', 'http://localhost/iSystemAsia/d-order/'); // isi path dari web
         define('SITE_URL', BASE_URL.'index.php/'); // hilangkan index.php atau komentari SITE_URL jika sudah memakai .htaccess
-        define('DEFAULT_CONTROLLER', 'home'); // default controller yg diakses pertama kali
+        define('DEFAULT_CONTROLLER', 'orders'); // default controller yg diakses pertama kali
         define('VERSION', 'Beta v0.1');
 
         // config database
@@ -19,7 +19,7 @@
         // config base url
         define('BASE_URL', '');
         define('SITE_URL', BASE_URL.'index.php/');
-        define('DEFAULT_CONTROLLER', 'home');
+        define('DEFAULT_CONTROLLER', 'orders');
         define('VERSION', 'Beta v0.1');
 
         // config database
@@ -32,7 +32,7 @@
         // config base url
         define('BASE_URL', '');
         define('SITE_URL', BASE_URL.'index.php/');
-        define('DEFAULT_CONTROLLER', 'home');
+        define('DEFAULT_CONTROLLER', 'orders');
         define('VERSION', '');
 
         // config database

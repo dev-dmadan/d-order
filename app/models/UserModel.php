@@ -117,7 +117,7 @@
 		}
 		/**
 		 * Method delete
-		 * Proses penghapusan data bank beserta data yang berelasi denganya
+		 * Proses penghapusan data user beserta data yang berelasi denganya
 		 * @param id {string}
 		 * @return result {array}
 		 */

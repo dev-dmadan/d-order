@@ -72,11 +72,11 @@
         private function error($error) {
             switch ($error) {
 				case '403':
-					$message = "ACCESS DENIED !";
+					$message = "You do not have access to this page.";
 					break;
 				
 				case '404':
-					$message = "PAGE NOT FOUND !";
+					$message = "The page you were looking for could not be found.";
 					break;
 
 				default:
@@ -84,7 +84,7 @@
 					break;
 			}
 			
-			require_once ROOT.DS.'app'.DS.'views'.DS.'auth'.DS.$error.'.php';
+			require_once ROOT.DS.'app'.DS.'views'.DS.'auth'.DS.'error.php';
         }
 
     }

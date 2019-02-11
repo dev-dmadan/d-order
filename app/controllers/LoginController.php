@@ -116,7 +116,7 @@
 			$_SESSION['sess_login'] = true;
 			$_SESSION['sess_lockscreen'] = false;
 			$_SESSION['sess_id'] = $user['username'];
-			$_SESSION['sess_nama'] = $user['name'];
+			$_SESSION['sess_name'] = $user['name'];
             $_SESSION['sess_images'] = $images;
             $_SESSION['sess_level'] = $user['level'];
 			$_SESSION['sess_status'] = $user['status'];
