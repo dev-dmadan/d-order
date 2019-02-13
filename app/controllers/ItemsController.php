@@ -116,7 +116,7 @@
         public function action_add() {
             if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data = isset($_POST) ? $_POST : false;
-                $image = isset($_FILES['image']) > $_FILES['image'] : false;
+                $image = isset($_FILES['image']) ? $_FILES['image'] : false;
 
                 $checkImage = true;
 
