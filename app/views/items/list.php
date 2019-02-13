@@ -18,6 +18,10 @@
             <div class="card">
                 <form id="order-form">
                     <div class="card-body">
+                        <!-- button add item -->                                        
+                            <div class="btn-group mb-3" role="group">
+                                <button type="button" id="btn-add-item" class="btn btn-outline-success">Add Item</button>
+                            </div>
                         <!-- <div class="table-responsive"> -->
                             <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-menu-list" style="width: 100%">
                             <!-- <table class="table table-bordered table-hover table-md" id="table-order-list" style="width: 100%"> -->
@@ -44,3 +48,4 @@
     </section>
 </div>
 <!-- End Main Content -->
+<?php include_once('modals/add_item.php'); ?>
