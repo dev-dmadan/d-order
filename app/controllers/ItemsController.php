@@ -114,8 +114,11 @@
          * 
          */
         public function action_add() {
-            if($_SERVER['REQUEST_METHOD'] === 'POST' ) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data = isset($_POST) ? $_POST : false;
+                $image = isset($_FILES['image']) > $_FILES['image'] : false;
+
+                $checkImage = true;
 
                 if(!$data) {
                     $this->notif['order'] = array(
@@ -130,34 +133,62 @@
                     $cek = $validation['cek'];
                     $this->error = $validation['error'];
 
+                    if($image) {
+                        $config = array(
+                            'jenis' => 'gambar',
+							'error' => $image['error'],
+							'size' => $image['size'],
+							'name' => $image['name'],
+							'tmp_name' => $image['tmp_name'],
+							'max' => 2*1048576,
+                        );
+                        $validImage = $this->validation->validFile($config);
+                        if(!$validImage['cek']) {
+                            $cek = $checkImage = false;
+                            $this->error['image'] = $validImage['error'];
+                        }
+                        else { $valueImage = md5($data['id']).$validImage['namaFile']; }
+                    }
+                    else { $valueImage = NULL; }
+
                     if($cek) {
                         $dataInsert = array(
                             'id' => $data['id'],
                             'name' => $data['name'],
                             'price' => $data['price'],
                             'description' => $data['description'],
-                            'image' => $image,
+                            'image' => $valueImage,
                             'status' => $data['status'],
                             'user' => $_SESSION['sess_id']
                         );
 
-                        $insert = $this->OrdersModel->insert($dataInsert);
-                        if($insert['success']) {
-                            $this->success = true;
-                            $this->notif = array(
-                                'type' => 'success',
-                                'title' => 'Success Message',
-                                'message' => 'Success add new menu item'
-                            );
+                        if($image) {
+                            $path = ROOT.DS.'assets'.DS.'images'.DS.'items'.DS.$valueImage;
+							if(!move_uploaded_file($image['tmp_name'], $path)){
+								$this->error['image'] = "Fail upload image";
+								$this->success = $checkImage = false;
+							}
                         }
-                        else {
-                            $this->notif = array(
-                                'type' => 'error',
-                                'title' => 'Error Message',
-                                'message' => 'Please try again'
-                            );
-                            $this->message = $insert['error'];
-                        }
+                        
+                        if($checkImage) {
+                            $insert = $this->ItemsModel->insert($dataInsert);
+                            if($insert['success']) {
+                                $this->success = true;
+                                $this->notif = array(
+                                    'type' => 'success',
+                                    'title' => 'Success Message',
+                                    'message' => 'Success add new menu item'
+                                );
+                            }
+                            else {
+                                $this->notif = array(
+                                    'type' => 'error',
+                                    'title' => 'Error Message',
+                                    'message' => 'Please try again'
+                                );
+                                $this->message = $insert['error'];
+                            }
+                        }  
                     }
                     else {
                         $this->notif = array(
@@ -174,7 +205,8 @@
                     'error' => $this->error,
                     'message' => $this->message,
                     'data' => array(
-                        'post' => $data
+                        'post' => $data,
+                        'image' => $image
                     )
                 );
 
@@ -203,8 +235,49 @@
         /**
          * 
          */
-        public function detail($id) {
+        public function action_edit_status() {
 
+        }
+
+        /**
+         * 
+         */
+        public function action_edit_foto() {
+
+        }
+
+        /**
+         * 
+         */
+        public function detail($id) {
+            $data_detail = !empty($this->ItemsModel->getById($id)) 
+                ? $this->ItemsModel->getById($id) : false;
+
+            if(!$data_detail || (empty($id) || $id == "")) { $this->redirect(BASE_URL."items/"); }
+            
+            $config = array();
+            
+            if(!empty($data_detail['image'])) {
+                $filename = ROOT.DS.'assets'.DS.'images'.DS.'items'.DS.$data_detail['image'];
+                if(!file_exists($filename)) { $image = BASE_URL.'assets/images/items/default.jpg'; }
+                else { $image = BASE_URL.'assets/images/items/'.$data_detail['image']; }
+            }
+            else {$image = BASE_URL.'assets/images/items/default.jpg'; }
+
+            $status = ($data_detail['status'] == 'ACTIVE') ?
+                '<div class="badge badge-success">'.$data_detail['status'].'</span>' :
+                '<div class="badge badge-danger">'.$data_detail['status'].'</span>';
+
+            $data = array(
+                'id' => $data_detail['id'],
+                'name' => $data_Detail['name'],
+                'price' => $data_detail['price'],
+                'description' => $data_detail['description'],
+                'image' => $image,
+                'status' => $status
+            );
+
+            $this->layout('items/view', $config, $data);
         }
 
         /**
@@ -253,7 +326,12 @@
          * 
          */
         private function set_validation($data) {
+            $this->validation->set_rules($data['name'], 'Name', 'name', 'string | 1 | 255 | required');
+            $this->validation->set_rules($data['price'], 'Price', 'name', 'nilai | 1 | 9999999 | required');
+            $this->validation->set_rules($data['description'], 'Description', 'name', 'string | 1 | 255 | required');
+            $this->validation->set_rules($data['status'], 'Name', 'Status', 'angka | 1 | 10 | required');
 
+            return $this->validation->run();
         }
     }
     

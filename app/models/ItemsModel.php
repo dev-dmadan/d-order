@@ -47,18 +47,23 @@
 		}
 		/**
 		 * Method insert
-		 * Proses insert data menu
+		 * Proses insert data menu items
 		 * @param data {array}
 		 * @return result {array}
 		 */
 		public function insert($data){
-			$query = "CALL add_menu ();";
+			$query = "CALL p_add_item (:name, :price, :description, :image, :status, :created_by);";
 			try{
 				$this->connection->beginTransaction();
 				$statement = $this->connection->prepare($query);
 				$result = $statement->execute(
 					array(
-						
+						':name' => $data['name'], 
+						':price' => $data['price'], 
+						':description' => $data['description'], 
+						':image' => $data['image'], 
+						':status' => $data['status'], 
+						':created_by' => $data['created_by']
 					)
 				);
 				$statement->closeCursor();

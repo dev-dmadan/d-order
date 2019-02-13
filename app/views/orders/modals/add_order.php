@@ -23,7 +23,7 @@
                     <!-- menu name -->
                     <div class="form-group" style="display: none">
                         <label for="menu_name">Other</label>
-                        <input id="menu_name" class="form-control field" placeholder="Please enter your custom menu">
+                        <input type="text" id="menu_name" class="form-control field" placeholder="Please enter your custom menu">
                         <div class="message message-menu_name"></div>
                     </div>
 
