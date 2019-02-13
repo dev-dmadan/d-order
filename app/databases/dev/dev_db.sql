@@ -101,8 +101,11 @@ CREATE TABLE IF NOT EXISTS items (
     price double(12,2),
     description text,
     image text,
+	status int, -- fk
 
     CONSTRAINT pk_items_id PRIMARY KEY(id),
+	CONSTRAINT fk_items_status FOREIGN KEY(status) REFERENCES active_status_lookup(id)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT fk_items_created_by FOREIGN KEY(created_by) REFERENCES user(username)
 		ON DELETE SET NULL ON UPDATE CASCADE,
 	CONSTRAINT fk_items_modified_by FOREIGN KEY(modified_by) REFERENCES user(username)

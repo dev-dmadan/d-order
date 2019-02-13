@@ -36,8 +36,26 @@
         /**
          * 
          */
-        private function list() {            
-            $this->view('menu/list', $data = null);
+        private function list() {
+            $config = array(
+                'title' => 'Menu Item List',
+                'property' => array(
+                    'main' => 'Menu Item List', 'sub' => ''
+                ),
+                'css' => array(
+                    "assets/dist/modules/datatables/datatables.min.css",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                ),
+                'js' => array(
+                    "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
+                    "assets/dist/modules/datatables/datatables.min.js",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                    "app/views/items/js/initList.js"
+                ),
+            );        
+            $this->layout('items/list', $config);
         }
 
         /**
@@ -96,8 +114,71 @@
          * 
          */
         public function action_add() {
-            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' ) {
+                $data = isset($_POST) ? $_POST : false;
 
+                if(!$data) {
+                    $this->notif['order'] = array(
+                        'type' => 'error',
+                        'title' => 'Error Message',
+                        'message' => 'Please try again'
+                    );
+                }
+                else {
+                    // data validation
+                    $validation = $this->set_validation($data, $data['action']);
+                    $cek = $validation['cek'];
+                    $this->error = $validation['error'];
+
+                    if($cek) {
+                        $dataInsert = array(
+                            'id' => $data['id'],
+                            'name' => $data['name'],
+                            'price' => $data['price'],
+                            'description' => $data['description'],
+                            'image' => $image,
+                            'status' => $data['status'],
+                            'user' => $_SESSION['sess_id']
+                        );
+
+                        $insert = $this->OrdersModel->insert($dataInsert);
+                        if($insert['success']) {
+                            $this->success = true;
+                            $this->notif = array(
+                                'type' => 'success',
+                                'title' => 'Success Message',
+                                'message' => 'Success add new menu item'
+                            );
+                        }
+                        else {
+                            $this->notif = array(
+                                'type' => 'error',
+                                'title' => 'Error Message',
+                                'message' => 'Please try again'
+                            );
+                            $this->message = $insert['error'];
+                        }
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning Message',
+                            'message' => 'Please check your form'
+                        );
+                    }
+                }
+
+                $result = array(
+                    'success' => $this->success,
+                    'notif' => $this->notif,
+                    'error' => $this->error,
+                    'message' => $this->message,
+                    'data' => array(
+                        'post' => $data
+                    )
+                );
+
+                echo json_encode($result);
             }
             else { die(ACCESS_DENIED); }
         }

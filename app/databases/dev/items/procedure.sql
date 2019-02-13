@@ -9,13 +9,14 @@ CREATE PROCEDURE p_add_item (
     price_param double(12,2),
     description_param text,
     image_param text,
+    status_param int,
     created_by_param varchar(50)
 )
 BEGIN
 
     INSERT INTO items
-        (name, price, description, image, created_by, modified_by) 
-    VALUES (name_param, price_param, description_param, image_param, created_by_param, modified_by_param);
+        (name, price, description, image, status, created_by, modified_by) 
+    VALUES (name_param, price_param, description_param, image_param, status_param, created_by_param, modified_by_param);
 
 END //
 
