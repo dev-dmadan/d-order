@@ -56,5 +56,24 @@
 			}
 
 			return true;
-        }
+		}
+		
+		/**
+		 * 
+		 */
+		public function getListMenu($level) {
+			$modelName = 'Access_rightModel';
+			require_once ROOT.DS.'app'.DS.'models'.DS.ucfirst($modelName).'.php';
+			
+			$class = ucfirst($modelName);
+			$this->$modelName = new $class();
+			$listMenu = $this->Access_rightModel->getAll_menuByLevel($level);
+
+			// echo '<pre>';
+			// echo var_dump($listMenu);
+			// echo '</pre>';
+			// die();
+
+			return $listMenu;
+		}
 	}

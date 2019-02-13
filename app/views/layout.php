@@ -40,11 +40,19 @@
         <!-- load default js -->
         <script>
             const BASE_URL = "<?php print BASE_URL; ?>";
-            var urlParams = <?php echo json_encode($_GET, JSON_HEX_TAG);?>;
+            const LEVEL = "<?php print $_SESSION['sess_level']; ?>";
+            var urlParams = <?php echo json_encode($_GET, JSON_HEX_TAG);?>;    
         </script>
         
         <?php
             require_once "layout/js/initJs.php";
+            ?>
+                <script>
+                    $(document).ready(function() {
+                        setActiveMenu($(location).attr("href").split('/'), LEVEL);
+                    });
+                </script>
+            <?php
             if($sess_welcome) {
                 ?>
                 <script>
@@ -67,6 +75,6 @@
                 <?php
             }
         ?>
-
+        
     </body>
 </html>

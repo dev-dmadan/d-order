@@ -156,7 +156,7 @@ DROP PROCEDURE IF EXISTS p_delete_order_detail;
 delimiter //
 
 CREATE PROCEDURE p_delete_order_detail (
-	in id_param 
+	in id_param int
 )
 BEGIN
 

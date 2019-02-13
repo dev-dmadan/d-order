@@ -8,7 +8,7 @@ $(document).ready(function() {
         "info": false,
         "columns": [
             {"data": "no"},
-            {"data": "menu_name"},
+            {"data": "order_item"},
             {"data": "price_full"},
             {"data": "qty"},
             {"data": "subtotal_full"},
@@ -48,8 +48,7 @@ $(document).ready(function() {
     $('#menu').on('change', function() {
         console.log('%cField Menu OnChange: ', 'color: blue; font-style: italic', $(this).val());
         if(this.value !== "" && this.value != null) {
-            onChangeMenu($(this).children("option").filter(":selected").text());
-            setPrice($(this).val());
+            onChangeMenu($(this).val(), $(this).children("option").filter(":selected").text());
         }
     });
 
@@ -162,16 +161,18 @@ function showFormOrder(action = 'action-add') {
 /**
  * 
  */
-function onChangeMenu(value) {
-    if(value.toLowerCase() == 'others') { 
+function onChangeMenu(id, text) {
+    if(text.toLowerCase() == 'others') { 
         $('#menu_name').val('');
         $('#menu_name').parent().css('display', 'block');
+        $('#price').val(0);
         $('#price').prop('readonly', false); 
     }
     else {
-        $('#menu_name').val(value);
+        $('#menu_name').val(text);
         $('#menu_name').parent().css('display', 'none');
         $('#price').prop('readonly', true);
+        setPrice(id);
     }
 }
 
@@ -180,11 +181,12 @@ function onChangeMenu(value) {
  */
 function setMenu() {
     $.ajax({
-        url: BASE_URL+'menu/get-menu-select',
+        url: BASE_URL+'items/get-menu-select',
         type: 'post',
         dataType: 'json',
         beforeSend: function() {},
         success: function(response) {
+            response.push({id: '0', text: 'Others'})
             console.log('%cResponse setMenu: ', 'color: blue; font-weight: bold', response);
             $.each(response, function(index, item){
 				var newOption = new Option(item.text, item.id);
@@ -205,7 +207,7 @@ function setMenu() {
  */
 function setPrice(id) {
     $.ajax({
-        url: BASE_URL+'menu/get-price',
+        url: BASE_URL+'items/get-price',
         type: 'get',
         data: {id: id},
         dataType: 'json',
@@ -241,8 +243,8 @@ function addOrder() {
         index: index,
         id: '',
         order_id: $('#order_number').val().trim(),
-        menu: menu,
-        menu_name: $('#menu_name').val().trim(),
+        item: menu,
+        order_item: $('#menu_name').val().trim(),
         price: price,
         price_full: '',
         qty: $('#qty').val(),
@@ -308,8 +310,8 @@ function validDetail(data, action = 'action-add') {
             }
             else if(action == 'action-edit') {
                 if(response.success) {
-                    listDetail[data.index].menu = data.menu;
-                    listDetail[data.index].menu_name = data.menu_name;
+                    listDetail[data.index].item = data.item;
+                    listDetail[data.index].order_item = data.order_item;
                     listDetail[data.index].price = data.price;
                     listDetail[data.index].price_full = response.data.price_full;
                     listDetail[data.index].qty = data.qty;
@@ -345,7 +347,7 @@ function checkDuplicate(data) {
     var ada = false;
 
     $.each(listDetail, function(index, item){
-        if(data.toLowerCase() == item.menu_name.toLowerCase() && !item.delete) { ada = true; }
+        if(data.toLowerCase() == item.order_item.toLowerCase() && !item.delete) { ada = true; }
     });
 
     return ada;
@@ -454,7 +456,8 @@ function getDataForm() {
 		money: money,
         notes: $('#notes').val().trim(),
         change_money: $('#change_money').val().trim(),
-        total: $('#total').val().trim()
+        total: $('#total').val().trim(),
+        status: $('#status').val().trim()
 	}
 
 	data.append('id', $('#order_number').val().trim());
@@ -499,7 +502,10 @@ function submit() {
 
                 setNotif(response.notif.order, type);
 			}
-			else { window.location.href = BASE_URL+'orders/history'; }
+			else { 
+                if(LEVEL == 'ADMIN') { window.location.href = BASE_URL; }
+                else { window.location.href = BASE_URL+'orders/history'; } 
+            }
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log('%cResponse Error submit: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);

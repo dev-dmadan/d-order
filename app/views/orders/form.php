@@ -28,6 +28,8 @@
                             
                         <!-- Order Number and Order Date -->
                         <div class="form-row">
+                            <input type="hidden" id="status" value="<?= $this->data['status']['id'] ?>">
+                            <input type="hidden" id="status_name" value="<?= $this->data['status']['name'] ?>">
                             <!-- Order Number -->
                             <div class="form-group col-md-6">
                                 <label for="order_number">Order Number</label>

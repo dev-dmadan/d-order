@@ -3,9 +3,9 @@
     Defined("BASE_PATH") or die(ACCESS_DENIED);
     
     /**
-     * Class menu
+     * Class Items
      */
-    class Menu extends Controller
+    class Items extends Controller
     {
         private $error = array();
         private $notif = array();
@@ -21,7 +21,7 @@
             $this->auth->checkAuth();
             $this->helper();
             $this->validation();
-            $this->model('MenuModel');
+            $this->model('ItemsModel');
             $this->model('DataTableModel');
         }
         
@@ -131,7 +131,7 @@
          */
         public function get_menu_select() {
             if($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $data_menu = $this->MenuModel->getAll();
+                $data_menu = $this->ItemsModel->getAll();
                 $data = array();
 
                 foreach($data_menu as $row) {
@@ -153,7 +153,7 @@
         public function get_price() {
             if($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $id = isset($_GET['id']) ? $_GET['id'] : false;
-                $menu = $this->MenuModel->getById($id);
+                $menu = $this->ItemsModel->getById($id);
                 $this->success = (empty($menu)) ? false : true;
 
                 $result = array(

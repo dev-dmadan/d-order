@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS menu(
 	name varchar(255),
     table_name varchar(255),
     url varchar(255),
+	class varchar(50),
     icon varchar(50),
 	position tinyint,
 
@@ -190,8 +191,8 @@ CREATE TABLE IF NOT EXISTS menu(
 )ENGINE=InnoDb;
 
 -- Tabel Detail Menu
-DROP TABLE IF EXISTS detail_menu;
-CREATE TABLE IF NOT EXISTS detail_menu(
+DROP TABLE IF EXISTS menu_detail;
+CREATE TABLE IF NOT EXISTS menu_detail(
 	id int NOT NULL AUTO_INCREMENT,
 
 	created_on datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -200,21 +201,45 @@ CREATE TABLE IF NOT EXISTS detail_menu(
 	modified_by varchar(50), -- who last edit
 
 	menu_id int, -- fk
-	access char(1),
-	-- 1: Read, 2: Add, 3: Update, 4: Delete, 5: Export
+	permission char(1),
+	-- 1: Read, 2: Add, 3: Update, 4: Delete, 5: Update Status, 6: Export
 
-	CONSTRAINT pk_detail_menu_id PRIMARY KEY(id),
-	CONSTRAINT fk_detail_menu_menu_id FOREIGN KEY(menu_id) REFERENCES menu(id)
+	CONSTRAINT pk_menu_detail_id PRIMARY KEY(id),
+	CONSTRAINT fk_menu_detail_menu_id FOREIGN KEY(menu_id) REFERENCES menu(id)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
-	CONSTRAINT fk_detail_menu_created_by FOREIGN KEY(created_by) REFERENCES user(username)
+	CONSTRAINT fk_menu_detail_created_by FOREIGN KEY(created_by) REFERENCES user(username)
 		ON DELETE SET NULL ON UPDATE CASCADE,
-	CONSTRAINT fk_detail_menu_modified_by FOREIGN KEY(modified_by) REFERENCES user(username)
+	CONSTRAINT fk_menu_detail_modified_by FOREIGN KEY(modified_by) REFERENCES user(username)
 		ON DELETE SET NULL ON UPDATE CASCADE
 )ENGINE=InnoDb;
 
--- Tabel Access Right
-DROP TABLE IF EXISTS access_right;
-CREATE TABLE IF NOT EXISTS access_right(
+-- Tabel Access Menu
+DROP TABLE IF EXISTS access_menu;
+CREATE TABLE IF NOT EXISTS access_menu (
+	id int NOT NULL AUTO_INCREMENT,
+
+	created_on datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	modified_on datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	created_by varchar(50), -- who created first
+	modified_by varchar(50), -- who last edit
+
+	level_id int, -- fk level lookup
+	menu_id int, -- fk menu
+
+	CONSTRAINT pk_access_menu_id PRIMARY KEY(id),
+	CONSTRAINT fk_access_menu_level_id FOREIGN KEY(level_id) REFERENCES level_lookup(id)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
+	CONSTRAINT fk_access_menu_menu_id FOREIGN KEY(menu_id) REFERENCES menu(id)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
+	CONSTRAINT fk_access_menu_created_by FOREIGN KEY(created_by) REFERENCES user(username)
+		ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT fk_access_menu_modified_by FOREIGN KEY(modified_by) REFERENCES user(username)
+		ON DELETE SET NULL ON UPDATE CASCADE
+)ENGINE=InnoDb;
+
+-- Tabel Role Permission
+DROP TABLE IF EXISTS role_permission;
+CREATE TABLE IF NOT EXISTS role_permission(
 	id int NOT NULL AUTO_INCREMENT,
 	
 	created_on datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -223,16 +248,16 @@ CREATE TABLE IF NOT EXISTS access_right(
 	modified_by varchar(50), -- who last edit
 
 	user varchar(50), -- fk
-	access_menu int, -- fk
+	permission_id int, -- fk
 
-	CONSTRAINT pk_access_right_id PRIMARY KEY(id),
-	CONSTRAINT fk_access_right_user FOREIGN KEY(user) REFERENCES user(username)
+	CONSTRAINT pk_role_permission_id PRIMARY KEY(id),
+	CONSTRAINT fk_role_permission_user FOREIGN KEY(user) REFERENCES user(username)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
-	CONSTRAINT fk_access_right_access_menu FOREIGN KEY(detail_menu) REFERENCES detail_menu(id)
+	CONSTRAINT fk_role_permission_permission_id FOREIGN KEY(permission_id) REFERENCES menu_detail(id)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
-	CONSTRAINT fk_access_right_created_by FOREIGN KEY(created_by) REFERENCES user(username)
+	CONSTRAINT fk_role_permission_created_by FOREIGN KEY(created_by) REFERENCES user(username)
 		ON DELETE SET NULL ON UPDATE CASCADE,
-	CONSTRAINT fk_access_right_modified_by FOREIGN KEY(modified_by) REFERENCES user(username)
+	CONSTRAINT fk_role_permission_modified_by FOREIGN KEY(modified_by) REFERENCES user(username)
 		ON DELETE SET NULL ON UPDATE CASCADE
 )ENGINE=InnoDb;
 

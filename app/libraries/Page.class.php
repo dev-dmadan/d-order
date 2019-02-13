@@ -67,8 +67,8 @@
             if($sess_menu) {
                 echo '<ul class="navbar-nav">';
                 foreach($sess_menu as $menu) {
-                    echo '<li class="nav-item">';
-                    echo '<a href="'.BASE_URL.$menu['url'].'" class="nav-link"><i class="'.$menu['icon'].'"></i><span>'.$menu['name'].'</span></a>';
+                    echo '<li class="nav-item '.$menu['class'].'">';
+                    echo '<a href="'.BASE_URL.$menu['url'].'" class="nav-link"><i class="'.$menu['icon'].'"></i><span>'.$menu['menu_name'].'</span></a>';
                     echo '</li>';
                 }
                 echo '</ul>';

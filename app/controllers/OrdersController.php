@@ -49,12 +49,14 @@
                     "assets/dist/modules/datatables/datatables.min.css",
                     "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
                     "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                    "app/views/orders/css/dataTable_detail.css"
                 ),
                 'js' => array(
                     "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
                     "assets/dist/modules/datatables/datatables.min.js",
                     "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
-                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"
+                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                    "app/views/orders/js/initList.js"
                 ),
             );
 
@@ -172,6 +174,32 @@
         /**
          * 
          */
+        public function history() {
+            $config = array(
+                'title' => 'Order History',
+                'property' => array(
+                    'main' => 'List All My Order', 'sub' => ''
+                ),
+                'css' => array(
+                    "assets/dist/modules/datatables/datatables.min.css",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                    "app/views/orders/css/dataTable_detail.css"
+                ),
+                'js' => array(
+                    "assets/dist/modules/datatables/datatables.min.js",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                    "app/views/orders/js/initHistory.js"
+                ),
+            );
+
+            $this->layout('orders/history', $config);
+        }
+
+        /**
+         * 
+         */
         public function form() {
             $this->add();
         }
@@ -204,7 +232,8 @@
                 'order_number' => $this->getIncrement(),
                 'order_date' => date('Y-m-d'),
                 'money' => 0,
-                'notes' => ''
+                'notes' => '',
+                'status' => $this->getStatusOrder('PENDING')
             );
             $this->layout('orders/form', $config, $data);
         }
@@ -244,11 +273,13 @@
                             'money' => $dataOrder['money'],
                             'notes' => $dataOrder['notes'],
                             'change_money' => $dataOrder['change_money'],
-                            'total' => $dataOrder['total']
+                            'total' => $dataOrder['total'],
+                            'status' => $dataOrder['status'],
+                            'user' => $_SESSION['sess_id']
                         );
 
                         $dataInsert = array(
-                            'dataOrder' => $dataOrder,
+                            'dataOrder' => $data_insertOrder,
                             'dataDetail' => $dataDetail
                         );
 
@@ -344,6 +375,23 @@
             echo json_encode($this->helper->cetakRupiah($value));
         }
 
+        private function getStatusOrder($name) {
+            $result = false;
+
+            $this->model('Status_orderModel');
+            $statusOrder = !empty($this->Status_orderModel->getByName($name)) ? 
+                $this->Status_orderModel->getByName($name) : false;
+            
+            if($statusOrder) {
+                $result = array(
+                    'id' => $statusOrder['id'],
+                    'name' => $statusOrder['name']
+                );
+            }
+
+            return $result;
+        }
+
         /**
          * 
          */
@@ -377,8 +425,9 @@
          * 
          */
         private function set_validation_detail($data) {
-            $this->validation->set_rules($data['menu'], 'Menu', 'menu', 'angka | 1 | 10 | required');
-            $this->validation->set_rules($data['menu_name'], 'Others Menu', 'menu_name', 'string | 1 | 255 | required');
+            // $required = strtolower($data['menu_name']) == 'others' ? 'required' : 
+            $this->validation->set_rules($data['item'], 'Menu', 'menu', 'angka | 1 | 10 | required');
+            $this->validation->set_rules($data['order_item'], 'Others Menu', 'menu_name', 'string | 1 | 255 | required');
             $this->validation->set_rules($data['price'], 'Price', 'price', 'nilai | 1 | 9999999 | required');
             $this->validation->set_rules($data['qty'], 'Qty', 'qty', 'nilai | 1 | 999 | required');
 

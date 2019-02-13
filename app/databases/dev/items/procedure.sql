@@ -32,7 +32,7 @@ CREATE PROCEDURE p_edit_item (
     price_param double(12,2),
     description_param text,
     image_param text,
-    modified_by_param varchar(50),
+    modified_by_param varchar(50)
 )
 BEGIN
 

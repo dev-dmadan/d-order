@@ -3,9 +3,9 @@
     Defined("BASE_PATH") or die(ACCESS_DENIED);
     
 	/**
-	 * Class MenuModel
+	 * Class ItemsModel
 	 */
-	class MenuModel extends Database {
+	class ItemsModel extends Database {
 
 		private $connection;
         
@@ -23,7 +23,7 @@
 		 * @return result {array}
 		 */
 		public function getAll(){
-			$query = "SELECT * FROM v_menu";
+			$query = "SELECT * FROM v_items";
 			$statement = $this->connection->prepare($query);
 			$statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -37,7 +37,7 @@
 		 * @return result {array}
 		 */
 		public function getById($id){
-			$query = "SELECT * FROM v_menu WHERE id = :id;";
+			$query = "SELECT * FROM v_items WHERE id = :id;";
 			$statement = $this->connection->prepare($query);
 			$statement->bindParam(':id', $id);
 			$statement->execute();

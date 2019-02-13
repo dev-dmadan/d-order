@@ -105,11 +105,11 @@
 		 */
 		private function setSession($user){
 			// cek kondisi foto
-            if(!empty($user['images'])) {
+            if(!empty($user['image'])) {
                 // cek foto di storage
-                $filename = ROOT.DS.'assets'.DS.'images'.DS.'user'.DS.$user['images'];
+                $filename = ROOT.DS.'assets'.DS.'images'.DS.'user'.DS.$user['image'];
                 if(!file_exists($filename)) { $images = BASE_URL.'assets/images/user/default.jpg'; }
-                else { $images = BASE_URL.'assets/images/user/'.$user['foto']; }
+                else { $images = BASE_URL.'assets/images/user/'.$user['image']; }
             }
             else { $images = BASE_URL.'assets/images/user/default.jpg'; }
 
@@ -117,11 +117,14 @@
 			$_SESSION['sess_lockscreen'] = false;
 			$_SESSION['sess_id'] = $user['username'];
 			$_SESSION['sess_name'] = $user['name'];
-            $_SESSION['sess_images'] = $images;
-            $_SESSION['sess_level'] = $user['level'];
-			$_SESSION['sess_status'] = $user['status'];
+			$_SESSION['sess_images'] = $images;
+			$_SESSION['sess_level_id'] = $user['level_id'];
+			$_SESSION['sess_level'] = $user['level_name'];
+			$_SESSION['sess_status_id'] = $user['status_id'];
+			$_SESSION['sess_status'] = $user['status_name'];
 			$_SESSION['sess_welcome'] = true;
 			$_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(60*60)); // 1 jam idle
+			$_SESSION['sess_menu'] = $this->auth->getListMenu($user['level_id']);
 		}
 
 		/**

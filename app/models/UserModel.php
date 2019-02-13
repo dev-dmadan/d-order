@@ -30,6 +30,7 @@
             
 			return $result;
 		}
+
 		/**
 		 * Method getById
 		 * Proses get data user berdasarkan id
@@ -45,6 +46,7 @@
             
 			return $result;
 		}
+
 		/**
 		 * Method insert
 		 * Proses insert data user
@@ -115,6 +117,7 @@
 				);
 			}
 		}
+		
 		/**
 		 * Method delete
 		 * Proses penghapusan data user beserta data yang berelasi denganya

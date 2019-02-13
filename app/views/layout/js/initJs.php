@@ -22,8 +22,9 @@
 
 <!-- Base Function -->
 <script src="<?= BASE_URL."app/views/layout/js/baseFunction.js"; ?>"></script>
-
 <!-- Page Specific JS File -->
-<?php $this->getJS(); ?>
+<?php 
+    if(method_exists($this, 'getJS')) { $this->getJS(); }
+?>
 
 <script src="<?= BASE_URL."assets/dist/js/custom.js"; ?>"></script>

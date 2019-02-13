@@ -5,7 +5,8 @@
 	/**
 	 * Class OrdersModel
 	 */
-	class OrdersModel extends Database {
+	class OrdersModel extends Database 
+	{
 
 		private $connection;
         
@@ -13,7 +14,7 @@
 		 * Method __construct
 		 * Open connection to DB
 		 */
-		public function __construct(){
+		public function __construct() {
 			$this->connection = $this->openConnection();
 		}
 		
@@ -22,7 +23,7 @@
 		 * Proses get semua data orders
 		 * @return result {array}
 		 */
-		public function getAll(){
+		public function getAll() {
 			$query = "SELECT * FROM v_orders";
 			$statement = $this->connection->prepare($query);
 			$statement->execute();
@@ -37,7 +38,7 @@
 		 * @param id {string}
 		 * @return result {array}
 		 */
-		public function getById($id){
+		public function getById($id) {
 			$query = "SELECT * FROM v_orders WHERE order_number = :id;";
 			$statement = $this->connection->prepare($query);
 			$statement->bindParam(':id', $id);
@@ -53,7 +54,7 @@
 		 * @param user {string}
 		 * @return result {array}
 		 */
-		public function getByUser($user){
+		public function getByUser($user) {
 			$query = "SELECT * FROM v_orders WHERE BINARY username = :user;";
 			$statement = $this->connection->prepare($query);
 			$statement->bindParam(':user', $user);
@@ -64,10 +65,13 @@
 		}
 
 		/**
-		 * 
+		 * Method getDetailById
+		 * Proses get data order detail berdasarkan order number
+		 * @param id {string} order number
+		 * @return result {array}
 		 */
 		public function getDetailById($id) {
-			$query = "SELECT * FROM v_orders_detail WHERE order_number = :id;";
+			$query = "SELECT * FROM v_order_detail WHERE order_number = :id;";
 			$statement = $this->connection->prepare($query);
 			$statement->bindParam(':id', $id);
 			$statement->execute();
@@ -78,11 +82,15 @@
 
 		/**
 		 * Method insert
-		 * Proses insert data orders
+		 * Proses insert data orders beserta detailnya
 		 * @param data {array}
+		 * 		dataOrder {array}
+		 * 		dataDetail {array}
 		 * @return result {array}
+		 * 		success {boolean}
+		 * 		error {string}
 		 */
-		public function insert($data){
+		public function insert($data) {
 			$dataOrder = $data['dataOrder'];
 			$dataDetail = $data['dataDetail'];
 
@@ -111,10 +119,12 @@
         }
 		
 		/**
-		 * 
+		 * Method insert_order
+		 * Proses insert data orders
+		 * @param data {array}
 		 */
 		private function insert_order($data) {
-			$query = "CALL add_order (:id, :date, :money, :total, :change_money, :notes, :status, :user);";
+			$query = "CALL p_add_order (:id, :date, :money, :total, :change_money, :notes, :status, :user);";
 			$statement = $this->connection->prepare($query);
 			$statement->execute(
 				array(
@@ -124,8 +134,8 @@
 					':notes' => $data['notes'],
 					':change_money' => $data['change_money'],
 					':total' => $data['total'],
-					':status' => 1,
-					':user' => $_SESSION['sess_id']
+					':status' => $data['status'],
+					':user' => $data['user']
 				)
 			);
 			$statement->closeCursor();
@@ -135,16 +145,18 @@
 		 * 
 		 */
 		private function insert_detailOrder($data) {
-			$query = "CALL add_order_detail (:order_id, :menu, :order_item, :price_item, :qty, :subtotal);";
+			$item = ($data['item'] == '0') ? NULL : $data['item'];
+			$query = "CALL p_add_order_detail (:order_id, :item, :order_item, :price_item, :qty, :subtotal, :created_by);";
 			$statement = $this->connection->prepare($query);
 			$statement->execute(
 				array(
 					':order_id' => $data['order_id'],
-					':menu' => $data['menu'],
-					':order_item' => $data['menu_name'],
+					':item' => $item,
+					':order_item' => $data['order_item'],
 					':price_item' => $data['price'],
 					':qty' => $data['qty'],
 					':subtotal' => $data['subtotal'],
+					':created_by' => $_SESSION['sess_id']
 				)
 			);
 			$statement->closeCursor();
@@ -157,13 +169,20 @@
 		 * @return result {array}
 		 */
 		public function update($data){
-			$query = "CALL update_order ();";
+			$query = "CALL p_edit_order (:id, :date, :money, :total, :change_money, :notes, :status, :modified_by);";
 			try{
 				$this->connection->beginTransaction();
 				$statement = $this->connection->prepare($query);
 				$statement->execute(
 					array(
-                        
+						':id' => $data['id'],
+						':date' => $data['date'],
+						':money' => $data['money'],
+						':total' => $data['notes'],
+						':change_money' => $data['change_money'],
+						':notes' => $data['notes'],
+						':status' => $data['status_id'],
+						':modified_by' => $data['modified_by']
 					)
 				);
 				$statement->closeCursor();
@@ -181,6 +200,21 @@
 				);
 			}
 		}
+
+		/**
+		 * 
+		 */
+		private function update_detailOrder($data) {
+
+		}
+
+		/**
+		 * 
+		 */
+		private function delete_detailOrder() {
+			
+		}
+
 		/**
 		 * Method delete
 		 * Proses penghapusan data order beserta data yang berelasi denganya

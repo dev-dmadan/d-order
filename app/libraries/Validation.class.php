@@ -125,12 +125,14 @@
 				case 'angka':
 					// cek required
 					if($data['required']) {
-						if(empty($data['field']) || $data['field'] == "") // jika data kosong
+						if($data['field'] == "") // jika data kosong
+						// if(empty($data['field']) || $data['field'] == "") // jika data kosong
 							{ $output = array('cek' => false, 'error' => $data['label']." Harus Diisi"); }
 						else { $output = $this->valid_angka($data); }
 					}
 					else { // jika opsional
-						if(!empty($data['field']) || $data['field'] != "") // jika diisi
+						if($data['field'] == "") // jika data kosong
+						// if(!empty($data['field']) || $data['field'] != "") // jika diisi
 							{ $output = $this->valid_angka($data); }
 						else 
 							{ $output = array('cek' => true, 'error' => ""); } // jika dikosongkan

@@ -48,7 +48,7 @@
          * @param name {string} nama module/menu yang didaftarkan di increment
          */
         private function lastIncrement($name) {
-            $query = "SELECT get_increment(:name) increment";
+            $query = "SELECT f_get_increment(:name) increment";
             try {
                 $this->connection->beginTransaction();
                 $statement = $this->connection->prepare($query);
@@ -80,7 +80,7 @@
          * 
          */
         private function getMask($name) {
-            $query = "SELECT mask FROM increment WHERE name = :name";
+            $query = "SELECT mask FROM v_increment WHERE table_name = :name";
             $statement = $this->connection->prepare($query);
 			$statement->bindParam(':name', $name);
 			$statement->execute();

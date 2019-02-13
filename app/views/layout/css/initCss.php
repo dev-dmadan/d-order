@@ -10,7 +10,9 @@
 <link rel="stylesheet" href="<?= BASE_URL."assets/dist/modules/bootstrap-daterangepicker/daterangepicker.css"; ?>">
 
 <!-- Custom CSS -->
-<?php $this->getCSS(); ?>
+<?php 
+    if(method_exists($this, 'getCSS')) { $this->getCSS(); } 
+?>
 
 <!-- Template CSS -->
 <link rel="stylesheet" href="<?= BASE_URL."assets/dist/css/style.css"; ?>">

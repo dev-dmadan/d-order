@@ -1,4 +1,58 @@
 /**
+ * Method setActiveMenu
+ * @param {object} url windows.location.href
+ * @param {string} level level user
+ */
+function setActiveMenu(url, level) {
+    var newUrl = [];
+    
+    $.each(url, function(index, item) {
+        if(item != "localhost" && item.toLowerCase() != "isystemasia") {
+            newUrl.push(item);
+        }
+    });
+
+    // menu order list
+    if(newUrl[3] == 'orders' && newUrl[4] == undefined) {
+        // default admin
+        if(LEVEL == 'ADMIN') {
+            $('.menu-orders-list').addClass('active');
+        }
+        // default member
+        else if(LEVEL == 'MEMBERS') {
+            $('.menu-orders-form').addClass('active');
+        }
+    }
+    // menu order form
+    else if(newUrl[3] == 'orders' && newUrl[4] == 'form') {
+        $('.menu-orders-form').addClass('active');
+    }
+    // menu order history
+    else if(newUrl[3] == 'orders' && newUrl[4] == 'history') {
+        $('.menu-orders-history').addClass('active');
+    }
+    // menu item
+    else if(newUrl[3] == 'items') {
+        $('.menu-items').addClass('active');
+    }
+    // menu user
+    else if(newUrl[3] == 'user') {
+        $('.menu-user').addClass('active');
+    }
+    else {
+        // default admin
+        if(newUrl[3] == '' && LEVEL == 'ADMIN') {
+            $('.menu-orders-list').addClass('active');
+        }
+        // default member
+        else if(newUrl[3] == '' && LEVEL == 'MEMBERS') {
+            $('.menu-orders-form').addClass('active');
+        }
+    }
+    
+}
+
+/**
  * Method onChangeField
  * @param {object} scope
  */

@@ -6,18 +6,8 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
         <title>Login &mdash; Mas'D Order</title>
 
-        <!-- <link rel="icon" href="<?= BASE_URL."assets/images/69design_icon.ico"; ?>" type='image/x-icon'> -->
-        <!-- General CSS Files -->
-        <link rel="stylesheet" href="<?= BASE_URL."assets/dist/modules/bootstrap/css/bootstrap.min.css"; ?>">
-        <link rel="stylesheet" href="<?= BASE_URL."assets/dist/modules/fontawesome/css/all.min.css"; ?>">
-
-        <!-- CSS Libraries -->
-        <link rel="stylesheet" href="<?= BASE_URL."assets/dist/modules/bootstrap-social/bootstrap-social.css"; ?>">
-        <link rel="stylesheet" href="<?= BASE_URL."assets/dist/modules/izitoast/css/iziToast.min.css"; ?>">
-
-        <!-- Template CSS -->
-        <link rel="stylesheet" href="<?= BASE_URL."assets/dist/css/style.css"; ?>">
-        <link rel="stylesheet" href="<?= BASE_URL."assets/dist/css/components.css"; ?>">
+        <!-- <link rel="icon" href="<?= BASE_URL."assets/images/"; ?>" type='image/x-icon'> -->
+        <?php require_once "app/views/layout/css/initCss.php"; ?>
     </head>
     <body>
         <div id="app">
@@ -59,31 +49,11 @@
             </section>
         </div>
 
-        <!-- General JS Scripts -->
-        <script src="<?= BASE_URL."assets/dist/modules/jquery.min.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/modules/popper.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/modules/tooltip.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/modules/bootstrap/js/bootstrap.min.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/modules/nicescroll/jquery.nicescroll.min.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/modules/moment.min.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/js/stisla.js"; ?>"></script>
-    
-        <!-- JS Libraies -->
-        <script src="<?= BASE_URL."assets/dist/modules/sweetalert/sweetalert.min.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/modules/izitoast/js/iziToast.min.js"; ?>"></script>
-
-        <!-- Page Specific JS File -->
-        
-        <!-- Template JS File -->
-        <script src="<?= BASE_URL."assets/dist/js/scripts.js"; ?>"></script>
-        <script src="<?= BASE_URL."assets/dist/js/custom.js"; ?>"></script>
-        
-        <!-- JS Login -->
         <script>
             const BASE_URL = "<?php print BASE_URL; ?>";
-		    var urlParams = <?php echo json_encode($_GET, JSON_HEX_TAG);?>;
+            var urlParams = <?php echo json_encode($_GET, JSON_HEX_TAG);?>;
         </script>
-        <script src="<?= BASE_URL."app/views/layout/js/initNotif.js"; ?>"></script>
+        <?php require_once "app/views/layout/js/initJs.php"; ?>
         <script src="<?= BASE_URL."app/views/auth/js/initLogin.js"; ?>"></script>
     </body>
 </html>
