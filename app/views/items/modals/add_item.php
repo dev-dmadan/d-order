@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
+                    <!-- description -->
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea id="description" class="form-control field" placeholder="Please fill description">
@@ -54,7 +54,7 @@
                         <div class="message message-status"></div>
                     </div>
 
-                    <!-- Image -->
+                    <!-- image -->
                     <div class="form-group">
                         <label for="image">Image</label>
                         <input type="file" id="image" class="form-control field">
