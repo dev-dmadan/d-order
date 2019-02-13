@@ -216,11 +216,13 @@
                 $data = array();
 
                 foreach($data_menu as $row) {
-                    $dataRow = array();
-                    $dataRow['id'] = $row['id'];
-                    $dataRow['text'] = $row['name'];
+                    if($row['status_name'] === 'ACTIVE') {
+                        $dataRow = array();
+                        $dataRow['id'] = $row['id'];
+                        $dataRow['text'] = $row['name'];
 
-                    $data[] = $dataRow;
+                        $data[] = $dataRow;
+                    }
                 }
 
                 echo json_encode($data);

@@ -263,7 +263,7 @@ function addOrder() {
         }
     );
 
-    if(checkDuplicate(data.menu_name)) { 
+    if(checkDuplicate(data.order_item)) { 
         indexDetail -= 1;
         setNotif({type: 'warning', title: 'Warning message', message: 'You have add this menu before'}, 'swal');
     }

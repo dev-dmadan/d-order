@@ -77,7 +77,6 @@
                     $this->success = true;
                 }
                 else {
-                    $success = false;
                     $this->error = array(
                         'username' => 'Username and your password is wrong !', 
                         'password' => 'Username and your password is wrong !'
