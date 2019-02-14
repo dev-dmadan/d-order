@@ -52,7 +52,8 @@
                     "assets/dist/modules/datatables/datatables.min.js",
                     "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
                     "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
-                    "app/views/items/js/initList.js"
+                    "app/views/items/js/initList.js",
+                    "app/views/items/js/initForm.js"
                 ),
             );        
             $this->layout('items/list', $config);
@@ -121,7 +122,7 @@
                 $checkImage = true;
 
                 if(!$data) {
-                    $this->notif['order'] = array(
+                    $this->notif = array(
                         'type' => 'error',
                         'title' => 'Error Message',
                         'message' => 'Please try again'
@@ -159,7 +160,7 @@
                             'description' => $data['description'],
                             'image' => $valueImage,
                             'status' => $data['status'],
-                            'user' => $_SESSION['sess_id']
+                            'created_by' => $_SESSION['sess_id']
                         );
 
                         if($image) {
@@ -325,11 +326,11 @@
         /**
          * 
          */
-        private function set_validation($data) {
+        private function set_validation($data, $action) {
             $this->validation->set_rules($data['name'], 'Name', 'name', 'string | 1 | 255 | required');
-            $this->validation->set_rules($data['price'], 'Price', 'name', 'nilai | 1 | 9999999 | required');
-            $this->validation->set_rules($data['description'], 'Description', 'name', 'string | 1 | 255 | required');
-            $this->validation->set_rules($data['status'], 'Name', 'Status', 'angka | 1 | 10 | required');
+            $this->validation->set_rules($data['price'], 'Price', 'price', 'nilai | 1 | 9999999 | required');
+            $this->validation->set_rules($data['description'], 'Description', 'description', 'string | 1 | 255 | required');
+            $this->validation->set_rules($data['status'], 'Status', 'status', 'angka | 1 | 10 | required');
 
             return $this->validation->run();
         }

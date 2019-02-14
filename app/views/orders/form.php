@@ -133,6 +133,6 @@
                  
 <!-- modal add detail dan show menu -->
 <?php 
-    include_once("modals/add_order.php");
+    include_once("modals/form_order_detail.php");
     include_once("modals/show_menu.php"); 
 ?>

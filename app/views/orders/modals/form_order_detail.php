@@ -1,11 +1,11 @@
 <?php Defined("BASE_PATH") or die(ACCESS_DENIED); ?>
 
 <!-- Modal Add order -->
-<div class="modal fade" id="modal-add-order" role="dialog" aria-labelledby="modal-add-orderLabel" aria-hidden="true">
+<div class="modal fade" id="modal-order-detail" role="dialog" aria-labelledby="modal-order-detailLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-add-orderLabel">Form Order</h5>
+                <h5 class="modal-title" id="modal-order-detailLabel">Form Order</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

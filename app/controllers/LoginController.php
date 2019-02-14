@@ -108,16 +108,16 @@
             if(!empty($user['image'])) {
                 // cek foto di storage
                 $filename = ROOT.DS.'assets'.DS.'images'.DS.'user'.DS.$user['image'];
-                if(!file_exists($filename)) { $images = BASE_URL.'assets/images/user/default.jpg'; }
-                else { $images = BASE_URL.'assets/images/user/'.$user['image']; }
+                if(!file_exists($filename)) { $image = BASE_URL.'assets/images/user/default.jpg'; }
+                else { $image = BASE_URL.'assets/images/user/'.$user['image']; }
             }
-            else { $images = BASE_URL.'assets/images/user/default.jpg'; }
+            else { $image = BASE_URL.'assets/images/user/default.jpg'; }
 
 			$_SESSION['sess_login'] = true;
 			$_SESSION['sess_lockscreen'] = false;
 			$_SESSION['sess_id'] = $user['username'];
 			$_SESSION['sess_name'] = $user['name'];
-			$_SESSION['sess_images'] = $images;
+			$_SESSION['sess_image'] = $image;
 			$_SESSION['sess_level_id'] = $user['level_id'];
 			$_SESSION['sess_level'] = $user['level_name'];
 			$_SESSION['sess_status_id'] = $user['status_id'];
@@ -138,7 +138,7 @@
 			if(!$lockscreen) { $this->redirect(); }
 			else{
 				if($_SERVER['REQUEST_METHOD'] == "POST") { $this->doLogin($callback); } // jika request post login
-				else { $this->view('lockscreen'); } // jika bukan, atau hanya menampilkan halaman login
+				else { $this->view('auth/lockscreen'); } // jika bukan, atau hanya menampilkan halaman login
 			}
 		}
 

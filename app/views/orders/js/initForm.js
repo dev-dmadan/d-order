@@ -155,7 +155,7 @@ function showFormOrder(action = 'action-add') {
         $('#btn-submit-add-order').text('Edit');
     }
 
-    $('#modal-add-order').modal({backdrop: 'static'});
+    $('#modal-order-detail').modal({backdrop: 'static'});
 }
 
 /**
@@ -300,7 +300,7 @@ function validDetail(data, action = 'action-add') {
                     setRupiah(total, 'text_total');
                     setRupiah(change_money, 'text_change_money');
                     renderTableDetail(listDetail);
-                    $('#modal-add-order').modal('hide');
+                    $('#modal-order-detail').modal('hide');
                     resetFormOrder();
                 }
                 else {
@@ -325,7 +325,7 @@ function validDetail(data, action = 'action-add') {
                         }
                     });
 
-                    $('#modal-add-order').modal('hide');
+                    $('#modal-order-detail').modal('hide');
                     resetFormOrder();
                 }
                 else {
@@ -482,11 +482,11 @@ function submit() {
 		contentType: false,
 		cache :false,
 		processData: false,
-		beforeSend: function(){
+		beforeSend: function() {
 			$('#btn-submit').prop('disabled', true);
 			$('#btn-submit').prepend('<i class="fa fa-spin fa-refresh"></i> ');
 		},
-		success: function(response){
+		success: function(response) {
 			console.log('%cResponse submit: ', 'font-weight: bold; color: green;', response);
 
 			$('#btn-submit').prop('disabled', false);
@@ -494,7 +494,7 @@ function submit() {
 
 			if(!response.cek.order_detail) { setNotif(response.notif.order_detail, 'toastr'); }			
 
-			if(!response.success){
+			if(!response.success) {
                 setError(response.error);
                 var type;
                 if(response.notif.order.type == 'error') { type = 'swal'; }
@@ -507,7 +507,7 @@ function submit() {
                 else { window.location.href = BASE_URL+'orders/history'; } 
             }
 		},
-		error: function(jqXHR, textStatus, errorThrown){
+		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('%cResponse Error submit: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
             setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
 			$('#btn-submit').prop('disabled', false);

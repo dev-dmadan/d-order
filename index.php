@@ -9,7 +9,7 @@
     define("BASE_PATH", true);
 	define('ROOT', dirname(__FILE__)); // root file web
     define('DS', DIRECTORY_SEPARATOR); // pemisah direktori '\'
-    define('ACCESS_DENIED', json_encode(array('success' => false, 'message' => 'Access Denied')));
+    define('ACCESS_DENIED', json_encode(array('success' => false, 'message' => 'Access Denied'), JSON_PRETTY_PRINT));
     /**
      * TYPE ENVIROMENT DEVELOPMENT
      * DEV --> for Local development
