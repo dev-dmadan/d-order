@@ -18,7 +18,7 @@ BEGIN
         (name, price, description, image, status, created_by, modified_by) 
     VALUES 
         (name_param, price_param, description_param, image_param, 
-        status_param, created_by_param, modified_by_param);
+        status_param, created_by_param, created_by_param);
 
 END //
 

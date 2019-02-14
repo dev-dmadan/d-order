@@ -34,3 +34,68 @@ $(document).ready(function() {
         }
     });
 });
+
+/**
+ * 
+ */
+function getView(id) {
+    var notifError = {
+        title: 'Error Message',
+        message: 'Access Denied',
+        type: 'error'
+    };
+    if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
+    else {
+
+    }
+}
+
+/**
+ * 
+ */
+function getDelete(id) {
+    var notifError = {
+        title: 'Error Message',
+        message: 'Access Denied',
+        type: 'error'
+    };
+    if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
+    else {
+        swal({
+            title: 'Are you sure?',
+            text: '',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if(willDelete) {
+                actionDelete(id, function(response) {
+                    if(response.success) { $("#table-item-list").DataTable().ajax.reload(); }
+                    setNotif(response.notif, 'swal');
+                })
+            }
+        });
+    }
+}
+
+/**
+ * 
+ */
+function actionDelete(id, callback) {
+    $.ajax({
+        url: BASE_URL+'items/delete/'+id,
+        type: 'post',
+        dataType: 'json',
+        data: {},
+        beforeSend: function() {
+        },
+        success: function(response) {
+            console.log("%cResponse getDelete: ", "color: green; font-weight: bold", response);
+            callback(response);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('%cResponse Error actionDelete: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+            setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
+        }
+    });
+}

@@ -8,13 +8,6 @@ $(document).ready(function() {
         showFormItem('action-add');
     });
 
-    // event onchange status
-    // $('#status').on('change', function() {
-    //     if(this.value !== "" && this.value != null) {
-    //         // onChangeMenu($(this).val(), $(this).children("option").filter(":selected").text());
-    //     }
-    // });
-
     // event onclick btn reset
     $('#btn-reset').on('click', function() {
         console.log("%cButton Reset clicked...", "color: blue; font-style: italic");
@@ -100,6 +93,13 @@ function getDataForm() {
     data.append('action', $('#btn-submit').val().trim());
 
     return data;
+}
+
+/**
+ * 
+ */
+function getEdit(id) {
+
 }
 
 /**

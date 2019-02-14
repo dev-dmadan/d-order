@@ -48,7 +48,7 @@
                         <!-- qty -->
                         <div class="form-group col-md-4">
                             <label for="qty">Qty</label>
-                            <input type="number" id="qty" class="form-control field" value="1">
+                            <input type="number" id="qty" class="form-control field" value="1" min="1">
                             <div class="message message-qty"></div>
                         </div>
                     </div>

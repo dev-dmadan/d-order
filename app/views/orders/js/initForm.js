@@ -410,7 +410,17 @@ function edit_detail() {
  * 
  */
 function delete_detail(index, value) {
-
+    swal({
+        title: 'Are you sure?',
+        text: '',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if(willDelete) {
+            console.log('Detail Deleted');
+        }
+    });
 }
 
 /**
