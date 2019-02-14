@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="mt-5 text-muted text-center">
-                                Don't have an username? <a href="auth-register.html">Register and Tell Mas'D</a>
+                                Don't have an username? <a href="#" data-toggle="modal" data-target="#modal-form-registration">Register and Tell Mas'D</a>
                             </div>
                             <div class="simple-footer">
                                 <strong>Mas'D Order | Copyright &copy; <?php echo date("Y"); ?> <a href="<?= BASE_URL ?>">Team iSure++</a>.</strong> All rights reserved. | Powered By i-SystemAsia</a>
@@ -48,6 +48,8 @@
                 </div>
             </section>
         </div>
+
+        <?php include_once('register.php'); ?>
 
         <script>
             const BASE_URL = "<?php print BASE_URL; ?>";
