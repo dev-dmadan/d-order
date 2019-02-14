@@ -140,7 +140,7 @@ function submit() {
             }
             setNotif(response.notif, 'toastr');
 		},
-		error: function(jqXHR, textStatus, errorThrown){
+		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('%cResponse Error submit: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
             setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
             $('#btn-submit').prop('disabled', false);

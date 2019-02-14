@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
-                            <table class="table table-bordered table-hover table-md" id="table-order-list" style="width: 100%">
+                            <table class="table table-bordered table-hover table-md" id="table-user-list" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%" class="text-right">No</th>
@@ -45,3 +45,5 @@
     </section>
 </div>
 <!-- End Main Content -->
+
+<?php include_once('modals/edit_status.php') ?>
