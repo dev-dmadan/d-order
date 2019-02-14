@@ -65,36 +65,39 @@
         public function get_list() {
             if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $config = array(
-					'tabel' => 'v_menu',
-					'kolomOrder' => array(null, 'name', 'price', 'description', 'kota', 'total', 'progress', 'status', null),
-					'kolomCari' => array('id', 'pemilik', 'tgl', 'pembangunan', 'luas_area', 'kota', 'total', 'status', 'progress'),
-					'orderBy' => array('id' => 'desc', 'status' => 'asc'),
+					'tabel' => 'v_items',
+					'kolomOrder' => array(null, 'name', 'price', 'status_name', null),
+					'kolomCari' => array('name', 'price', 'status_name', 'description'),
+					'orderBy' => array('id' => 'desc', 'status_id' => 'asc'),
 					'kondisi' => false,
                 );
                 
-                $dataMenu = $this->DataTableModel->getAllDataTable($config);
+                $dataItems = $this->DataTableModel->getAllDataTable($config);
 
                 $data = array();
                 $no_urut = $_POST['start'];
-                foreach($dataMenu as $row) {
+                foreach($dataItems as $row) {
                     $no_urut++;
 
-                    $status = (strtolower($row['status']) == 'ACTIVE') ? '<div class="badge badge-success">'.$row['status'].'</div>' : 
-                        ($row['status'] == '' || empty($row['status'])) ? '<div class="badge badge-danger">NOT SET</div>' :
-                        '<div class="badge badge-danger">'.$row['status'].'</div>';
+                    $status = (strtolower($row['status_name']) == 'active') ? 
+                        '<div class="badge badge-success">'.$row['status_name'].'</div>' : 
+                        (
+                            ($row['status_name'] == '' || empty($row['status_name'])) ? 
+                                '<div class="badge badge-danger">NOT SET</div>' :
+                                '<div class="badge badge-danger">'.$row['status_name'].'</div>'
+                        );
 
-                    $btnEdit = '';
-                    $btnDelete = '';
-                    $btnAction = '<div class="btn-group">'.$btnEdit.$btnDelete.'</div>';
+                    $btnView = '<button onclick="getView('."'".$row["id"]."'".')" type="button" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></button>';
+                    $btnEdit = '<button onclick="getEdit('."'".$row["id"]."'".')" type="button" class="btn btn-sm btn-success" title="Update Item"><i class="fa fa-edit"></i></button>';
+                    $btnDelete = '<button onclick="getDelete('."'".$row["id"]."'".')" type="button" class="btn btn-sm btn-danger" title="Delete Item"><i class="fa fa-trash"></i></button>';
+                    $btnAction = '<div class="btn-group">'.$btnView.$btnEdit.$btnDelete.'</div>';
 
                     $dataRow = array();
-                    $dataRow[] = null;
                     $dataRow['no'] = $no_urut;
                     $dataRow['name'] = $row['name'];
-                    $dataRow['price'] = $row['price'];
-                    $dataRow['status'] = $row['description'];
-                    $dataRow['description'] = $status;
-                    $dataRow['images'] = $btnAction;
+                    $dataRow['price'] = $this->helper->cetakRupiah($row['price']);
+                    $dataRow['status'] = $status;
+                    $dataRow['option'] = $btnAction;
 
                     $data[] = $dataRow;
                 }

@@ -8,6 +8,13 @@ $(document).ready(function() {
         showFormItem('action-add');
     });
 
+    // event onchange status
+    // $('#status').on('change', function() {
+    //     if(this.value !== "" && this.value != null) {
+    //         // onChangeMenu($(this).val(), $(this).children("option").filter(":selected").text());
+    //     }
+    // });
+
     // event onclick btn reset
     $('#btn-reset').on('click', function() {
         console.log("%cButton Reset clicked...", "color: blue; font-style: italic");
@@ -124,7 +131,7 @@ function submit() {
 			if(!response.success) { setError(response.error); }
 			else { 
                 $('#modal-form-item').modal('hide');
-                $("#table-order-detail").DataTable().ajax.reload(); 
+                $("#table-item-list").DataTable().ajax.reload(); 
             }
             setNotif(response.notif, 'toastr');
 		},
@@ -171,4 +178,5 @@ function reset() {
     $('#form-item').trigger('reset');
     $('.field').removeClass('is-invalid').removeClass('is-valid');
     $('.message').removeClass('valid-feedback').removeClass('invalid-feedback').text('');
+    $('#status').val(null).trigger('change');
 }
