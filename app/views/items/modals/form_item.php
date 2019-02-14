@@ -16,8 +16,8 @@
                     
                     <!-- name -->
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" class="form-control field" placeholder="Please insert your name">
+                        <label for="name">Menu Name</label>
+                        <input type="text" id="name" class="form-control field" placeholder="Please insert menu name">
                         <div class="message message-name"></div>
                     </div>
 
@@ -41,7 +41,7 @@
                     <!-- description -->
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" class="form-control field" placeholder="Please fill description"></textarea>
+                        <textarea id="description" class="form-control field" placeholder="Please fill description about menu"></textarea>
                         <div class="message message-description"></div>
                     </div>
 
