@@ -44,6 +44,12 @@ $(document).ready(function() {
         showFormOrder('action-add');
     });
 
+    // event onclick btn show menu
+    $('#btn-show-menu').on('click', function() {
+        console.log("%cButton Show Menu clicked...", "color: blue; font-style: italic");
+        showMenu();
+    });
+
     // event onchange menu
     $('#menu').on('change', function() {
         console.log('%cField Menu OnChange: ', 'color: blue; font-style: italic', $(this).val());
@@ -156,6 +162,13 @@ function showFormOrder(action = 'action-add') {
     }
 
     $('#modal-order-detail').modal({backdrop: 'static'});
+}
+
+/**
+ * 
+ */
+function showMenu() {
+    $('#modal-show-menu').modal({backdrop: 'static'});
 }
 
 /**

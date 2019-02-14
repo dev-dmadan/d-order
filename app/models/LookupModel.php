@@ -28,7 +28,23 @@
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             
 			return $result;
-        }
+		}
+		
+		/**
+		 * 
+		 */
+		public function getByName_activeStatus($status) {
+			$query = "SELECT id, name FROM active_status_lookup WHERE name = :name";
+			$statement = $this->connection->prepare($query);
+			$statement->execute(
+				array(
+					':name' => $status
+				)
+			);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            
+			return $result;
+		}
 
         /**
          * 
@@ -41,6 +57,50 @@
             
 			return $result;
         }
+
+		/**
+		 * 
+		 */
+		public function getByName_orderStatus($status) {
+			$query = "SELECT id, name FROM order_status_lookup WHERE name = :name";
+			$statement = $this->connection->prepare($query);
+			$statement->execute(
+				array(
+					':name' => $status
+				)
+			);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            
+			return $result;
+		}
+
+		/**
+		 * 
+		 */
+		public function getAll_level() {
+			$query = "SELECT id, name FROM level_lookup";
+			$statement = $this->connection->prepare($query);
+			$statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            
+			return $result;
+		}
+
+		/**
+		 * 
+		 */
+		public function getByName_level($level) {
+			$query = "SELECT id, name FROM level_lookup WHERE name = :name";
+			$statement = $this->connection->prepare($query);
+			$statement->execute(
+				array(
+					':name' => $level
+				)
+			);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            
+			return $result;
+		}
 
 		/**
 		 * Method __destruct

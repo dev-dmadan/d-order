@@ -35,7 +35,7 @@
 		 * 
 		 */
 		public function getAll_menuByLevel($level) {
-			$query = "SELECT * FROM v_access_menu WHERE level_id = :level";
+			$query = "SELECT * FROM v_access_menu WHERE level_id = :level ORDER BY position ASC";
 			$statement = $this->connection->prepare($query);
 			$statement->execute(
 				array(

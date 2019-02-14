@@ -55,5 +55,6 @@
         </script>
         <?php require_once "app/views/layout/js/initJs.php"; ?>
         <script src="<?= BASE_URL."app/views/auth/js/initLogin.js"; ?>"></script>
+        <script src="<?= BASE_URL."app/views/auth/js/initRegister.js"; ?>"></script>
     </body>
 </html>

@@ -9,7 +9,8 @@
 	class Login extends Controller {
 
 		private $username;
-        private $password;
+		private $password;
+		private $message = NULL;
         private $error = array();
         private $notif = array();
         private $success = false;

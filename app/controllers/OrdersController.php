@@ -73,8 +73,7 @@
 					'kolomOrder' => array(null, null, 'order_number', 'user', 'money', 'total', 'change_money', 'status_id', null),
 					'kolomCari' => array('order_number', 'order_date', 'total', 'money', 'change_money', 'status_name'),
 					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
-                    // 'kondisi' => "WHERE order_date = CURDATE()",
-                    'kondisi' => false,
+                    'kondisi' => "WHERE order_date = CURDATE()",
 				);
 
 				$dataOrder = $this->DataTableModel->getAllDataTable($config);
@@ -145,7 +144,7 @@
          * 
          */
         public function get_list_detail() {
-            if($_SERVER['REQUEST_METHOD'] === 'GET' && $_SESSION['sess_level'] === 'ADMIN') {
+            if($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $order_number = (isset($_GET['order_number']) && !empty($_GET['order_number'])) ? strtoupper($_GET['order_number']) : false;
                 $dataDetail = !empty($this->OrdersModel->getDetailById($order_number)) ? $this->OrdersModel->getDetailById($order_number) : false;
                 
@@ -195,6 +194,80 @@
             );
 
             $this->layout('orders/history', $config);
+        }
+
+        /**
+         * 
+         */
+        public function get_list_history() {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $config = array(
+					'tabel' => 'v_orders',
+					'kolomOrder' => array(null, null, 'order_number', 'money', 'total', 'change_money', 'status_id', null),
+					'kolomCari' => array('order_number', 'order_date', 'total', 'money', 'change_money', 'status_name'),
+					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
+                    'kondisi' => 'WHERE user = "'.$_SESSION['sess_id'].'"',
+				);
+
+				$dataOrder = $this->DataTableModel->getAllDataTable($config);
+
+				$data = array();
+				$no_urut = $_POST['start'];
+				foreach($dataOrder as $row){
+					$no_urut++;
+
+                    // button aksi
+					$btnDetail = '<button onclick="getView('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-info" title="View Detail"><i class="fa fa-eye"></i></button>';
+					
+					$option = '<div class="btn-group">'.$btnDetail.'</div>';
+
+                    switch ($row['status_id']) {
+                        // pending
+                        case 1 :
+                            $status = '<div class="badge badge-primary">';
+                            break;
+                        
+                        // process
+                        case 2 :
+                            $status = '<div class="badge badge-info">';
+                            break;
+
+                        // delivered
+                        case 3 :
+                            $status = '<div class="badge badge-success">';
+                            break;
+
+                        // reject
+                        default:
+                            $status = '<div class="badge badge-danger">';
+                            break;
+                    }
+
+                    $status .= $row['status_name'].'</div>';
+					
+                    $dataRow = array();
+                    $dataRow[] = null;
+                    $dataRow['no'] = $no_urut;
+                    $dataRow['order_number'] = $row['order_number'];
+                    $dataRow['money'] = $this->helper->cetakRupiah($row['money']);
+					$dataRow['total'] = $this->helper->cetakRupiah($row['total']);
+                    $dataRow['change_money'] = $this->helper->cetakRupiah($row['change_money']);
+                    $dataRow['status'] = $status;
+                    $dataRow['option'] = $option;
+
+					$data[] = $dataRow;
+				}
+
+				$output = array(
+					'draw' => $_POST['draw'],
+					'recordsTotal' => $this->DataTableModel->recordTotal(),
+					'recordsFiltered' => $this->DataTableModel->recordFilter(),
+					'data' => $data,
+				);
+
+				echo json_encode($output);
+            }
+            else { die(ACCESS_DENIED); }
         }
 
         /**

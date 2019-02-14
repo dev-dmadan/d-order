@@ -26,7 +26,6 @@
                                         <th></th>
                                         <th style="width: 5%" class="text-right">No</th>
                                         <th>Order Number</th>
-                                        <th>User</th>
                                         <th class="text-right">Money</th>
                                         <th class="text-right">Total</th>
                                         <th class="text-right">Change Money</th>

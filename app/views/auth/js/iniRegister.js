@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-    // event on submit login
-    $('#form-login').on('submit', function(e) {
+    // event on submit register
+    $('#form-registration').on('submit', function(e) {
         e.preventDefault();
-        submit_login();
+        submit_register();
 
 		return false;
     });
@@ -13,7 +13,7 @@ $(document).ready(function() {
 /**
  * Method submit_login
  */
-function submit_login() {
+function submit_register() {
     $.ajax({
         url: BASE_URL+'login/',
         type: 'POST',
