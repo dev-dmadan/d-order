@@ -36,17 +36,19 @@ CREATE TABLE IF NOT EXISTS `access_menu` (
   CONSTRAINT `fk_access_menu_level_id` FOREIGN KEY (`level_id`) REFERENCES `level_lookup` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_access_menu_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_access_menu_modified_by` FOREIGN KEY (`modified_by`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mas-d-order.access_menu: ~6 rows (approximately)
+-- Dumping data for table mas-d-order.access_menu: ~7 rows (approximately)
+DELETE FROM `access_menu`;
 /*!40000 ALTER TABLE `access_menu` DISABLE KEYS */;
-REPLACE INTO `access_menu` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `level_id`, `menu_id`) VALUES
+INSERT INTO `access_menu` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `level_id`, `menu_id`) VALUES
 	(1, '2019-02-12 18:14:39', '2019-02-12 18:20:03', NULL, NULL, 1, 1),
 	(2, '2019-02-12 18:20:08', '2019-02-12 18:20:13', NULL, NULL, 1, 2),
 	(3, '2019-02-12 18:20:55', '2019-02-12 18:20:55', NULL, NULL, 1, 3),
 	(4, '2019-02-12 18:21:04', '2019-02-12 18:21:04', NULL, NULL, 1, 4),
 	(5, '2019-02-12 18:21:10', '2019-02-13 11:00:33', NULL, NULL, 2, 2),
-	(7, '2019-02-12 18:22:06', '2019-02-13 11:00:59', NULL, NULL, 2, 5);
+	(7, '2019-02-12 18:22:06', '2019-02-13 11:00:59', NULL, NULL, 2, 5),
+	(8, '2019-02-14 14:29:21', '2019-02-14 14:29:21', NULL, NULL, 1, 5);
 /*!40000 ALTER TABLE `access_menu` ENABLE KEYS */;
 
 -- Dumping structure for table mas-d-order.active_status_lookup
@@ -61,8 +63,9 @@ CREATE TABLE IF NOT EXISTS `active_status_lookup` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.active_status_lookup: ~2 rows (approximately)
+DELETE FROM `active_status_lookup`;
 /*!40000 ALTER TABLE `active_status_lookup` DISABLE KEYS */;
-REPLACE INTO `active_status_lookup` (`id`, `created_on`, `modified_on`, `name`, `description`) VALUES
+INSERT INTO `active_status_lookup` (`id`, `created_on`, `modified_on`, `name`, `description`) VALUES
 	(1, '2019-02-12 18:14:19', '2019-02-12 18:14:19', 'ACTIVE', NULL),
 	(2, '2019-02-12 18:14:26', '2019-02-12 18:14:26', 'NON ACTIVE', NULL);
 /*!40000 ALTER TABLE `active_status_lookup` ENABLE KEYS */;
@@ -106,10 +109,11 @@ CREATE TABLE IF NOT EXISTS `increment` (
   CONSTRAINT `fk_increment_modified_by` FOREIGN KEY (`modified_by`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mas-d-order.increment: ~1 rows (approximately)
+-- Dumping data for table mas-d-order.increment: ~0 rows (approximately)
+DELETE FROM `increment`;
 /*!40000 ALTER TABLE `increment` DISABLE KEYS */;
-REPLACE INTO `increment` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `menu_id`, `mask`, `last_increment`, `description`) VALUES
-	(1, '2019-02-13 10:15:40', '2019-02-13 14:54:19', NULL, NULL, 1, 'ORD-yyyy-000', 91, NULL);
+INSERT INTO `increment` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `menu_id`, `mask`, `last_increment`, `description`) VALUES
+	(1, '2019-02-13 10:15:40', '2019-02-14 16:47:27', NULL, NULL, 1, 'ORD-yyyy-000', 6, NULL);
 /*!40000 ALTER TABLE `increment` ENABLE KEYS */;
 
 -- Dumping structure for table mas-d-order.items
@@ -132,12 +136,16 @@ CREATE TABLE IF NOT EXISTS `items` (
   CONSTRAINT `fk_items_created_by` FOREIGN KEY (`created_by`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_items_modified_by` FOREIGN KEY (`modified_by`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_items_status` FOREIGN KEY (`status`) REFERENCES `active_status_lookup` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mas-d-order.items: ~0 rows (approximately)
+-- Dumping data for table mas-d-order.items: ~4 rows (approximately)
+DELETE FROM `items`;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-REPLACE INTO `items` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `name`, `price`, `description`, `image`, `status`) VALUES
-	(1, '2019-02-13 13:36:48', '2019-02-13 15:19:09', NULL, NULL, 'Nasi Goreng Aceh', 16000.00, NULL, NULL, 1);
+INSERT INTO `items` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `name`, `price`, `description`, `image`, `status`) VALUES
+	(1, '2019-02-13 13:36:48', '2019-02-13 15:19:09', NULL, NULL, 'Nasi Goreng Aceh', 16000.00, NULL, NULL, 1),
+	(2, '2019-02-14 10:58:11', '2019-02-14 10:58:11', 'hidayat', 'hidayat', 'Jus Jeruk', 15000.00, 'Jus rasa jeruk', NULL, 1),
+	(3, '2019-02-14 11:48:35', '2019-02-14 11:48:35', 'hidayat', 'hidayat', 'Ali Imron', 1000000.00, 'Ali sangat gemuk', NULL, 1),
+	(4, '2019-02-14 11:49:31', '2019-02-14 11:49:31', 'hidayat', 'hidayat', 'lili', 20000.00, 'gak enak', NULL, 1);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 
 -- Dumping structure for table mas-d-order.level_lookup
@@ -152,8 +160,9 @@ CREATE TABLE IF NOT EXISTS `level_lookup` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.level_lookup: ~2 rows (approximately)
+DELETE FROM `level_lookup`;
 /*!40000 ALTER TABLE `level_lookup` DISABLE KEYS */;
-REPLACE INTO `level_lookup` (`id`, `created_on`, `modified_on`, `name`, `description`) VALUES
+INSERT INTO `level_lookup` (`id`, `created_on`, `modified_on`, `name`, `description`) VALUES
 	(1, '2019-02-12 18:14:04', '2019-02-12 18:14:04', 'ADMIN', NULL),
 	(2, '2019-02-12 18:14:09', '2019-02-12 18:14:09', 'MEMBERS', NULL);
 /*!40000 ALTER TABLE `level_lookup` ENABLE KEYS */;
@@ -180,8 +189,9 @@ CREATE TABLE IF NOT EXISTS `menu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.menu: ~5 rows (approximately)
+DELETE FROM `menu`;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-REPLACE INTO `menu` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `name`, `table_name`, `url`, `class`, `icon`, `position`) VALUES
+INSERT INTO `menu` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `name`, `table_name`, `url`, `class`, `icon`, `position`) VALUES
 	(1, '2019-02-12 18:14:56', '2019-02-13 13:29:38', NULL, NULL, 'Orders List', 'orders', 'orders', 'menu-orders-list', NULL, 1),
 	(2, '2019-02-12 18:15:25', '2019-02-13 11:11:00', NULL, NULL, 'Orders Form', NULL, 'orders/form', 'menu-orders-form', NULL, 2),
 	(3, '2019-02-12 18:16:39', '2019-02-13 11:11:12', NULL, NULL, 'Menu Items', 'items', 'items', 'menu-items', NULL, 4),
@@ -209,8 +219,9 @@ CREATE TABLE IF NOT EXISTS `menu_detail` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.menu_detail: ~15 rows (approximately)
+DELETE FROM `menu_detail`;
 /*!40000 ALTER TABLE `menu_detail` DISABLE KEYS */;
-REPLACE INTO `menu_detail` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `menu_id`, `permission`) VALUES
+INSERT INTO `menu_detail` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `menu_id`, `permission`) VALUES
 	(1, '2019-02-12 18:17:22', '2019-02-12 18:17:29', NULL, NULL, 1, '1'),
 	(2, '2019-02-12 18:17:34', '2019-02-12 18:17:34', NULL, NULL, 1, '2'),
 	(3, '2019-02-12 18:17:38', '2019-02-12 18:17:38', NULL, NULL, 1, '3'),
@@ -255,11 +266,11 @@ CREATE TABLE IF NOT EXISTS `orders` (
   CONSTRAINT `fk_order_user` FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table mas-d-order.orders: ~2 rows (approximately)
+-- Dumping data for table mas-d-order.orders: ~3 rows (approximately)
+DELETE FROM `orders`;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-REPLACE INTO `orders` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `date`, `money`, `total`, `change_money`, `notes`, `status`, `user`) VALUES
-	('ORD-2019089', '2019-02-13 14:42:16', '2019-02-13 14:42:16', 'hidayat', 'hidayat', '2019-02-13', 50000.00, 18000.00, 32000.00, 'Yang manis-manis eaaa', 1, 'hidayat'),
-	('ORD-2019090', '2019-02-13 14:42:50', '2019-02-13 14:42:50', 'hidayat', 'hidayat', '2019-02-13', 50000.00, 10000.00, 40000.00, '', 1, 'hidayat');
+INSERT INTO `orders` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `date`, `money`, `total`, `change_money`, `notes`, `status`, `user`) VALUES
+	('ORD-2019006', '2019-02-14 16:49:00', '2019-02-14 16:49:00', 'rifka', 'rifka', '2019-02-14', 50000.00, 3000000.00, -2950000.00, '', 1, 'rifka');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 
 -- Dumping structure for table mas-d-order.order_detail
@@ -285,13 +296,13 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
   CONSTRAINT `fk_order_detail_modified_by` FOREIGN KEY (`modified_by`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_order_detail_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_order_detail_order_item` FOREIGN KEY (`item`) REFERENCES `items` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mas-d-order.order_detail: ~2 rows (approximately)
+-- Dumping data for table mas-d-order.order_detail: ~3 rows (approximately)
+DELETE FROM `order_detail`;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
-REPLACE INTO `order_detail` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `order_id`, `item`, `order_item`, `price_item`, `qty`, `subtotal`) VALUES
-	(7, '2019-02-13 14:42:16', '2019-02-13 14:42:16', 'hidayat', 'hidayat', 'ORD-2019089', NULL, 'Nasi goreng mafia di bandung', 18000.00, 1, 18000.00),
-	(8, '2019-02-13 14:42:50', '2019-02-13 14:42:50', 'hidayat', 'hidayat', 'ORD-2019090', NULL, 'Nasi goreng mafia di bandung', 10000.00, 1, 10000.00);
+INSERT INTO `order_detail` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `order_id`, `item`, `order_item`, `price_item`, `qty`, `subtotal`) VALUES
+	(10, '2019-02-14 16:49:00', '2019-02-14 16:49:00', 'rifka', 'rifka', 'ORD-2019006', 3, 'Ali Imron', 1000000.00, 3, 3000000.00);
 /*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
 
 -- Dumping structure for table mas-d-order.order_status_lookup
@@ -312,13 +323,37 @@ CREATE TABLE IF NOT EXISTS `order_status_lookup` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.order_status_lookup: ~4 rows (approximately)
+DELETE FROM `order_status_lookup`;
 /*!40000 ALTER TABLE `order_status_lookup` DISABLE KEYS */;
-REPLACE INTO `order_status_lookup` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `name`, `description`) VALUES
+INSERT INTO `order_status_lookup` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `name`, `description`) VALUES
 	(1, '2019-02-13 14:00:34', '2019-02-13 14:00:34', NULL, NULL, 'PENDING', NULL),
 	(2, '2019-02-13 14:00:40', '2019-02-13 14:00:40', NULL, NULL, 'PROCESS', NULL),
 	(3, '2019-02-13 14:00:46', '2019-02-13 14:00:46', NULL, NULL, 'REJECT', NULL),
 	(4, '2019-02-13 14:00:51', '2019-02-13 14:00:51', NULL, NULL, 'DONE', NULL);
 /*!40000 ALTER TABLE `order_status_lookup` ENABLE KEYS */;
+
+-- Dumping structure for procedure mas-d-order.p_add_item
+DROP PROCEDURE IF EXISTS `p_add_item`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_add_item`(
+	IN `name_param` varchar(255),
+	IN `price_param` double(12,2),
+	IN `description_param` text,
+	IN `image_param` text,
+	IN `status_param` int,
+	IN `created_by_param` varchar(50)
+
+)
+BEGIN
+
+    INSERT INTO items
+        (name, price, description, image, status, created_by, modified_by) 
+    VALUES 
+        (name_param, price_param, description_param, image_param, 
+        status_param, created_by_param, created_by_param);
+
+END//
+DELIMITER ;
 
 -- Dumping structure for procedure mas-d-order.p_add_order
 DROP PROCEDURE IF EXISTS `p_add_order`;
@@ -364,6 +399,29 @@ BEGIN
 	VALUES 
 		(order_id_param, item_param, order_item_param, price_item_param, 
 		qty_param, subtotal_param, created_by_param, created_by_param);
+
+END//
+DELIMITER ;
+
+-- Dumping structure for procedure mas-d-order.p_add_user
+DROP PROCEDURE IF EXISTS `p_add_user`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_add_user`(
+    in username_param varchar(50),
+    in password_param text,
+    in name_param varchar(255),
+    in level_param int,
+    in status_param int,
+    in image_param text,
+    in created_by_param varchar(50)
+)
+BEGIN
+
+    INSERT INTO user 
+        (username, password, name, level, status, image, created_by, modified_by)
+    VALUES 
+        (username_param, password_param, name_param, level_param, 
+        status_param, image_param, created_by_param, created_by_param);
 
 END//
 DELIMITER ;
@@ -487,11 +545,12 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
   CONSTRAINT `fk_role_permission_modified_by` FOREIGN KEY (`modified_by`) REFERENCES `user` (`username`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_role_permission_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `menu_detail` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_role_permission_user` FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.role_permission: ~15 rows (approximately)
+DELETE FROM `role_permission`;
 /*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
-REPLACE INTO `role_permission` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `user`, `permission_id`) VALUES
+INSERT INTO `role_permission` (`id`, `created_on`, `modified_on`, `created_by`, `modified_by`, `user`, `permission_id`) VALUES
 	(1, '2019-02-12 18:24:19', '2019-02-12 18:26:08', NULL, NULL, 'hidayat', 1),
 	(2, '2019-02-12 18:26:14', '2019-02-12 18:26:14', NULL, NULL, 'hidayat', 2),
 	(3, '2019-02-12 18:26:27', '2019-02-12 18:26:27', NULL, NULL, 'hidayat', 3),
@@ -535,10 +594,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mas-d-order.user: ~2 rows (approximately)
+DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-REPLACE INTO `user` (`username`, `created_on`, `modified_on`, `created_by`, `modified_by`, `password`, `name`, `level`, `status`, `image`) VALUES
-	('alibaba', '2019-02-12 18:23:11', '2019-02-12 18:23:11', NULL, NULL, 'alibaba', 'M. Ali Imron', 2, 1, NULL),
-	('hidayat', '2019-02-12 18:22:38', '2019-02-12 18:22:38', NULL, NULL, 'hidayat', 'M. Hidayat', 1, 1, NULL);
+INSERT INTO `user` (`username`, `created_on`, `modified_on`, `created_by`, `modified_by`, `password`, `name`, `level`, `status`, `image`) VALUES
+	('alinavillera', '2019-02-14 16:38:45', '2019-02-14 16:56:39', NULL, NULL, '$2y$10$tQW/V/IAli4SI5Xb.1.DiOAGI8f86SqkRDikGAON1.qM.QG4Mz2mi', 'Muhammad Ali Imron', 2, 1, NULL),
+	('hidayat', '2019-02-12 18:22:38', '2019-02-14 16:35:50', NULL, NULL, '$2y$10$mhqbPgiaw1v/duA5l4zTueZPpXiTUM8VkCg5ubmGx3xPKh7K3jwvO', 'M. Hidayat', 1, 1, NULL),
+	('rifka', '2019-02-14 16:47:09', '2019-02-14 16:47:17', NULL, NULL, '$2y$10$XUDmalxPVm/tYfnJ37IUw.GU0sq4SKoJiyJwVlv.uBFs9vNaUWJom', 'rifka', 2, 1, NULL),
+	('udin_tempest', '2019-02-14 16:40:22', '2019-02-14 16:40:33', NULL, NULL, '$2y$10$1pOmjUmkt6xNSOv.L/lM..IoSTtJUtk3A49FxaueVRl.Nic2nopqe', 'Lili Syarifudin', 2, 1, '5949016025e74cd85eed5a64a7a5452457d9daf8c1b69fb332a2da7f216f11047028c3d2.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for view mas-d-order.v_access_menu
@@ -578,6 +640,8 @@ CREATE TABLE `v_items` (
 	`price` DOUBLE(12,2) NULL,
 	`description` TEXT NULL COLLATE 'latin1_swedish_ci',
 	`image` TEXT NULL COLLATE 'latin1_swedish_ci',
+	`status_id` INT(11) NULL,
+	`status_name` VARCHAR(255) NULL COLLATE 'latin1_swedish_ci',
 	`created_on` DATETIME NOT NULL,
 	`created_by` VARCHAR(50) NULL COLLATE 'latin1_swedish_ci',
 	`created_by_name` VARCHAR(255) NULL COLLATE 'latin1_swedish_ci',
@@ -689,7 +753,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP VIEW IF EXISTS `v_items`;
 -- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `v_items`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_items` AS select `i`.`id` AS `id`,`i`.`name` AS `name`,`i`.`price` AS `price`,`i`.`description` AS `description`,`i`.`image` AS `image`,`i`.`created_on` AS `created_on`,`i`.`created_by` AS `created_by`,`ucb`.`name` AS `created_by_name`,`i`.`modified_on` AS `modified_on`,`i`.`modified_by` AS `modified_by`,`umb`.`name` AS `modified_by_name` from ((`items` `i` left join `user` `ucb` on((`ucb`.`username` = `i`.`created_by`))) left join `user` `umb` on((`umb`.`username` = `i`.`modified_by`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_items` AS select `i`.`id` AS `id`,`i`.`name` AS `name`,`i`.`price` AS `price`,`i`.`description` AS `description`,`i`.`image` AS `image`,`i`.`status` AS `status_id`,`asl`.`name` AS `status_name`,`i`.`created_on` AS `created_on`,`i`.`created_by` AS `created_by`,`ucb`.`name` AS `created_by_name`,`i`.`modified_on` AS `modified_on`,`i`.`modified_by` AS `modified_by`,`umb`.`name` AS `modified_by_name` from (((`items` `i` left join `active_status_lookup` `asl` on((`asl`.`id` = `i`.`status`))) left join `user` `ucb` on((`ucb`.`username` = `i`.`created_by`))) left join `user` `umb` on((`umb`.`username` = `i`.`modified_by`)));
 
 -- Dumping structure for view mas-d-order.v_menu_permission
 DROP VIEW IF EXISTS `v_menu_permission`;
