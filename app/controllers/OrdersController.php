@@ -71,7 +71,7 @@
                 $config = array(
 					'tabel' => 'v_orders',
 					'kolomOrder' => array(null, null, 'order_number', 'user', 'money', 'total', 'change_money', 'status_id', null),
-					'kolomCari' => array('order_number', 'order_date', 'total', 'money', 'change_money', 'status_name'),
+					'kolomCari' => array('order_number', 'user', 'user_name', 'order_date', 'total', 'money', 'change_money', 'status_name'),
 					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
                     'kondisi' => "WHERE order_date = CURDATE()",
 				);

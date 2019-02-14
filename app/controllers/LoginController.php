@@ -71,9 +71,10 @@
                 $username = $dataUser['username'];
                 $password = $dataUser['password'];
 
-                // if(($username === $this->username) && (password_verify($this->password, $password)) {
-				if((($username === $this->username) && ($password === $this->password)) 
+				if((($username === $this->username) && password_verify($this->password, $password)) 
 					&& $dataUser['status_name'] === 'ACTIVE') {
+				// if((($username === $this->username) && ($password === $this->password)) 
+				// 	&& $dataUser['status_name'] === 'ACTIVE') {
                     $this->setSession($dataUser);
                     $this->success = true;
                 }

@@ -11,7 +11,6 @@
                 </button>
             </div>
             <form id="form-registration">
-                <input type="hidden" id="id">
                 <div class="modal-body">
                     
                     <!-- fullname -->

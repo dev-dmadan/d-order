@@ -114,12 +114,12 @@ function setNotif(notif, type = 'default') {
  * @param {object} error
  */
 function setError(error) {
-    $.each(error, function(index, item){
-        if(item != ""){
+    $.each(error, function(index, item) {
+        if(item != "") {
             $('#'+index).removeClass('is-invalid').removeClass('is-valid').addClass('is-invalid');
             $('.message-'+index).removeClass('valid-feedback').removeClass('invalid-feedback').addClass('invalid-feedback').text(item);
         }
-        else{
+        else {
             $('#'+index).removeClass('is-invalid').removeClass('is-valid').addClass('is-valid');
             $('.message-'+index).removeClass('valid-feedback').removeClass('invalid-feedback').addClass('valid-feedback').text(item);
         }

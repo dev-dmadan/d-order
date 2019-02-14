@@ -54,7 +54,7 @@
 		 * @return result {array}
 		 */
 		public function insert($data){
-			$query = "CALL add_user (:username, :password, :name, :level, :status);";
+			$query = "CALL p_add_user (:username, :password, :name, :level, :status, :image, :created_by);";
 			try{
 				$this->connection->beginTransaction();
 				$statement = $this->connection->prepare($query);
@@ -64,7 +64,9 @@
                         ':password' => $data['password'],
                         ':name' => $data['name'],
                         ':level' => $data['level'],
-						':status' => $data['status']
+						':status' => $data['status'],
+						':image' => $data['image'],
+						':created_by' => $data['created_by']
 					)
 				);
 				$statement->closeCursor();

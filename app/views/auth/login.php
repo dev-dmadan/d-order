@@ -23,14 +23,23 @@
                             
                                 <div class="card-body">
                                     <form id="form-login">
+
+                                        <!-- username -->
                                         <div class="form-group has-feedback">
                                             <label for="username">Username</label>
                                             <input id="username" type="text" class="form-control field" tabindex="1" autofocus>
                                             <div class="message-username"></div>
                                         </div>
 
+                                        <!-- password -->
                                         <div class="form-group has-feedback">
-                                            <button type="submit" id="submit-login" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                            <label for="password">Password</label>
+                                            <input id="password" type="password" class="form-control field" tabindex="2">
+                                            <div class="message-password"></div>
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <button type="submit" id="submit-login" class="btn btn-primary btn-lg btn-block" tabindex="3">
                                                 Login
                                             </button>
                                         </div>
@@ -38,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="mt-5 text-muted text-center">
-                                Don't have an username? <a href="#" data-toggle="modal" data-target="#modal-form-registration">Register and Tell Mas'D</a>
+                                Don't have an username? <a href="#" id="btn-form-register">Register and Tell Mas'D</a>
                             </div>
                             <div class="simple-footer">
                                 <strong>Mas'D Order | Copyright &copy; <?php echo date("Y"); ?> <a href="<?= BASE_URL ?>">Team iSure++</a>.</strong> All rights reserved. | Powered By i-SystemAsia</a>

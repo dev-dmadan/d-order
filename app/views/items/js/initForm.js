@@ -22,6 +22,11 @@ $(document).ready(function() {
 
 		return false;
     });
+
+    // event on change field
+    $('.field').on('change', function(){
+        onChangeField(this);
+	});
 });
 
 /**

@@ -8,6 +8,10 @@ $(document).ready(function() {
 		return false;
     });
 
+    // event on change field
+    $('.field').on('change', function(){
+		onChangeField(this);
+	});
 });
 
 /**
@@ -20,7 +24,7 @@ function submit_login() {
         dataType: 'json',
         data:{
             'username': $('#username').val().trim(),
-            'password': $('#username').val().trim(),
+            'password': $('#password').val().trim(),
         },
         beforeSend: function(){
             $('#submit-login').prop('disabled', true);
