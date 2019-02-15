@@ -223,15 +223,104 @@
          * 
          */
         public function edit($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
+                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $data = !empty($this->ItemsModel->getById($id)) ?
+                        $this->ItemsModel->getById($id) : false;
 
+                    if($data) {
+                        $this->success = true;
+                        
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning message',
+                            'message' => "Sorry we can't find any data"
+                        );
+                    }
+
+                    $result = array(
+                        'success' => $this->success,
+                        'notif' => $this->notif,
+                        'data' => $data
+                    );
+
+                    echo json_encode($result);
+                }
+            }
+            else { die(ACCESS_DENIED); }
         }
 
         /**
          * 
          */
         public function action_edit() {
-            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
+                $data = isset($_POST) ? $_POST : false;
 
+                if(!$data) {
+                    $this->notif = array(
+                        'type' => 'error',
+                        'title' => 'Error Message',
+                        'message' => 'Please try again'
+                    );
+                }
+                else {
+                    // data validation
+                    $validation = $this->set_validation($data, $data['action']);
+                    $cek = $validation['cek'];
+                    $this->error = $validation['error'];
+
+                    if($cek) {
+                        $dataUpdate = array(
+                            'id' => $data['id'],
+                            'name' => $data['name'],
+                            'price' => $data['price'],
+                            'description' => $data['description'],
+                            'status' => $data['status'],
+                            'modified_by' => $_SESSION['sess_id']
+                        );
+
+                        $update = $this->ItemsModel->update($dataUpdate);
+                        if($update['success']) {
+                            $this->success = true;
+                            $this->notif = array(
+                                'type' => 'success',
+                                'title' => 'Success Message',
+                                'message' => 'Success edit menu item'
+                            );
+                        }
+                        else {
+                            $this->notif = array(
+                                'type' => 'error',
+                                'title' => 'Error Message',
+                                'message' => 'Please try again'
+                            );
+                            $this->message = $update['error'];
+                        }
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning Message',
+                            'message' => 'Please check your form'
+                        );
+                    }
+                }
+
+                $result = array(
+                    'success' => $this->success,
+                    'notif' => $this->notif,
+                    'error' => $this->error,
+                    'message' => $this->message,
+                    'data' => array(
+                        'post' => $data,
+                    )
+                );
+
+                echo json_encode($result);
             }
             else { die(ACCESS_DENIED); }
         }
@@ -257,15 +346,29 @@
             if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
                 if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
                 else {
-                    $delete = $this->ItemModel->delete($id);
+                    $delete = $this->ItemsModel->delete($id);
                     if($delete['success']) {
                         $this->success = true;
                         $this->notif = array(
                             'type' => 'success',
                             'title' => 'Success Message',
-                            'message' => 'Data Berhasil Dihapus',
+                            'message' => 'Data deleted successfully',
                         );
                     }
+                    else {
+                        $this->message = $delete['error'];
+                        $this->notif = array(
+                            'type' => 'error',
+                            'title' => 'Error Message',
+                            'message' => 'Please try again'
+                        );
+                    }
+                    
+                    echo json_encode(array(
+                        'success' => $this->success,
+                        'message' => $this->message,
+                        'notif' => $this->notif
+                    ));
                 }
             }
             else { die(ACCESS_DENIED); }

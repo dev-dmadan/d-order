@@ -89,13 +89,18 @@
 		 * @return result {array}
 		 */
 		public function update($data){
-			$query = "CALL update_menu ();";
+			$query = "CALL p_edit_item (:id, :name, :price, :description, :status, :modified_by);";
 			try{
 				$this->connection->beginTransaction();
 				$statement = $this->connection->prepare($query);
 				$statement->execute(
 					array(
-      
+						':id' => $data['id'], 
+						':name' => $data['name'],
+						':price' => $data['price'],
+						':description' => $data['description'],
+						':status' => $data['status'],
+						':modified_by' => $data['modified_by']
 					)
 				);
 				$statement->closeCursor();
@@ -115,12 +120,12 @@
 		}
 		/**
 		 * Method delete
-		 * Proses penghapusan data menu beserta data yang berelasi denganya
+		 * Proses penghapusan data menu items beserta data yang berelasi denganya
 		 * @param id {string}
 		 * @return result {array}
 		 */
 		public function delete($id){
-			$query = "CALL delete_menu (:id);";
+			$query = "CALL p_delete_item (:id);";
 			try{
 				$this->connection->beginTransaction();
 				$statement = $this->connection->prepare($query);

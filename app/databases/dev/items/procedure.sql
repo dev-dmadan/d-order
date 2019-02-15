@@ -34,7 +34,7 @@ CREATE PROCEDURE p_edit_item (
     name_param varchar(255),
     price_param double(12,2),
     description_param text,
-    image_param text,
+    status_param int,
     modified_by_param varchar(50)
 )
 BEGIN
@@ -43,7 +43,7 @@ BEGIN
         name = name_param,
         price = price_param,
         description = description_param,
-        image = image_param,
+        status = status_param,
         modified_by = modified_by_param
     WHERE id = id_param;
 
