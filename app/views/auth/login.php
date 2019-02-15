@@ -57,7 +57,7 @@
                 </div>
             </section>
         </div>
-
+        
         <?php include_once('register.php'); ?>
 
         <script>
