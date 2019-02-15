@@ -19,6 +19,20 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h4></h4>
+                            <div class="card-header-action">
+                                <div class="dropdown">
+                                    <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle" aria-expanded="false">Action</a>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        <a href="#" class="dropdown-item has-icon"><i class="fas fa-edit"></i> Edit Profile</a>
+                                        <a href="#" class="dropdown-item has-icon"><i class="fas fa-camera"></i> Edit Photo Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item has-icon text-danger"><i class="fas fa-key"></i> Change Password</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <form id="user-profile">
                             <div class="card-body">
                                 <div class="row">
@@ -31,8 +45,6 @@
                                                 <div class="user-name"><?= $_SESSION['sess_name'] ?></div>
                                                 <div class="text-job text-muted"><?= $_SESSION['sess_level'] ?></div>
                                             </div>
-
-
                                         </div>
                                     </div>
 

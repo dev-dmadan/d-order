@@ -36,8 +36,8 @@
 
 			$cekTimeout = isset($_POST['timeout']) ? $_POST['timeout'] : false;
 
-            // if(!$cekTimeout) { $_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(60*60)); }
-            if(!$cekTimeout) { $_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(5)); }
+            if(!$cekTimeout) { $_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(60*60)); }
+            // if(!$cekTimeout) { $_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(5)); }
 		}
 
 		/**
