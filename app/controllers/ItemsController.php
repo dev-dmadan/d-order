@@ -229,10 +229,7 @@
                     $data = !empty($this->ItemsModel->getById($id)) ?
                         $this->ItemsModel->getById($id) : false;
 
-                    if($data) {
-                        $this->success = true;
-                        
-                    }
+                    if($data) { $this->success = true; }
                     else {
                         $this->notif = array(
                             'type' => 'warning',

@@ -12,6 +12,7 @@
             </div>
             <form id="form-order-detail">
                 <input type="hidden" id="detailId">
+                <input type="hidden" id="index_detail">
                 <div class="modal-body">
                     <!-- menu -->
                     <div class="form-group">

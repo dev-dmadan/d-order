@@ -24,7 +24,7 @@ $(document).ready(function() {
             },
             { data: "no" },
             { data: "order_number" },
-            { data: "user" },
+            { data: "name" },
             { data: "money" },
             { data: "total" },
             { data: "change_money" },
@@ -129,6 +129,86 @@ function renderTableDetail(data) {
 /**
  * 
  */
+function showFormItem() {
+    reset();
+    $('#modal-status-order').modal({backdrop: 'static'});
+}
+
+/**
+ * 
+ */
+function setValue(value) {
+    $('#order_number').text(value.orders.order_number);
+    $('#name').text(value.orders.user_name);
+    $('#money').text(value.orders.money);
+    $('#status_name').text(value.orders.status_name);
+    $('#status_id').val(value.orders.status_id);
+
+    var detail = '';
+
+    $.each(value.detail, function(index, item) {
+        detail += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                item.order_item + ' &mdash; ' + item.subtotal + 
+                '<span class="badge badge-primary badge-pill">' + item.qty + '</span>';
+    });
+
+    $('.detail-orders').html(detail).text();
+}
+
+/**
+ * 
+ */
 function getEdit(id) {
+    var notifError = {
+        title: 'Error Message',
+        message: 'Access Denied',
+        type: 'error'
+    };
+    if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
+    else {
+        $.ajax({
+            url: BASE_URL+'orders/edit/'+id.toLowerCase(),
+            type: 'POST',
+            dataType: 'JSON',
+            data: {},
+            beforeSend: function() {
+                $('#btn-submit').prop('disabled', true);
+                $('#btn-reset').prop('disabled', true);
+            },
+            success: function(response) {
+                console.log('%cResponse getEdit: ', 'font-weight: bold; color: green;', response);
+                if(response.success) {
+                    $('#btn-submit').prop('disabled', false);
+                    $('#btn-reset').prop('disabled', false);
+                    showFormItem('action-edit');
+                    setValue(response.data);
+                }
+                else {
+                    setNotif(response.notif, 'swal');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('%cResponse Error getEdit: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+                setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
+                $('#btn-submit').prop('disabled', false);
+                $('#btn-reset').prop('disabled', false);
+                // $('#btn-submit').html($('#btn-submit').text());
+                $('#modal-form-item').modal('hide');
+            }
+        });
+    }
+}
+
+/**
+ * 
+ */
+function submit() {
+
+}
+
+/**
+ * 
+ */
+function reset() {
 
 }

@@ -1,9 +1,8 @@
 /**
  * Method setActiveMenu
  * @param {object} url windows.location.href
- * @param {string} level level user
  */
-function setActiveMenu(url, level) {
+function setActiveMenu(url) {
     var newUrl = [];
     
     $.each(url, function(index, item) {
@@ -13,7 +12,7 @@ function setActiveMenu(url, level) {
     });
 
     // menu order list
-    if(newUrl[3] == 'orders' && newUrl[4] == undefined) {
+    if(newUrl[3] == 'orders' && (newUrl[4] == undefined || newUrl[4] == '')) {
         // default admin
         if(LEVEL == 'ADMIN') {
             $('.menu-orders-list').addClass('active');

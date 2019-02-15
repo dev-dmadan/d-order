@@ -62,7 +62,8 @@ $(document).ready(function() {
     $('#form-order-detail').on('submit', function(e) {
         console.log("%cButton Submit Order Detail clicked...", "color: blue; font-style: italic");
         e.preventDefault();
-        addOrder();
+        if($('#btn-submit-add-order').val() == 'action-add') { addOrder(); }
+        else if($('#btn-submit-add-order').val() == 'action-edit') { editDetail(); }
 
         return false;
     });
@@ -328,22 +329,28 @@ function validDetail(data, action = 'action-add') {
                     listDetail[data.index].price = data.price;
                     listDetail[data.index].price_full = response.data.price_full;
                     listDetail[data.index].qty = data.qty;
-                    listDetail[data.index].notes_detail = data.notes_detail;
+                    listDetail[data.index].subtotal = data.subtotal;
+                    listDetail[data.index].subtotal_full = response.data.subtotal_full;
                     listDetail[data.index].action = data.action;
 
-                    $('#table-order-detail tbody tr').remove();
-                    $.each(listDetail, function(i, item){
-                        if(!item.delete) {
-                            renderTableDetail(item);
-                        }
-                    });
+                    var total = sum_subtotal(listDetail);
+                    var money = ($('#money').inputmask) ? 
+                        ( parseFloat($('#money').inputmask('unmaskedvalue')) ?
+                            parseFloat($('#money').inputmask('unmaskedvalue')) : 
+                            $('#money').inputmask('unmaskedvalue')
+                        ) : $('#money').val().trim(); 
+                    var change_money = parseFloat(money)-total;
 
+                    $('#total').val(total);
+                    $('#change_money').val(change_money);
+
+                    setRupiah(total, 'text_total');
+                    setRupiah(change_money, 'text_change_money');
+                    renderTableDetail(listDetail);
                     $('#modal-order-detail').modal('hide');
                     resetFormOrder();
                 }
-                else {
-                    setError(response.error);
-                }
+                else { setError(response.error); }
             }
         },
         error: function (jqXHR, textStatus, errorThrown){
@@ -409,20 +416,61 @@ function btnAction_detail(index) {
  * 
  */
 function get_edit_detail(index) {
-
+    console.log('%cButton edit detail is clicked..', 'font-style: italic');
+    
+    var data = listDetail[index];
+    showFormOrder('action-edit');
+    setValue(data);
 }
 
 /**
  * 
  */
-function edit_detail() {
-    
+function editDetail() {
+    var action = ($('#btn-submit-add-order').val() == 'action-add') ? 'add' : 'edit';
+    var menu = ($('#menu').val() != "" && $('#menu').val() != null) ? $('#menu').val().trim() : "";
+    var price = ($('#price').inputmask) ? 
+			( parseFloat($('#price').inputmask('unmaskedvalue')) ?
+				parseFloat($('#price').inputmask('unmaskedvalue')) : 
+				$('#price').inputmask('unmaskedvalue')
+			) : $('#price').val().trim();
+    var subtotal = price * $('#qty').val();
+            
+    var data = {
+        index: $('#index_detail').val().trim(),
+        id: $('#detailId').val().trim(),
+        order_id: $('#order_number').val().trim(),
+        item: menu,
+        order_item: $('#menu_name').val().trim(),
+        price: price,
+        price_full: '',
+        qty: $('#qty').val(),
+        subtotal: subtotal,
+        subtotal_full: '',
+        action: action,
+        delete: false
+    };
+
+    validDetail(data, 'action-edit');
+}
+
+/**
+ * 
+ */
+function setValue(value) {
+    $('#index_detail').val(value.index);
+    $('#detailId').val(value.id);
+    $('#menu').val(value.item).trigger('change');
+    $('#menu_name').val(value.order_item).trigger('change');
+    $('#price').val(value.price).trigger('change');
+    $('#qty').val(value.qty).trigger('change');
 }
 
 /**
  * 
  */
 function delete_detail(index, value) {
+    console.log('%cButton delete detail is clicked..', 'font-style: italic');
     swal({
         title: 'Are you sure?',
         text: '',
@@ -431,7 +479,24 @@ function delete_detail(index, value) {
         dangerMode: true,
     }).then((willDelete) => {
         if(willDelete) {
-            console.log('Detail Deleted');
+            listDetail[index].delete = true;
+
+            var total = sum_subtotal(listDetail);
+            var money = ($('#money').inputmask) ? 
+                ( parseFloat($('#money').inputmask('unmaskedvalue')) ?
+                    parseFloat($('#money').inputmask('unmaskedvalue')) : 
+                    $('#money').inputmask('unmaskedvalue')
+                ) : $('#money').val().trim(); 
+            var change_money = parseFloat(money)-total;
+
+            $('#total').val(total);
+            $('#change_money').val(change_money);
+
+            setRupiah(total, 'text_total');
+            setRupiah(change_money, 'text_change_money');
+            renderTableDetail(listDetail);
+            
+            console.log('%cDetail Deleted', 'font-style: italic');
         }
     });
 }

@@ -26,7 +26,7 @@
                                         <th></th>
                                         <th style="width: 5%" class="text-right">No</th>
                                         <th>Order Number</th>
-                                        <th>User</th>
+                                        <th>Name</th>
                                         <th class="text-right">Money</th>
                                         <th class="text-right">Total</th>
                                         <th class="text-right">Change Money</th>
@@ -48,3 +48,5 @@
     </section>
 </div>
 <!-- End Main Content -->
+
+<?php include_once('modals/form_edit_status_order.php'); ?>

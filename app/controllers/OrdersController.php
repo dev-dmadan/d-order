@@ -70,7 +70,7 @@
             if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
                 $config = array(
 					'tabel' => 'v_orders',
-					'kolomOrder' => array(null, null, 'order_number', 'user', 'money', 'total', 'change_money', 'status_id', null),
+					'kolomOrder' => array(null, null, 'order_number', 'user_name', 'money', 'total', 'change_money', 'status_id', null),
 					'kolomCari' => array('order_number', 'user', 'user_name', 'order_date', 'total', 'money', 'change_money', 'status_name'),
 					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
                     'kondisi' => "WHERE order_date = CURDATE()",
@@ -118,7 +118,7 @@
                     $dataRow[] = null;
                     $dataRow['no'] = $no_urut;
                     $dataRow['order_number'] = $row['order_number'];
-                    $dataRow['user'] = $row['user'];
+                    $dataRow['name'] = $row['user_name'];
                     $dataRow['money'] = $this->helper->cetakRupiah($row['money']);
 					$dataRow['total'] = $this->helper->cetakRupiah($row['total']);
                     $dataRow['change_money'] = $this->helper->cetakRupiah($row['change_money']);
@@ -437,6 +437,58 @@
 				);
 
 				echo json_encode($output);
+            }
+            else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
+        public function edit($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
+                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $id = strtoupper($id);
+                    $order = !empty($this->OrdersModel->getById($id)) ?
+                        $this->OrdersModel->getById($id) : false;
+                    $detail = !empty($this->OrdersModel->getDetailById($id)) ? 
+                        $this->OrdersModel->getDetailById($id) : false;
+
+                    if($order) { 
+                        $order['money'] = $this->helper->cetakRupiah($order['money']);
+                        $order['change_money'] = $this->helper->cetakRupiah($order['change_money']);
+                        $order['total'] = $this->helper->cetakRupiah($order['total']);
+
+                        $temp = array();
+                        foreach($detail as $item) {
+                            $row = $item;
+                            $row['price_item'] = $this->helper->cetakRupiah($item['price_item']);
+                            $row['subtotal'] = $this->helper->cetakRupiah($item['subtotal']);
+
+                            $temp[] = $row;
+                        }
+
+                        $this->success = true;
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning message',
+                            'message' => "Sorry we can't find any data"
+                        );
+                    }
+
+                    $result = array(
+                        'success' => $this->success,
+                        'notif' => $this->notif,
+                        'data' => array(
+                            'orders' => $order,
+                            'detail' => $temp
+                        )
+                    );
+
+                    echo json_encode($result);
+                }
             }
             else { die(ACCESS_DENIED); }
         }
