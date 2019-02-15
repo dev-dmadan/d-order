@@ -65,7 +65,7 @@
             <div class="d-sm-none d-lg-inline-block"><?= $_SESSION['sess_name'] ?></div></a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-title"></div>
-                <a href="features-profile.html" class="dropdown-item has-icon">
+                <a href="<?= BASE_URL."profile" ?>" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profile
                 </a>
                 <div class="dropdown-divider"></div>

@@ -253,6 +253,27 @@
         /**
          * 
          */
+        public function delete($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
+                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $delete = $this->ItemModel->delete($id);
+                    if($delete['success']) {
+                        $this->success = true;
+                        $this->notif = array(
+                            'type' => 'success',
+                            'title' => 'Success Message',
+                            'message' => 'Data Berhasil Dihapus',
+                        );
+                    }
+                }
+            }
+            else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
         public function detail($id) {
             $data_detail = !empty($this->ItemsModel->getById($id)) 
                 ? $this->ItemsModel->getById($id) : false;
@@ -332,7 +353,7 @@
         private function set_validation($data, $action) {
             $this->validation->set_rules($data['name'], 'Name', 'name', 'string | 1 | 255 | required');
             $this->validation->set_rules($data['price'], 'Price', 'price', 'nilai | 1 | 9999999 | required');
-            $this->validation->set_rules($data['description'], 'Description', 'description', 'string | 1 | 255 | required');
+            $this->validation->set_rules($data['description'], 'Description', 'description', 'string | 1 | 255 | not_required');
             $this->validation->set_rules($data['status'], 'Status', 'status', 'angka | 1 | 10 | required');
 
             return $this->validation->run();
