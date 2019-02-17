@@ -1,48 +1,68 @@
-$(document).ready(function() {
-    var table_user_list = $("#table-user-list").DataTable({
-        // "responsive": true,
-        "lengthMenu": [ 10, 25, 75, 100 ],
-        "pageLength": 10,
-        "order": [],
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": BASE_URL+"user/get-list/",
-            "type": 'POST',
-            "data": {}
-        },
-        "columns": [
-            { data: "no" },
-            { data: "username" },
-            { data: "name" },
-            { data: "level" },
-            { data: "status" },
-            { data: "option" }
-        ],
-        "columnDefs": [
-            {   
-                "targets": [0, 5],
-                "orderable": false,
-            }
-        ],
-        "createdRow": function(row, data, dataIndex){
-            console.log("DataTable createdRow: ", {row: row, data: data, dataIndex: dataIndex});
-            for(var i = 0; i < 6; i++) {
-                if(i == 0) { 
-                    $('td:eq('+i+')', row).addClass('text-right'); 
-                }
+var table_user_list = $("#table-user-list").DataTable({
+    // "responsive": true,
+    "lengthMenu": [ 10, 25, 75, 100 ],
+    "pageLength": 10,
+    "order": [],
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": BASE_URL+"user/get-list/",
+        "type": 'POST',
+        "data": {}
+    },
+    "columns": [
+        { data: "no" },
+        { data: "username" },
+        { data: "name" },
+        { data: "level" },
+        { data: "status" },
+        { data: "option" }
+    ],
+    "columnDefs": [
+        {   
+            "targets": [0, 5],
+            "orderable": false,
+        }
+    ],
+    "createdRow": function(row, data, dataIndex){
+        console.log("DataTable createdRow: ", {row: row, data: data, dataIndex: dataIndex});
+        for(var i = 0; i < 6; i++) {
+            if(i == 0) { 
+                $('td:eq('+i+')', row).addClass('text-right'); 
             }
         }
-    });
+    }
+});
 
-    setStatus();
+$(document).ready(function() {
+
+    init();
     
     // event on submit edit status
-    $('#btn-submit').on('submit', function(e) {
+    $('#form-user').on('submit', function(e) {
         e.preventDefault();
         submit();
+        return false;
     });
 });
+
+/**
+ * 
+ */
+function init() {
+    $('#status').select2({
+    	placeholder: "Choose Status"
+    });
+    
+    setStatus();
+}
+
+/**
+ * 
+ */
+function getView(username) {
+    setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+}
 
 /**
  * 
@@ -73,10 +93,12 @@ function getEdit(username) {
             beforeSend: function() {
             },
             success: function(response) {
+                console.log('%cResponse getEdit: ', 'color: green; font-weight: bold', response);
                 if(response.success) {
-                    $('#status').val(response.data).trigger('change');
-                    $('#username').val(username);
                     showFormUser();
+                    $('#status').val(response.data.status_id).trigger('change');
+                    $('#username').val(username);
+                    $('#level').val(response.data.level_name);
                 }
                 else { setNotif(response.notif, 'swal'); }
             },
@@ -97,19 +119,24 @@ function submit() {
     var status = ($('#status').val() != "" && $('#status').val() != null) ? $('#status').val().trim() : "";
     var data = {
         username: $('#username').val().trim(),
+        level: $('#level').val().trim(),
         status: status
     };
     $.ajax({
         url: BASE_URL+'user/action-edit-status/',
-        type: 'get',
+        type: 'POST',
         dataType: 'json',
         data: data,
         beforeSend: function() {
+            $('#btn-submit').prop('disabled', true);
         },
         success: function(response) {
+            console.log('%cResponse submit: ', 'color: green; font-weight: bold', response);
+            $('#btn-submit').prop('disabled', false);
             if(response.success) {
                 setNotif(response.notif, 'swal');
                 showFormUser('hide');
+                table_user_list.ajax.reload();
             }
             else { 
                 setNotif(response.notif, 'toastr');
@@ -121,7 +148,7 @@ function submit() {
             var notif = {type: 'error', title: 'Error Message', message: 'Please try again'};
             setNotif(notif, 'swal');
             showFormUser('hide');
-            callback({success: false, notif: notif});
+            $('#btn-submit').prop('disabled', false);
         }
     });
 }

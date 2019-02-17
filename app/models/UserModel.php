@@ -121,6 +121,37 @@
 		}
 		
 		/**
+		 * 
+		 */
+		public function update_status($data) {
+			$query = "UPDATE user SET status = :status, modified_by = :modified_by WHERE BINARY username = :username;";
+			try{
+				$this->connection->beginTransaction();
+				$statement = $this->connection->prepare($query);
+				$statement->execute(
+					array(
+                        ':username' => $data['username'],
+						':status' => $data['status'],
+						':modified_by' => $data['modified_by']
+					)
+				);
+				$statement->closeCursor();
+				$this->connection->commit();
+				return array(
+					'success' => true,
+					'error' => null
+				);
+			}
+			catch(PDOException $e){
+				$this->connection->rollback();
+				return array(
+					'success' => false,
+					'error' => $e->getMessage()
+				);
+			}
+		}
+
+		/**
 		 * Method delete
 		 * Proses penghapusan data user beserta data yang berelasi denganya
 		 * @param id {string}

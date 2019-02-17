@@ -40,6 +40,7 @@
         <!-- load default js -->
         <script>
             const BASE_URL = "<?php print BASE_URL; ?>";
+            const USER_ID = "<?php print $_SESSION['sess_id']; ?>";
             const LEVEL = "<?php print $_SESSION['sess_level']; ?>";
             var urlParams = <?php echo json_encode($_GET, JSON_HEX_TAG);?>;    
         </script>

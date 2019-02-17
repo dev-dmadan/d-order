@@ -47,7 +47,8 @@ $(document).ready(function() {
     // event onclick btn show menu
     $('#btn-show-menu').on('click', function() {
         console.log("%cButton Show Menu clicked...", "color: blue; font-style: italic");
-        showMenu();
+        // showMenu();
+        setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
     });
 
     // event onchange menu
@@ -66,6 +67,21 @@ $(document).ready(function() {
         else if($('#btn-submit-add-order').val() == 'action-edit') { editDetail(); }
 
         return false;
+    });
+
+    // event on click reset button
+    $('#btn-reset').on('click', function() {
+        swal({
+            title: 'Are you sure?',
+            text: '',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((ok) => {
+            if(ok) {
+                reset();
+            }
+        });
     });
 
     // event on submit order

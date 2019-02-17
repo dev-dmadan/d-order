@@ -25,10 +25,10 @@
                                 <div class="dropdown">
                                     <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle" aria-expanded="false">Action</a>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                        <a href="#" class="dropdown-item has-icon"><i class="fas fa-edit"></i> Edit Profile</a>
-                                        <a href="#" class="dropdown-item has-icon"><i class="fas fa-camera"></i> Edit Photo Profile</a>
+                                        <a href="#" id="btn-edit-profile" class="dropdown-item has-icon"><i class="fas fa-edit"></i> Edit Profile</a>
+                                        <a href="#" id="btn-edit-photo" class="dropdown-item has-icon"><i class="fas fa-camera"></i> Edit Photo Profile</a>
                                         <div class="dropdown-divider"></div>
-                                        <a href="#" class="dropdown-item has-icon text-danger"><i class="fas fa-key"></i> Change Password</a>
+                                        <a href="#" id="btn-change-password" class="dropdown-item has-icon text-danger"><i class="fas fa-key"></i> Change Password</a>
                                     </div>
                                 </div>
                             </div>

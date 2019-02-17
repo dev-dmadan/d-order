@@ -30,7 +30,7 @@
             $uri = explode('/', $this->__request);
 			$class = isset($uri[0]) && ($uri[0] != "") ? strtolower($uri[0]) : DEFAULT_CONTROLLER; // class
 			$method = isset($uri[1]) ? strtolower($uri[1]) : 'index';	// method
-			$param = isset($uri[2]) ? strtolower($uri[2]) : false;	// param
+			$param = isset($uri[2]) ? $uri[2] : false;	// param
 
 			// explode request untuk url cantik
 			$class = str_replace('_', ' ', $class);

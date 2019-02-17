@@ -40,8 +40,8 @@
                         </div>
                     </div>
                     
-                    <div class="card-footer bg-whitesmoke text-right">   
-                    </div>
+                    <!-- <div class="card-footer bg-whitesmoke text-right">   
+                    </div> -->
                 </form>
             </div>
         </div>
