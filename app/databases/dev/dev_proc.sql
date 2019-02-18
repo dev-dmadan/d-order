@@ -175,6 +175,8 @@ BEGIN
 	WHERE id = id_param;
 
 END //
+
+delimiter ;
 -- End Procedure edit status order
 
 -- Procedure delete order
