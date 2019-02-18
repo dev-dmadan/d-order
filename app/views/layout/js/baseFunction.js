@@ -6,7 +6,7 @@ function setActiveMenu(url) {
     var newUrl = [];
     
     $.each(url, function(index, item) {
-        if(item != "localhost" && item.toLowerCase() != "isystemasia") {
+        if(item != "localhost" && item.toLowerCase() != "isystemasia" && item != "dev" && item != "test") {
             newUrl.push(item);
         }
     });

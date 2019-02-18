@@ -17,28 +17,41 @@
     }
     else if(TYPE === 'DEV_LIVE') {
         // config base url
-        define('BASE_URL', '');
+        define('BASE_URL', 'https://d-order.bpmonline.asia/dev/');
         define('SITE_URL', BASE_URL.'index.php/');
         define('DEFAULT_CONTROLLER', 'orders');
         define('VERSION', 'Beta v0.1');
 
         // config database
-        define('DB_HOST', '');
+        define('DB_HOST', 'localhost');
+        define('DB_USERNAME', 'bpmonlin_full');
+        define('DB_PASSWORD', '');
+        define('DB_NAME', 'bpmonlin_mas-d-order.dev');
+    }
+    else if(TYPE === 'TEST') {
+        // config base url
+        define('BASE_URL', 'https://d-order.bpmonline.asia/test/');
+        define('SITE_URL', BASE_URL.'index.php/');
+        define('DEFAULT_CONTROLLER', 'orders');
+        define('VERSION', 'Beta v0.1');
+
+        // config database
+        define('DB_HOST', 'localhost');
         define('DB_USERNAME', '');
         define('DB_PASSWORD', '');
-        define('DB_NAME', '');
+        define('DB_NAME', 'bpmonlin_mas-d-order.test');
     }
     else if(TYPE === 'PROD') {
         // config base url
-        define('BASE_URL', '');
+        define('BASE_URL', 'https://d-order.bpmonline.asia/');
         define('SITE_URL', BASE_URL.'index.php/');
         define('DEFAULT_CONTROLLER', 'orders');
         define('VERSION', '');
 
         // config database
-        define('DB_HOST', '');
-        define('DB_USERNAME', '');
+        define('DB_HOST', 'localhost');
+        define('DB_USERNAME', 'bpmonlin_full');
         define('DB_PASSWORD', '');
-        define('DB_NAME', '');
+        define('DB_NAME', 'bpmonlin_mas-d-order');
     }
     else { die(ACCESS_DENIED); }
