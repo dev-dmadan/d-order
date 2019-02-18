@@ -11,9 +11,21 @@ var table_order_history = $("#table-order-history").DataTable({
         "data": {}
     },
     "columns": [
+        {
+            className: 'details-control',
+            orderable: false,
+            data: null,
+            defaultContent: '',
+            render: function () {
+                return '<i class="fa fa-plus-square" aria-hidden="true"></i>';
+            },
+            width: "15px"
+        },
         { data: "no" },
-        { data: "name" },
-        { data: "price" },
+        { data: "order_number" },
+        { data: "money" },
+        { data: "total" },
+        { data: "change_money" },
         { data: "status" },
         { data: "option" }
     ],
@@ -25,8 +37,8 @@ var table_order_history = $("#table-order-history").DataTable({
     ],
     "createdRow": function(row, data, dataIndex){
         console.log("DataTable createdRow: ", {row: row, data: data, dataIndex: dataIndex});
-        for(var i = 0; i < 5; i++) {
-            if(i == 0 || i == 2) { 
+        for(var i = 0; i < 8; i++) {
+            if(i == 1 || (i >= 3 && i <= 5)) { 
                 $('td:eq('+i+')', row).addClass('text-right'); 
             }
         }
@@ -82,6 +94,13 @@ $(document).ready(function() {
  */
 function init() {
 
+}
+
+/**
+ * 
+ */
+function getView(id) {
+    setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
 }
 
 /**

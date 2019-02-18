@@ -64,40 +64,55 @@
             if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $config = array(
 					'tabel' => 'v_orders',
-					'kolomOrder' => array(null, 'username', 'name', 'level_id', 'status_id', null),
-					'kolomCari' => array('username', 'name', 'level_name', 'status_name'),
-					'orderBy' => array('level_id' => 'asc', 'status_id' => 'asc'),
-                    'kondisi' => false,
+					'kolomOrder' => array(null, null, 'order_number', 'money', 'total', 'change_money', 'status_id', null),
+					'kolomCari' => array('order_number', 'order_date', 'total', 'money', 'change_money', 'status_name'),
+					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
+                    'kondisi' => 'WHERE user = "'.$_SESSION['sess_id'].'"',
 				);
 
-				$dataUser = $this->DataTableModel->getAllDataTable($config);
+				$dataOrder = $this->DataTableModel->getAllDataTable($config);
 
 				$data = array();
 				$no_urut = $_POST['start'];
-				foreach($dataUser as $row){
+				foreach($dataOrder as $row){
 					$no_urut++;
 
                     // button aksi
-					// $aksiDetail = '<button onclick="getView('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-info" title="Lihat Detail"><i class="fa fa-eye"></i></button>';
-					$btnEdit = '<button onclick="getEdit('."'".strtolower($row["username"])."'".')" type="button" class="btn btn-sm btn-success" title="Update Status"><i class="fa fa-edit"></i></button>';
-					// $aksiHapus = '<button onclick="getDelete('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-danger" title="Hapus Data"><i class="fa fa-trash"></i></button>';
+					$btnDetail = '<button onclick="getView('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-info" title="View Detail"><i class="fa fa-eye"></i></button>';
 					
-					$option = '<div class="btn-group">'.$btnEdit.'</div>';
+					$option = '<div class="btn-group">'.$btnDetail.'</div>';
 
-                    if($row['status_name'] == 'ACTIVE') { $status = '<div class="badge badge-success">'; }
-                    else { $status = '<div class="badge badge-danger">'; }
+                    switch ($row['status_id']) {
+                        // pending
+                        case 1 :
+                            $status = '<div class="badge badge-primary">';
+                            break;
+                        
+                        // process
+                        case 2 :
+                            $status = '<div class="badge badge-info">';
+                            break;
+
+                        // delivered
+                        case 3 :
+                            $status = '<div class="badge badge-success">';
+                            break;
+
+                        // reject
+                        default:
+                            $status = '<div class="badge badge-danger">';
+                            break;
+                    }
+
                     $status .= $row['status_name'].'</div>';
-
-                    if($row['level_name'] == 'ADMIN') { $level = '<div class="badge badge-success">'; }
-                    else { $level = '<div class="badge badge-primary">'; }
-                    $level .= $row['level_name'].'</div>';
-
+					
                     $dataRow = array();
                     $dataRow[] = null;
                     $dataRow['no'] = $no_urut;
-                    $dataRow['username'] = $row['username'];
-                    $dataRow['name'] = $row['name'];
-                    $dataRow['level'] = $level;
+                    $dataRow['order_number'] = $row['order_number'];
+                    $dataRow['money'] = $this->helper->cetakRupiah($row['money']);
+					$dataRow['total'] = $this->helper->cetakRupiah($row['total']);
+                    $dataRow['change_money'] = $this->helper->cetakRupiah($row['change_money']);
                     $dataRow['status'] = $status;
                     $dataRow['option'] = $option;
 

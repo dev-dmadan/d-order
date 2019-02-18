@@ -125,3 +125,10 @@ function renderTableDetail(data) {
 
     return detail;
 }
+
+/**
+ * 
+ */
+function getView(id) {
+    setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+}
