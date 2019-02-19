@@ -509,7 +509,7 @@
                 if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
                 else {
                     $id = strtoupper($id);
-                    $status = isset($_POST['status']) ? $this->getStatusOrder($_POST['status']); : false;
+                    $status = isset($_POST['status']) ? $this->getStatusOrder($_POST['status']) : false;
 
                     if($status) {
                         $data = array(
