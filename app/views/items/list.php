@@ -46,3 +46,4 @@
 </div>
 <!-- End Main Content -->
 <?php include_once('modals/form_item.php'); ?>
+<?php include_once('modals/view_item.php'); ?>

@@ -117,3 +117,7 @@
         </div>
     </section>
 </div>
+<!-- End Main Content -->
+<?php include_once('modals/edit_profile.php'); ?>
+<?php include_once('modals/edit_photo_profile.php'); ?>
+<?php include_once('modals/change_password.php'); ?>
