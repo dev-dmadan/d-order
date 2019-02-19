@@ -51,17 +51,17 @@ $(document).ready(function() {
     // event on click btn edit profil
     $('#btn-edit-profile').on('click', function() {
         // getProfile();
-        setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+        $('#modal-edit-profile').modal({backdrop: 'static'});
     });
 
     // event on click btn edit photo
     $('#btn-edit-photo').on('click', function() {
-        setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+        $('#modal-edit-photo-profile').modal({backdrop: 'static'});
     });
 
     // event on click btn change password
     $('#btn-change-password').on('click', function() {
-        setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+        $('#modal-change-password').modal({backdrop: 'static'});
     });
 
     // event on submit edit profile
