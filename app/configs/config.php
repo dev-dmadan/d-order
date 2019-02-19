@@ -25,7 +25,7 @@
         // config database
         define('DB_HOST', 'localhost');
         define('DB_USERNAME', 'bpmonlin_full');
-        define('DB_PASSWORD', '');
+        define('DB_PASSWORD', 'k6&e-71A])d7');
         define('DB_NAME', 'bpmonlin_mas-d-order.dev');
     }
     else if(TYPE === 'TEST') {
@@ -37,8 +37,8 @@
 
         // config database
         define('DB_HOST', 'localhost');
-        define('DB_USERNAME', '');
-        define('DB_PASSWORD', '');
+        define('DB_USERNAME', 'bpmonlin_full');
+        define('DB_PASSWORD', 'k6&e-71A])d7');
         define('DB_NAME', 'bpmonlin_mas-d-order.test');
     }
     else if(TYPE === 'PROD') {
@@ -46,12 +46,12 @@
         define('BASE_URL', 'https://d-order.bpmonline.asia/');
         define('SITE_URL', BASE_URL.'index.php/');
         define('DEFAULT_CONTROLLER', 'orders');
-        define('VERSION', '');
+        define('VERSION', 'v1.0');
 
         // config database
         define('DB_HOST', 'localhost');
         define('DB_USERNAME', 'bpmonlin_full');
-        define('DB_PASSWORD', '');
+        define('DB_PASSWORD', 'k6&e-71A])d7');
         define('DB_NAME', 'bpmonlin_mas-d-order');
     }
     else { die(ACCESS_DENIED); }

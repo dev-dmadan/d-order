@@ -2,9 +2,11 @@
 # mas-d-order #
 # Version 1.0 for DBMS MySQL and MariaDB #
 
-DROP DATABASE IF EXISTS `mas-d-order`;
-CREATE DATABASE `mas-d-order`;
-USE `mas-d-order`;
+# Local Development Only
+	DROP DATABASE IF EXISTS `mas-d-order`;
+	CREATE DATABASE `mas-d-order`;
+	USE `mas-d-order`;
+# End Local Development Only
 
 # ============================= Lookup Table ============================= #
 
