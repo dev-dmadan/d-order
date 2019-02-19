@@ -182,7 +182,6 @@ function renderButtonAction(status, order_number) {
                 break;
             case 'PROCESS':
                 button += '<a href="#" onclick="getEdit(\''+order_number+'\')" class="dropdown-item has-icon text-primary"><i class="fas fa-edit"></i> Edit Order</a>' +
-                    '<a href="#" onclick="setStatus(\''+order_number+'\', \'process\')" class="dropdown-item has-icon"><i class="fas fa-truck"></i> Process Order</a>' +
                     '<a href="#" onclick="setStatus(\''+order_number+'\', \'reject\')" class="dropdown-item has-icon text-danger"><i class="fas fa-times-circle"></i> Reject Order</a>' +
                     '<div class="dropdown-divider"></div>' +
                     '<a href="#" onclick="setStatus(\''+order_number+'\', \'done\')" class="dropdown-item has-icon text-success"><i class="fas fa-thumbs-up"></i> Complete Order</a>';
