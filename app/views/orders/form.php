@@ -81,20 +81,22 @@
                         </div>
                         
                         <!-- table order detail -->
-                        <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-detail" style="width: 100%">
-                            <thead>
-                                <tr>
-                                    <th style="width: 5%">No</th>
-                                    <th>Order</th>
-                                    <th class="text-right">Price</th>
-                                    <th class="text-right" style="width: 5%">Qty</th>
-                                    <th class="text-right">Subtotal</th>
-                                    <th>Option</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-md" id="table-order-detail" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">No</th>
+                                        <th>Order</th>
+                                        <th class="text-right">Price</th>
+                                        <th class="text-right" style="width: 5%">Qty</th>
+                                        <th class="text-right">Subtotal</th>
+                                        <th>Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
                         <!-- Money, Total, and Change Money -->
                         <div class="text-right">

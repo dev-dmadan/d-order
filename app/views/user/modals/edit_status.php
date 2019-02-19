@@ -2,7 +2,7 @@
 
 <!-- Modal Edit Status -->
 <div class="modal fade" id="modal-edit-status" role="dialog" aria-labelledby="modal-edit-statusLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-edit-statusLabel">Form Edit Status User</h5>

@@ -23,7 +23,11 @@ var table_order_list = $("#table-order-list").DataTable({
         },
         { 
             className: 'show-detail', 
-            data: "name" 
+            data: "name", 
+            render: function(data) {
+                var split = data.split('|');
+                return '<img alt="image" src="'+split[1]+'" class="rounded-circle" width="35" data-toggle="tooltip" title="" data-original-title="'+split[0]+'"><p>'+split[0]+'</p>';
+            }
         },
         { 
             className: 'show-detail', 
