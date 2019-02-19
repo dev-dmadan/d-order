@@ -13,7 +13,7 @@
     /**
      * TYPE ENVIROMENT DEVELOPMENT
      * DEV --> for Local development
-     * LIVE --> for Live development
+     * DEV_LIVE --> for Live development
      * TEST --> for Testing (Pre Production)
      * PROD --> for Production
      */

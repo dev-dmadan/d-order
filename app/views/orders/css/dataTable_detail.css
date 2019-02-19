@@ -7,3 +7,6 @@ tr.shown td.details-control {
     text-align:center; 
     color:red;
 }
+.show-detail {
+    cursor: pointer;
+}

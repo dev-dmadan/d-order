@@ -15,33 +15,52 @@ $(document).ready(function() {
             {
                 className: 'details-control',
                 orderable: false,
-                data: null,
+                data: "order_number",
                 defaultContent: '',
                 render: function () {
                     return '<i class="fa fa-plus-square" aria-hidden="true"></i>';
                 },
                 width: "15px"
             },
-            { data: "no" },
-            { data: "order_number" },
-            { data: "name" },
-            { data: "money" },
-            { data: "total" },
-            { data: "change_money" },
-            { data: "status" },
-            { data: "option" }
+            { 
+                className: 'show-detail', 
+                data: "name" 
+            },
+            { 
+                className: 'show-detail', 
+                data: "status", 
+                render: function (data) { 
+                    var status = '';
+                    switch (data) {
+                        case 'PENDING':
+                            status = '<div class="badge badge-primary">' +data+ '</di>';
+                            break;
+                        case 'PROCESS':
+                            status = '<div class="badge badge-info">' +data+ '</di>';
+                            break;
+                        case 'REJECT':
+                            status = '<div class="badge badge-danger">' +data+ '</di>';
+                            break;
+                        case 'DONE':
+                            status = '<div class="badge badge-success">' +data+ '</di>';
+                            break;
+                    }
+
+                    return status;
+                }
+            }
         ],
         "columnDefs": [
             {   
-                "targets": [0, 1, 8],
+                "targets": [0],
                 "orderable": false,
             }
         ],
         "createdRow": function(row, data, dataIndex){
             console.log("DataTable createdRow: ", {row: row, data: data, dataIndex: dataIndex});
-            for(var i = 0; i < 9; i++) {
-                if(i == 1 || (i >= 4 && i <= 6)) { 
-                    $('td:eq('+i+')', row).addClass('text-right'); 
+            for(var i = 0; i < 3; i++) {
+                if(i > 0 && i < 3) { 
+                    $('td:eq('+i+')', row).addClass('text-center'); 
                 }
             }
         }
@@ -51,6 +70,13 @@ $(document).ready(function() {
     $('#table-order-list tbody').on('click', 'td.details-control', function () {
         onClickShowDetailDataTable(table_order_list, this);
     });
+
+    $('#table-order-list tbody').on('click', 'td.show-detail', function () {
+        onClickShowDetailDataTable(table_order_list, this);
+    });
+
+    // event on click view detail
+    $()
 });
 
 /**
@@ -94,7 +120,7 @@ function showDetailDataTable(data) {
         success: function(response) {
             console.log('%cResponse showDetailDataTable:', 'color: green; font-weight: green', response);
             if(response.success) {
-                content.html(renderTableDetail(response.data)).removeClass('loading');
+                content.html(renderTableDetail(response.data)).removeClass('loading').text();
             }
             else {
 
@@ -109,21 +135,33 @@ function showDetailDataTable(data) {
  * 
  */
 function renderTableDetail(data) {
-    var detail = 'Order doesnt have detail..';
+    var action = '<div class="dropdown text-right">' +
+        '<a href="#" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">Action</a>' +
+        '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">' +
+            '<a href="#" onclick="getView(\''+data.main.order_number+'\')" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View Detail</a>' +
+            '<a href="#" id="btn-edit-order" class="dropdown-item has-icon"><i class="fas fa-edit"></i> Edit Order</a>' +
+            '<div class="dropdown-divider"></div>' +
+            '<a href="#" id="btn-success-order" class="dropdown-item has-icon text-success"><i class="fas fa-thumbs-up"></i> Complete Order</a>' +
+        '</div>' +
+    '</div>';
 
-    if(data.length > 0) {
-        var table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-        $.each(data, function(index, item) {
-            table += '<tr>'+
-                        '<td>'+item.order_item+' ('+item.qty+') - '+item.subtotal_full+'</td>'+
-                    '</tr>';
+    var header = '<div class="section-title">Notes</div>' + data.main.notes;
+    var footer = '<div class="section-title">Payment</div>' + 
+            '<p><strong>Money</strong> ' +data.main.money_full+ '</p>' +
+            '<p><strong>Total</strong> ' +data.main.total_full+ '</p>' +
+            '<p><strong>Change Money</strong> ' +data.main.change_money_full+ '</p>';
+    var detail = 'Order doesnt have detail..';
+    if(data.detail.length > 0) {
+        detail = '<div class="section-title">Order Detail</div><ul class="list-group list-group-flush detail-orders">';
+        $.each(data.detail, function(index, item) {
+            detail += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                        item.order_item + ' &mdash; ' + item.subtotal_full + 
+                        '<span class="badge badge-primary badge-pill">' + item.qty + '</span>';
         });
-    
-        table += '</table>';
-        detail = table;
+        detail += '</ul>';
     }
 
-    return detail;
+    return action + header + detail + footer;
 }
 
 /**
@@ -197,6 +235,13 @@ function getEdit(id) {
             }
         });
     }
+}
+
+/**
+ * 
+ */
+function getView(id) {
+    console.log(id);
 }
 
 /**

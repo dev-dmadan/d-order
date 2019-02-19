@@ -18,12 +18,12 @@
             <div class="card">
                 <form id="order-form">
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <!-- <div class="table-responsive"> -->
                             <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
                             <table class="table table-bordered table-hover table-md" id="table-order-list" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <!-- <th></th>
                                         <th style="width: 5%" class="text-right">No</th>
                                         <th>Order Number</th>
                                         <th>Name</th>
@@ -31,13 +31,16 @@
                                         <th class="text-right">Total</th>
                                         <th class="text-right">Change Money</th>
                                         <th>Status</th>
-                                        <th>Option</th>
+                                        <th>Option</th> -->
+                                        <th></th>
+                                        <th class="text-center">Customer</th>
+                                        <th class="text-center">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                             </table>
-                        </div>
+                        <!-- </div> -->
                     </div>
                     
                     <!-- <div class="card-footer bg-whitesmoke text-right">   

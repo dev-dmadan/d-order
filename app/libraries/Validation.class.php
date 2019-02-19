@@ -183,7 +183,8 @@
 		 */
 		private function valid_string($data) {
 			$cek = true;
-			$pattern = "/^[a-zA-Z0-9-_,.!?&' \/\r\n]*$/";
+			// $pattern = "/^[a-zA-Z0-9-_,.!?&' \/\r\n]*$/";
+			$pattern = "/^[a-zA-Z0-9-_,.@#%^*+=<>(){}!?&' \/\r\n]*$/";
 
 			// cek pattern
 			if(!preg_match($pattern, $data['field'])) {

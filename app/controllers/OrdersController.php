@@ -70,7 +70,7 @@
             if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
                 $config = array(
 					'tabel' => 'v_orders',
-					'kolomOrder' => array(null, null, 'order_number', 'user_name', 'money', 'total', 'change_money', 'status_id', null),
+					'kolomOrder' => array('user_name', 'status_id'),
 					'kolomCari' => array('order_number', 'user', 'user_name', 'order_date', 'total', 'money', 'change_money', 'status_name'),
 					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
                     'kondisi' => "WHERE order_date = CURDATE()",
@@ -90,40 +90,40 @@
 					
 					$aksi = '<div class="btn-group">'.$aksiEdit.'</div>';
 
-                    switch ($row['status_id']) {
-                        // pending
-                        case 1 :
-                            $status = '<div class="badge badge-primary">';
-                            break;
+                    // switch ($row['status_id']) {
+                    //     // pending
+                    //     case 1 :
+                    //         $status = '<div class="badge badge-primary">';
+                    //         break;
                         
-                        // process
-                        case 2 :
-                            $status = '<div class="badge badge-info">';
-                            break;
+                    //     // process
+                    //     case 2 :
+                    //         $status = '<div class="badge badge-info">';
+                    //         break;
 
-                        // delivered
-                        case 3 :
-                            $status = '<div class="badge badge-success">';
-                            break;
+                    //     // delivered
+                    //     case 3 :
+                    //         $status = '<div class="badge badge-success">';
+                    //         break;
 
-                        // reject
-                        default:
-                            $status = '<div class="badge badge-danger">';
-                            break;
-                    }
+                    //     // reject
+                    //     default:
+                    //         $status = '<div class="badge badge-danger">';
+                    //         break;
+                    // }
 
-                    $status .= $row['status_name'].'</div>';
+                    // $status .= $row['status_name'].'</div>';
 					
                     $dataRow = array();
-                    $dataRow[] = null;
-                    $dataRow['no'] = $no_urut;
+                    // $dataRow[] = null;
+                    // $dataRow['no'] = $no_urut;
                     $dataRow['order_number'] = $row['order_number'];
                     $dataRow['name'] = $row['user_name'];
-                    $dataRow['money'] = $this->helper->cetakRupiah($row['money']);
-					$dataRow['total'] = $this->helper->cetakRupiah($row['total']);
-                    $dataRow['change_money'] = $this->helper->cetakRupiah($row['change_money']);
-                    $dataRow['status'] = $status;
-                    $dataRow['option'] = $aksi;
+                    // $dataRow['money'] = $this->helper->cetakRupiah($row['money']);
+					// $dataRow['total'] = $this->helper->cetakRupiah($row['total']);
+                    // $dataRow['change_money'] = $this->helper->cetakRupiah($row['change_money']);
+                    $dataRow['status'] = $row['status_name'];
+                    // $dataRow['option'] = $aksi;
 
 					$data[] = $dataRow;
 				}
@@ -146,12 +146,17 @@
         public function get_list_detail() {
             if($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $order_number = (isset($_GET['order_number']) && !empty($_GET['order_number'])) ? strtoupper($_GET['order_number']) : false;
+                $mainData = $this->OrdersModel->getById($order_number);
                 $dataDetail = !empty($this->OrdersModel->getDetailById($order_number)) ? $this->OrdersModel->getDetailById($order_number) : false;
                 
                 if(!$order_number || !$dataDetail) { die(ACCESS_DENIED); }
                 else {
                     $this->success = true;
                     
+                    $mainData['money_full'] = $this->helper->cetakRupiah($mainData['money']);
+                    $mainData['total_full'] = $this->helper->cetakRupiah($mainData['total']);
+                    $mainData['change_money_full'] = $this->helper->cetakRupiah($mainData['change_money']);
+
                     $data = array();
                     foreach($dataDetail as $row) {
                         $temp = $row;
@@ -161,7 +166,10 @@
 
                     $output = array(
                         'success' => $this->success,
-                        'data' => $data
+                        'data' => array(
+                            'main' => $mainData,
+                            'detail' => $data,
+                        ),
                     );
 
                     echo json_encode($output);

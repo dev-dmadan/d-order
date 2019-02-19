@@ -364,6 +364,19 @@
 		(15, 4, '5');
 -- End Feed menu_detail
 
+-- Feed Access Menu
+	INSERT INTO access_menu 
+		(id, level_id, menu_id) 
+	VALUES
+		(1, 1, 1),
+		(2, 1, 2),
+		(3, 1, 3),
+		(4, 1, 4),
+		(5, 2, 2),
+		(7, 2, 5),
+		(8, 1, 5);
+-- End Feed Access Menu
+
 -- Feed Increment
 	INSERT INTO increment 
 		(id, menu_id, mask, last_increment, description) 
