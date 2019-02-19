@@ -504,10 +504,67 @@
         /**
          * 
          */
+        public function set_status($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
+                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $id = strtoupper($id);
+                    $status = isset($_POST['status']) ? $this->getStatusOrder($_POST['status']); : false;
+
+                    if($status) {
+                        $data = array(
+                            'id' => $id,
+                            'status' => $status['id'],
+                            'modified_by' => $_SESSION['sess_id']
+                        );
+
+                        $update = $this->OrdersModel->update_status($data);
+                        if($update['success']) {
+                            $this->success = true;
+                            $this->notif = array(
+                                'type' => 'success',
+                                'title' => 'Success Message',
+                                'message' => 'Success edit status order'
+                            );
+                        }
+                        else {
+                            $this->notif = array(
+                                'type' => 'error',
+                                'title' => 'Error Message',
+                                'message' => 'Please try again'
+                            );
+                            $this->message = $update['error'];
+                        }
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'error',
+                            'title' => 'Error Message',
+                            'message' => 'Please try again'
+                        );
+                    }
+
+                    $result = array(
+                        'success' => $this->success,
+                        'notif' => $this->notif,
+                        'message' => $this->message,
+                    );
+    
+                    echo json_encode($result);
+                }
+            }
+        }
+
+        /**
+         * 
+         */
         public function set_rupiah($value) {
             echo json_encode($this->helper->cetakRupiah($value));
         }
 
+        /**
+         * 
+         */
         private function getStatusOrder($name) {
             $result = false;
 

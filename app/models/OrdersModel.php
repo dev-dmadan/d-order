@@ -211,6 +211,37 @@
 		/**
 		 * 
 		 */
+		public function update_status($data) {
+			$query = "UPDATE orders SET status = :status, modified_by = :modified_by WHERE id = :id;";
+			try{
+				$this->connection->beginTransaction();
+				$statement = $this->connection->prepare($query);
+				$statement->execute(
+					array(
+						':id' => $data['id'],
+						':status' => $data['status'],
+						':modified_by' => $data['modified_by']
+					)
+				);
+				$statement->closeCursor();
+				$this->connection->commit();
+				return array(
+					'success' => true,
+					'error' => null
+				);
+			}
+			catch(PDOException $e){
+				$this->connection->rollback();
+				return array(
+					'success' => false,
+					'error' => $e->getMessage()
+				);
+			}
+		}
+
+		/**
+		 * 
+		 */
 		private function delete_detailOrder() {
 			
 		}
