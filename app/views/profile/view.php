@@ -80,32 +80,50 @@
                         <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Order History</a>
+                                <a class="nav-link active show" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="true">Order History</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link show" id="analytic-tab" data-toggle="tab" href="#analytic" role="tab" aria-controls="analytic" aria-selected="false">Analytics Order</a>
                             </li>
                         </ul>
 
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <!-- content history -->
+                            <div class="tab-pane fade active show" id="history" role="tabpanel" aria-labelledby="history-tab">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <div class="float-right mb-3">
+                                            <button id="exportExcel" class="btn btn-success"><i class=""></i> Export Excel</button>
+                                            <button id="refreshTable" class="btn btn-info"><i class=""></i> Refresh</button>
+                                        </div>
                                         <div class="table-responsive">
-                                        <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
-                                        <table class="table table-bordered table-hover table-md" id="table-order-history" style="width: 100%">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th style="width: 5%" class="text-right">No</th>
-                                                    <th>Order Number</th>
-                                                    <th class="text-right">Money</th>
-                                                    <th class="text-right">Total</th>
-                                                    <th class="text-right">Change Money</th>
-                                                    <th>Status</th>
-                                                    <th>Option</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                            <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
+                                            <table class="table table-bordered table-hover table-md" id="table-order-history" style="width: 100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th style="width: 5%" class="text-right">No</th>
+                                                        <th>Order Number</th>
+                                                        <th class="text-right">Money</th>
+                                                        <th class="text-right">Total</th>
+                                                        <th class="text-right">Change Money</th>
+                                                        <th>Status</th>
+                                                        <th>Option</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>   
+                            </div>
+
+                            <!-- content analytic -->
+                            <div class="tab-pane fade" id="analytic" role="tabpanel" aria-labelledby="analytic-tab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Analytic Order
                                     </div>
                                 </div>   
                             </div>
