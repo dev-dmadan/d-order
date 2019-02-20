@@ -138,7 +138,8 @@ function getView(id) {
     };
     if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
     else{
-        setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+        // setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+        window.location.href = BASE_URL+'orders/detail/'+id.toLowerCase();
     }
 }
 
