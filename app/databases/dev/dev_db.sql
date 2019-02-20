@@ -336,11 +336,11 @@
 	INSERT INTO menu
 		(id, name, table_name, url, class, icon, position) 
 	VALUES
-		(1, 'Orders List', 'orders', 'orders', 'menu-orders-list', NULL, 1),
-		(2, 'Orders Form', NULL, 'orders/form', 'menu-orders-form', NULL, 2),
-		(3, 'Menu Items', 'items', 'items', 'menu-items', NULL, 4),
-		(4, 'User', 'user', 'user', 'menu-user', NULL, 5),
-		(5, 'Orders History', NULL, 'orders/history', 'menu-orders-history', NULL, 3);
+		(1, 'Orders List', 'orders', 'orders', 'menu-orders-list', 'fas fa-clipboard-list', 1),
+		(2, 'Orders Form', NULL, 'orders/form', 'menu-orders-form', 'fas fa-cart-plus', 2),
+		(3, 'Menu Items', 'items', 'items', 'menu-items', 'fas fa-book-open', 4),
+		(4, 'User', 'user', 'user', 'menu-user', 'fas fa-user', 5),
+		(5, 'Orders History', NULL, 'orders/history', 'menu-orders-history', 'fas fa-book', 3);
 -- End Feed menu
 
 -- Feed menu_detail
