@@ -74,27 +74,22 @@
                                         
                                         <!-- End Invoice -->
 
-                                        <!-- Table -->
+                                        <!-- table view order -->
                                         <div class="table-responsive">
-                                            <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
-                                            <table class="table table-bordered table-hover table-md" id="table-order-history" style="width: 100%">
+                                            <table class="table table-bordered table-hover table-md" id="table-order-detail" style="width: 100%">
                                                 <thead>
                                                     <tr>
-                                                        <th></th>
-                                                        <th style="width: 5%" class="text-right">No</th>
-                                                        <th>Order Number</th>
-                                                        <th class="text-right">Money</th>
-                                                        <th class="text-right">Total</th>
-                                                        <th class="text-right">Change Money</th>
-                                                        <th>Status</th>
-                                                        <th>Option</th>
+                                                        <th style="width: 5%">No</th>
+                                                        <th>Order</th>
+                                                        <th class="text-right">Price</th>
+                                                        <th class="text-right" style="width: 5%">Qty</th>
+                                                        <th class="text-right">Subtotal</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <!-- End Table -->
 
                                         <!-- Money, Total, and Change Money -->
                                         <div class="text-right">
