@@ -18,14 +18,6 @@
             <div class="card">
                 <form id="form-order">
                     <div class="card-body">
-                        <!-- <?php
-                            echo '<pre>';
-                            var_dump($this->data);
-                            echo '</br>';
-                            var_dump($_SESSION);
-                            echo '</pre>';
-                        ?> -->
-                            
                         <!-- Order Number and Order Date -->
                         <div class="form-row">
                             <input type="hidden" id="status" value="<?= $this->data['status']['id'] ?>">
@@ -102,28 +94,30 @@
                         <div class="text-right">
                             <div style="margin-bottom: 15px;">
                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Money</div>
-                                <div id="text_money" style="font-size: 18px; color: #34395e; font-weight: 700;">Rp 0,00</div>
+                                <div id="text_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= (isset($this->data['text_money'])) ? $this->data['text_money'] : 'Rp 0,00'; ?></div>
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Change Money</div>
-                                <div id="text_change_money" style="font-size: 18px; color: #34395e; font-weight: 700;">Rp 0,00</div>
-                                <input type="hidden" id="change_money" value="0">
+                                <div id="text_change_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= (isset($this->data['text_change_money'])) ? $this->data['text_change_money'] : 'Rp 0,00'; ?></div>
+                                <input type="hidden" id="change_money" value="<?= (isset($this->data['change_money'])) ? $this->data['change_money'] : 0; ?>">
                             </div>
                             <hr class="mt-2 mb-2">
                             <div style="margin-bottom: 15px;">
                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Total</div>
-                                <div id="text_total" style="font-size: 24px; color: #34395e; font-weight: 700;">Rp 0,00</div>
-                                <input type="hidden" id="total" value="0">
+                                <div id="text_total" style="font-size: 24px; color: #34395e; font-weight: 700;"><?= (isset($this->data['text_total'])) ? $this->data['text_total'] : 'Rp 0,00'; ?></div>
+                                <input type="hidden" id="total" value="<?= (isset($this->data['total'])) ? $this->data['total'] : 0; ?>">
                             </div>
                         </div>
 
-                        <!-- button submit and reset -->
-                        <div class="text-right">
-                            <div class="btn-group mb-3" role="group">
-                                <button id="btn-reset" class="btn btn-secondary" type="button">Reset</button>
-                                <button id="btn-submit" class="btn btn-primary" type="submit" value="<?= $this->data['action']; ?>">Order</button>
-                            </div>
+                        <!-- button back, submit and reset -->
+                        <?php if($this->data['action'] == 'action-edit') { ?> 
+                            <a href="<?= BASE_URL."orders/history/" ?>" class="btn btn-secondary" role="button">Back</a> 
+                        <?php } ?>
+                        <div class="btn-group float-right" role="group">
+                            <button id="btn-reset" class="btn btn-secondary" type="button">Reset</button>
+                            <button id="btn-submit" class="btn btn-primary" type="submit" value="<?= $this->data['action']; ?>">Order</button>
                         </div>
+                        <!-- </div> -->
                     </div>
                     
                 </form>

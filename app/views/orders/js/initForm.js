@@ -123,6 +123,10 @@ function init() {
     $('#btn-submit-add-order').text('Add');
     
     setMenu();
+    if($('#btn-submit').val() == 'action-edit') {
+        getEdit($('#order_number').val().trim());
+        $('#btn-submit').text('Edit Order');
+    }
 }
 
 /**
@@ -619,6 +623,49 @@ function submit() {
 		}
 
 	});
+}
+
+/**
+ * 
+ */
+function getEdit(id) {
+    $.ajax({
+        url: BASE_URL+'orders/get-edit/'+id.toLowerCase(),
+        type: 'post',
+        dataType: 'json',
+        data: {},
+        beforeSend: function() {
+        },
+        success: function(response) {
+            console.log("%cResponse getEdit: ", "color: green; font-weight: bold", response);
+            if(response.success) {
+                $.each(response.data, function(i, data) {
+                    var index = indexDetail++;
+                    var item = (data.item_id == null || data.item_id == '') ? '0' : data.item_id;
+                    var dataDetail = {
+                        index: index,
+                        id: data.id,
+                        order_id: data.order_number,
+                        item: item,
+                        order_item: data.order_item,
+                        price: data.price_item,
+                        price_full: data.price_full,
+                        qty: data.qty,
+                        subtotal: data.subtotal,
+                        subtotal_full: data.subtotal_full,
+                        action: 'edit',
+                        delete: false
+                    }
+                    listDetail.push(dataDetail);
+                });
+                renderTableDetail(listDetail);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('%cResponse Error getEdit: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+            setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
+        }
+    });
 }
 
 /**

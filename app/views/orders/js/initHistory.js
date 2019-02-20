@@ -130,5 +130,30 @@ function renderTableDetail(data) {
  * 
  */
 function getView(id) {
-    setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+    var notifError = {
+        title: 'Error Message',
+        message: 'Access Denied',
+        type: 'error'
+    };
+    if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
+    else{
+        setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+    }
+}
+
+/**
+ * 
+ */
+function getEdit(id, status) {
+    var notifError = {
+        title: 'Error Message',
+        message: 'Access Denied',
+        type: 'error'
+    };
+    if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
+    else{
+        // setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+        if(status === 'PENDING') { window.location.href = BASE_URL+'orders/form/'+id.toLowerCase(); }
+        else { setNotif(notifError, 'swal'); }
+    }
 }

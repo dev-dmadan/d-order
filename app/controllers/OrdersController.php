@@ -195,8 +195,8 @@
 
                     // button aksi
 					$btnDetail = '<button onclick="getView('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-info" title="View Detail"><i class="fas fa-eye"></i></button>';
-                    $btnEdit = '<button onclick="getEdit('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-success" title="Edit Order"><i class="fas fa-edit"></i></button>';
-                    $btnDelete = '<button onclick="getDelete('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-danger" title="Delete Order"><i class="fas fa-trash"></i></button>';
+                    $btnEdit = '<button onclick="getEdit('."'".strtolower($row["order_number"])."'".', '."'".$row["status_name"]."'".')" type="button" class="btn btn-sm btn-success" title="Edit Order"><i class="fas fa-edit"></i></button>';
+                    $btnDelete = '<button onclick="getDelete('."'".strtolower($row["order_number"])."'".', '."'".$row["status_name"]."'".')" type="button" class="btn btn-sm btn-danger" title="Delete Order"><i class="fas fa-trash"></i></button>';
 
                     switch ($row['status_id']) {
                         // pending
@@ -254,9 +254,9 @@
         /**
          * 
          */
-        public function form($id) {
-
-            $this->add();
+        public function form($id = false) {
+            if(!$id || $id == '') { $this->add(); }
+            else { $this->edit($id); }
         }
 
         /**
@@ -426,7 +426,101 @@
         /**
          * 
          */
-        public function edit($id) {
+        private function edit($id) {
+            $id = strtoupper($id);
+            $dataOrder = ($this->OrdersModel->getById($id)) ? $this->OrdersModel->getById($id) : false;     
+            if($dataOrder && $dataOrder['status_name'] === 'PENDING') {
+                $config = array(
+                    'title' => 'Order Form',
+                    'property' => array(
+                        'main' => 'Change your Order ?', 'sub' => ''
+                    ),
+                    'css' => array(
+                        "assets/dist/modules/datatables/datatables.min.css",
+                        "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                        "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                    ),
+                    'js' => array(
+                        "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
+                        "assets/dist/modules/datatables/datatables.min.js",
+                        "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                        "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                        "app/views/orders/js/initForm.js"
+                    )
+                );
+    
+                $data = array(
+                    'action' => 'action-edit',
+                    'order_number' => $dataOrder['order_number'],
+                    'order_date' => $dataOrder['order_date'],
+                    'money' => $dataOrder['money'],
+                    'text_money' => $this->helper->cetakRupiah($dataOrder['money']),
+                    'notes' => $dataOrder['notes'],
+                    'change_money' => $dataOrder['change_money'],
+                    'text_change_money' => $this->helper->cetakRupiah($dataOrder['change_money']),
+                    'total' => $dataOrder['total'],
+                    'text_total' => $this->helper->cetakRupiah($dataOrder['total']),
+                    'status' => $this->getStatusOrder($dataOrder['status_name'])
+                );
+                $this->layout('orders/form', $config, $data);
+            }
+            else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
+        public function get_edit($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $id = strtoupper($id);
+                    $detail = !empty($this->OrdersModel->getDetailById($id)) ? 
+                        $this->OrdersModel->getDetailById($id) : false;
+                    
+                    if($detail) {
+                        $temp = array();
+                        foreach($detail as $item) {
+                            $row = $item;
+                            $row['price_full'] = $this->helper->cetakRupiah($item['price_item']);
+                            $row['subtotal_full'] = $this->helper->cetakRupiah($item['subtotal']);
+
+                            $temp[] = $row;
+                        }
+
+                        $this->success = true;
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning message',
+                            'message' => "Sorry we can't find any data"
+                        );
+                    }
+
+                    $result = array(
+                        'success' => $this->success,
+                        'notif' => $this->notif,
+                        'data' => $temp
+                    );
+
+                    echo json_encode($result);
+                }
+            }
+            else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
+        public function action_edit() {
+
+        }
+
+        /**
+         * 
+         */
+        public function get_edit_orders($id) {
             if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
                 if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
                 else {
@@ -473,6 +567,38 @@
                 }
             }
             else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
+        public function action_edit_orders() {
+
+        }
+
+        /**
+         * 
+         */
+        public function detail($id) {
+            $config = array(
+                'title' => 'View Order',
+                'property' => array(
+                    'main' => 'View Order', 'sub' => ''
+                ),
+                'css' => array(
+                    "assets/dist/modules/datatables/datatables.min.css",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                ),
+                'js' => array(
+                    "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
+                    "assets/dist/modules/datatables/datatables.min.js",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                    "app/views/orders/initView.js"
+                ),
+            );        
+            $this->layout('orders/view', $config);
         }
 
         /**
