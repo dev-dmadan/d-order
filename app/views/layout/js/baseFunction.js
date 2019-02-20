@@ -124,3 +124,10 @@ function setError(error) {
         }
     });
 }
+
+/**
+ *
+ */
+function goBack() {
+    window.history.back();
+}

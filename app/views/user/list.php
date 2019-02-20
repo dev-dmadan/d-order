@@ -42,5 +42,4 @@
     </section>
 </div>
 <!-- End Main Content -->
-
 <?php include_once('modals/edit_status.php') ?>

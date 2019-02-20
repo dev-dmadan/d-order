@@ -61,7 +61,8 @@ function init() {
  * 
  */
 function getView(username) {
-    setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+    // setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
+    window.location.href = BASE_URL+'user/detail/'+username;
 }
 
 /**
