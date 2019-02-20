@@ -99,7 +99,6 @@
 				$this->insert_order($dataOrder);
 				foreach($dataDetail as $index => $row) {
 					if(!$dataDetail[$index]['delete']) {
-						array_map('strtoupper', $row);
 						$this->insert_detailOrder($row);
 					}
 				}
@@ -169,23 +168,26 @@
 		 * @return result {array}
 		 */
 		public function update($data){
-			$query = "CALL p_edit_order (:id, :date, :money, :total, :change_money, :notes, :status, :modified_by);";
+			$dataOrder = $data['dataOrder'];
+			$dataDetail = $data['dataDetail'];
 			try{
 				$this->connection->beginTransaction();
-				$statement = $this->connection->prepare($query);
-				$statement->execute(
-					array(
-						':id' => $data['id'],
-						':date' => $data['date'],
-						':money' => $data['money'],
-						':total' => $data['notes'],
-						':change_money' => $data['change_money'],
-						':notes' => $data['notes'],
-						':status' => $data['status_id'],
-						':modified_by' => $data['modified_by']
-					)
-				);
-				$statement->closeCursor();
+				$this->update_order($dataOrder);
+				foreach($dataDetail as $index => $row) {
+					// jika diedit
+					if(!$dataDetail[$index]['delete'] && $dataDetail[$index]['action'] == 'edit') {
+						$this->update_detailOrder($row);
+					}
+					// jika ada penambahan
+					else if(!$dataDetail[$index]['delete'] && $dataDetail[$index]['action'] == 'add') {
+						$this->insert_detailOrder($row);
+					}
+					// jika dihapus
+					else if($dataDetail[$index]['delete'] && $dataDetail[$index]['action'] == 'edit') {
+						$this->delete_detailOrder($row['id']);
+					}
+				}
+
 				$this->connection->commit();
 				return array(
 					'success' => true,
@@ -204,8 +206,43 @@
 		/**
 		 * 
 		 */
-		private function update_detailOrder($data) {
+		private function update_order($data) {
+			$query = "CALL p_edit_order (:id, :date, :money, :total, :change_money, :notes, :status, :modified_by);";
+			$statement = $this->connection->prepare($query);
+			$statement->execute(
+				array(
+					':id' => $data['id'],
+					':date' => $data['date'],
+					':money' => $data['money'],
+					':total' => $data['total'],
+					':change_money' => $data['change_money'],
+					':notes' => $data['notes'],
+					':status' => $data['status'],
+					':modified_by' => $data['modified_by']
+				)
+			);
+			$statement->closeCursor();
+		}
 
+		/**
+		 * 
+		 */
+		private function update_detailOrder($data) {
+			$item = ($data['item'] == '0') ? NULL : $data['item'];
+			$query = "CALL p_edit_order_detail (:id, :item, :order_item, :price_item, :qty, :subtotal, :modified_by);";
+			$statement = $this->connection->prepare($query);
+			$statement->execute(
+				array(
+					':id' => $data['id'],
+					':item' => $item,
+					':order_item' => $data['order_item'],
+					':price_item' => $data['price'],
+					':qty' => $data['qty'],
+					':subtotal' => $data['subtotal'],
+					':modified_by' => $_SESSION['sess_id']
+				)
+			);
+			$statement->closeCursor();
 		}
 
 		/**
@@ -242,8 +279,15 @@
 		/**
 		 * 
 		 */
-		private function delete_detailOrder() {
-			
+		private function delete_detailOrder($id) {
+			$query = "CALL p_delete_order_detail (:id);";
+			$statement = $this->connection->prepare($query);
+			$statement->execute(
+				array(
+					':id' => $id,
+				)
+			);
+			$statement->closeCursor();
 		}
 
 		/**
@@ -253,10 +297,10 @@
 		 * @return result {array}
 		 */
 		public function delete($id){
-			$query = "CALL delete_order (:id);";
+			$query = "CALL p_delete_order (:id);";
 			try{
 				$this->connection->beginTransaction();
-				$statement = $this->koneksi->prepare($query);
+				$statement = $this->connection->prepare($query);
 				$statement->execute(
 					array(
 						':id' => $id

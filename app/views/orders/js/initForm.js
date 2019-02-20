@@ -524,17 +524,6 @@ function delete_detail(index, value) {
 /**
  * 
  */
-function resetFormOrder() {
-    $('#form-order-detail').trigger('reset');
-    $('#menu').val(null).trigger('change');
-
-    $('#form-order-detail .field').removeClass('is-invalid').removeClass('is-valid');
-    $('#form-order-detail .message').removeClass('valid-feedback').removeClass('invalid-feedback').addClass('invalid-feedback').text('');
-}
-
-/**
- * 
- */
 function sum_subtotal(listDetail) {
     var total = 0;
     $.each(listDetail, function(index, item) {
@@ -544,6 +533,17 @@ function sum_subtotal(listDetail) {
     });
 
     return total;
+}
+
+/**
+ * 
+ */
+function resetFormOrder() {
+    $('#form-order-detail').trigger('reset');
+    $('#menu').val(null).trigger('change');
+
+    $('#form-order-detail .field').removeClass('is-invalid').removeClass('is-valid');
+    $('#form-order-detail .message').removeClass('valid-feedback').removeClass('invalid-feedback').addClass('invalid-feedback').text('');
 }
 
 /**
@@ -611,7 +611,7 @@ function submit() {
                 setNotif(response.notif.order, type);
 			}
 			else { 
-                if(LEVEL == 'ADMIN') { window.location.href = BASE_URL; }
+                if(LEVEL == 'ADMIN' && $('#btn-submit').val().trim() == 'action-add') { window.location.href = BASE_URL; }
                 else { window.location.href = BASE_URL+'orders/history'; } 
             }
 		},

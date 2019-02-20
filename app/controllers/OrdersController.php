@@ -429,7 +429,7 @@
         private function edit($id) {
             $id = strtoupper($id);
             $dataOrder = ($this->OrdersModel->getById($id)) ? $this->OrdersModel->getById($id) : false;     
-            if($dataOrder && $dataOrder['status_name'] === 'PENDING') {
+            if($dataOrder && $dataOrder['status_name'] === 'PENDING' && $dataOrder['user'] === $_SESSION['sess_id']) {
                 $config = array(
                     'title' => 'Order Form',
                     'property' => array(
@@ -514,7 +514,114 @@
          * 
          */
         public function action_edit() {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = isset($_POST) ? $_POST : false;
+                $dataOrder = isset($_POST['dataOrder']) ? json_decode($_POST['dataOrder'], true) : false;
+                $dataDetail = isset($_POST['dataDetail']) ? json_decode($_POST['dataDetail'], true) : false;
+                
+                $cekDetail = true;
 
+                if(!$data) {
+                    $this->notif['order'] = array(
+                        'type' => 'error',
+                        'title' => 'Error Message',
+                        'message' => 'Please try again'
+                    );
+                }
+                else {
+                    // data validation
+                    $validation = $this->set_validation($dataOrder, $data['action']);
+                    $cek = $validation['cek'];
+                    $this->error = $validation['error'];
+
+                    if(!$this->helper->cekArray($dataDetail)) {
+                        $cek = $cekDetail = false;
+                    }
+
+                    // get status real time
+                    $checkStatus = ($this->OrdersModel->getById($dataOrder['id'])['status_name'] === 'PENDING') ? true : false;
+
+                    if($cek && $checkStatus) {
+                        $data_updateOrder = array(
+                            'id' => $dataOrder['id'],
+                            'date' => $dataOrder['date'],
+                            'money' => $dataOrder['money'],
+                            'notes' => $dataOrder['notes'],
+                            'change_money' => ($dataOrder['money'] - $dataOrder['total']),
+                            'total' => $dataOrder['total'],
+                            'status' => $dataOrder['status'],
+                            'modified_by' => $_SESSION['sess_id']
+                        );
+
+                        $dataUpdate = array(
+                            'dataOrder' => $data_updateOrder,
+                            'dataDetail' => $dataDetail
+                        );
+
+                        $update = $this->OrdersModel->update($dataUpdate);
+                        if($update['success']) {
+                            $this->success = true;
+                            $_SESSION['notif'] = array(
+                                'type' => 'success',
+                                'title' => 'Success Message',
+                                'message' => 'Success change your order, please wait your order will be process'
+                            );
+                            $this->notif['order'] = $_SESSION['notif'];
+                        }
+                        else {
+                            $this->notif['order'] = array(
+                                'type' => 'error',
+                                'title' => 'Error Message',
+                                'message' => 'Please try again'
+                            );
+                            $this->message = $update['error'];
+                        }
+                    }
+                    else {
+                        if(!$cekDetail) {
+                            $this->notif['order_detail'] = array(
+                                'type' => 'warning',
+                                'title' => 'Warning Message',
+                                'message' => 'Please check your order detail'
+                            );
+                        }
+
+                        if(!$checkStatus) {
+                            $this->notif['order'] = array(
+                                'type' => 'error',
+                                'title' => 'Can\'t Edit Order',
+                                'message' => 'Cause Mas\'D is going to process the orders, tell him directly to change order !'
+                            );
+                        }
+                        else {
+                            $this->notif['order'] = array(
+                                'type' => 'warning',
+                                'title' => 'Warning Message',
+                                'message' => 'Please check your form'
+                            );
+                        }
+                        
+                    }
+                }
+
+                $result = array(
+                    'success' => $this->success,
+                    'cek' => array(
+                        'order_detail' => $cekDetail
+                    ),
+                    'notif' => $this->notif,
+                    'error' => $this->error,
+                    'message' => $this->message,
+                    'data' => array(
+                        'post' => $data,
+                        'dataOrder' => $dataOrder,
+                        'dataDetail' => $dataDetail
+                    )
+                );
+
+                echo json_encode($result);
+            }
+            else { die(ACCESS_DENIED); }
         }
 
         /**
@@ -653,6 +760,55 @@
                     echo json_encode($result);
                 }
             }
+        }
+
+        /**
+         * 
+         */
+        public function delete($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $id = strtoupper($id);
+                    // check user & check status
+                    $getOrder = $this->OrdersModel->getById($id);
+                    $checkUser = $getOrder['user'] === $_SESSION['sess_id'] ? true : false;
+                    $checkStatus = ($getOrder['status_name'] === 'PENDING' || $getOrder['status_name'] === 'REJECT') ? true : false;
+                    if($checkUser && $checkStatus) {
+                        $delete = $this->OrdersModel->delete($id);
+                        if($delete['success']) {
+                            $this->success = true;
+                            $this->notif = array(
+                                'type' => 'success',
+                                'title' => 'Success Message',
+                                'message' => 'Data deleted successfully',
+                            );
+                        }
+                        else {
+                            $this->message = $delete['error'];
+                            $this->notif = array(
+                                'type' => 'error',
+                                'title' => 'Error Message',
+                                'message' => 'Please try again'
+                            );
+                        }
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'error',
+                            'title' => 'Error Message',
+                            'message' => 'Access Denied'
+                        );
+                    }
+                    
+                    echo json_encode(array(
+                        'success' => $this->success,
+                        'message' => $this->message,
+                        'notif' => $this->notif
+                    ));
+                }
+            }
+            else { die(ACCESS_DENIED); }
         }
 
         /**

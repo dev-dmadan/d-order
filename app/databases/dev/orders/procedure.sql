@@ -84,7 +84,7 @@ DROP PROCEDURE IF EXISTS p_delete_order;
 delimiter //
 
 CREATE PROCEDURE p_delete_order (
-	in id_param int
+	in id_param varchar(50)
 )
 BEGIN
 
@@ -129,7 +129,6 @@ delimiter //
 
 CREATE PROCEDURE p_edit_order_detail (
 	in id_param int,
-	in order_id_param varchar(50),
 	in item_param int,
 	in order_item_param varchar(255),
 	in price_item_param double(12,2),

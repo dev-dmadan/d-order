@@ -111,9 +111,9 @@
 
                         <!-- button back, submit and reset -->
                         <?php if($this->data['action'] == 'action-edit') { ?> 
-                            <a href="<?= BASE_URL."orders/history/" ?>" class="btn btn-secondary" role="button">Back</a> 
+                            <a href="<?= BASE_URL."orders/history/" ?>" class="btn btn-secondary mb-3" role="button">Back</a> 
                         <?php } ?>
-                        <div class="btn-group float-right" role="group">
+                        <div class="btn-group float-right mb-3" role="group">
                             <button id="btn-reset" class="btn btn-secondary" type="button">Reset</button>
                             <button id="btn-submit" class="btn btn-primary" type="submit" value="<?= $this->data['action']; ?>">Order</button>
                         </div>
