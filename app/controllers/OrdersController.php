@@ -194,29 +194,33 @@
 					$no_urut++;
 
                     // button aksi
-					$btnDetail = '<button onclick="getView('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-info" title="View Detail"><i class="fa fa-eye"></i></button>';
-					
-					$option = '<div class="btn-group">'.$btnDetail.'</div>';
+					$btnDetail = '<button onclick="getView('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-info" title="View Detail"><i class="fas fa-eye"></i></button>';
+                    $btnEdit = '<button onclick="getEdit('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-success" title="Edit Order"><i class="fas fa-edit"></i></button>';
+                    $btnDelete = '<button onclick="getDelete('."'".strtolower($row["order_number"])."'".')" type="button" class="btn btn-sm btn-danger" title="Delete Order"><i class="fas fa-trash"></i></button>';
 
                     switch ($row['status_id']) {
                         // pending
                         case 1 :
                             $status = '<div class="badge badge-primary">';
+                            $option = '<div class="btn-group">'.$btnDetail.$btnEdit.$btnDelete.'</div>';
                             break;
                         
                         // process
                         case 2 :
                             $status = '<div class="badge badge-info">';
+                            $option = '<div class="btn-group">'.$btnDetail.'</div>';
                             break;
 
                         // reject
                         case 3 :
                             $status = '<div class="badge badge-danger">';
+                            $option = '<div class="btn-group">'.$btnDetail.$btnDelete.'</div>';
                             break;
 
                         // delivered
                         default:
                             $status = '<div class="badge badge-success">';
+                            $option = '<div class="btn-group">'.$btnDetail.'</div>';
                             break;
                     }
 
@@ -250,7 +254,8 @@
         /**
          * 
          */
-        public function form() {
+        public function form($id) {
+
             $this->add();
         }
 
@@ -322,7 +327,7 @@
                             'date' => $dataOrder['date'],
                             'money' => $dataOrder['money'],
                             'notes' => $dataOrder['notes'],
-                            'change_money' => $dataOrder['change_money'],
+                            'change_money' => ($dataOrder['money'] - $dataOrder['total']),
                             'total' => $dataOrder['total'],
                             'status' => $dataOrder['status'],
                             'user' => $_SESSION['sess_id']

@@ -228,6 +228,30 @@
         /**
          * 
          */
+        public function detail($username) {
+            $config = array(
+                'title' => 'User Detail',
+                'property' => array(
+                    'main' => 'User Detail', 'sub' => ''
+                ),
+                'css' => array(
+                    "assets/dist/modules/datatables/datatables.min.css",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                ),
+                'js' => array(
+                    "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
+                    "assets/dist/modules/datatables/datatables.min.js",
+                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                ),
+            );        
+            $this->layout('user/view', $config);
+        }
+
+        /**
+         * 
+         */
         private function set_validation($data) {
             $this->validation->set_rules($data['status'], 'Active Status', 'status', 'angka | 1 | 10 | required');
 
