@@ -85,13 +85,14 @@
                     
                     if(empty($row['image'])) { $image = BASE_URL.'assets/images/user/default.jpg'; }
                     else {
-                        if(!file_exists($row['image'])) { $image = BASE_URL.'assets/images/user/default.jpg'; }
-                        else { $image = $row['image']; }
+                        $filename = ROOT.DS.'assets'.DS.'images'.DS.'user'.DS.$row['image'];
+                        if(!file_exists($filename)) { $image = BASE_URL.'assets/images/user/default.jpg'; }
+                        else { $image = BASE_URL.'assets/images/user/'.$row['image']; }
                     }
 
                     $dataRow = array();
                     $dataRow['order_number'] = $row['order_number'];
-                    $dataRow['name'] = $row['user_name']. '|'.$image;
+                    $dataRow['name'] = $row['user_name'].'|'.$image;
                     $dataRow['status'] = $row['status_name'];
 
 					$data[] = $dataRow;
@@ -125,6 +126,7 @@
                     $mainData['money_full'] = $this->helper->cetakRupiah($mainData['money']);
                     $mainData['total_full'] = $this->helper->cetakRupiah($mainData['total']);
                     $mainData['change_money_full'] = $this->helper->cetakRupiah($mainData['change_money']);
+                    unset($mainData['image']);
 
                     $data = array();
                     foreach($dataDetail as $row) {
@@ -313,7 +315,7 @@
                 }
                 else {
                     // data validation
-                    $validation = $this->set_validation($dataOrder, $data['action']);
+                    $validation = $this->set_validation($dataOrder);
                     $cek = $validation['cek'];
                     $this->error = $validation['error'];
 
@@ -530,7 +532,7 @@
                 }
                 else {
                     // data validation
-                    $validation = $this->set_validation($dataOrder, $data['action']);
+                    $validation = $this->set_validation($dataOrder);
                     $cek = $validation['cek'];
                     $this->error = $validation['error'];
 
@@ -702,7 +704,7 @@
                     "assets/dist/modules/datatables/datatables.min.js",
                     "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
                     "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
-                    "app/views/orders/initView.js"
+                    "app/views/orders/js/initView.js"
                 ),
             );        
             $this->layout('orders/view', $config);

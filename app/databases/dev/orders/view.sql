@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW v_orders AS
 SELECT
     o.id order_number, o.date order_date, o.money, o.total, o.change_money, o.notes,
     o.status status_id, osl.name status_name,
-    o.user, u.name user_name,
+    o.user, u.name user_name, u.image,
     o.created_on, o.created_by, ucb.name created_by_name,
     o.modified_on, o.modified_by, umb.name modified_by_name
 FROM orders o
