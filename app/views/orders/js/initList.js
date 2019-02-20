@@ -26,6 +26,7 @@ var table_order_list = $("#table-order-list").DataTable({
             data: "name", 
             render: function(data) {
                 var split = data.split('|');
+                console.log(split);
                 return '<img alt="image" src="'+split[1]+'" class="rounded-circle" width="35" data-toggle="tooltip" title="" data-original-title="'+split[0]+'"><p>'+split[0]+'</p>';
             }
         },
@@ -78,6 +79,11 @@ $(document).ready(function() {
 
     $('#table-order-list tbody').on('click', 'td.show-detail', function () {
         onClickShowDetailDataTable(table_order_list, this);
+    });
+
+    // event on click refresh table
+    $('#refreshTable').on('click', function() {
+        refreshTable($(this), table_order_list);
     });
 
 });

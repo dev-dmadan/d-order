@@ -59,7 +59,7 @@
                     }
                     else { $obj->$newMethod($param); }
 				}
-				else die($this->error('403')); // method tidak tersedia	
+				else die($this->error('404')); // method tidak tersedia	
 			}
 			else die($this->error('404')); // class tidak tersedia
         }

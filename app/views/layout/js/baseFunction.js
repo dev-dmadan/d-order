@@ -131,3 +131,13 @@ function setError(error) {
 function goBack() {
     window.history.back();
 }
+
+/**
+ * 
+ */
+function refreshTable(btn, table) {
+    btn.prop('disabled', true);
+    table.ajax.reload(function(response) {
+        btn.prop('disabled', false);
+    }, false);
+}

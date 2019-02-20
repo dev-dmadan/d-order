@@ -96,7 +96,7 @@
 				'callback' => $callback,
 				'error' => $this->error,
                 'notif' => $this->notif,
-                'data' => $dataUser
+                // 'data' => $dataUser
 			);
 
 			echo json_encode($result);
