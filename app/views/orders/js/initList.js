@@ -86,6 +86,12 @@ $(document).ready(function() {
         refreshTable($(this), table_order_list);
     });
 
+    // auto refresh every 1 minutes
+    setInterval( function () {
+        console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
+        table_order_list.ajax.reload(null, false);
+    }, 60000 );
+
 });
 
 /**
