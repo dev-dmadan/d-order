@@ -19,8 +19,8 @@
                 <div class="card-header">
                     <h4></h4>
                     <div class="card-header-action">
-                        <button id="exportExcel" class="btn btn-success"><i class=""></i> Export Excel</button>
-                        <button id="refreshTable" class="btn btn-info"><i class=""></i> Refresh</button>
+                        <button id="exportExcel" class="btn btn-success"><i class="far fa-file-excel"></i> Export Excel</button>
+                        <button id="refreshTable" class="btn btn-info"><i class="fas fa-sync-alt"></i> Refresh</button>
                     </div>
                 </div>
                 <form id="order-form">
