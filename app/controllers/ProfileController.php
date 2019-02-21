@@ -45,6 +45,7 @@
                     "assets/dist/modules/datatables/datatables.min.css",
                     "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
                     "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                    // "app/views/profile/css/cardCustom.css"
                 ),
                 'js' => array(
                     "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
