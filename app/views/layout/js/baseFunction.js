@@ -30,6 +30,10 @@ function setActiveMenu(url) {
     else if(newUrl[3] == 'orders' && newUrl[4] == 'history') {
         $('.menu-orders-history').addClass('active');
     }
+    // menu view orders
+    else if(newUrl[3] == 'orders' && newUrl[4] == 'detail') {
+        $('.menu-orders-history').addClass('active');
+    }
     // menu item
     else if(newUrl[3] == 'items') {
         $('.menu-items').addClass('active');
