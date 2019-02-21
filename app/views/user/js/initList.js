@@ -44,6 +44,17 @@ $(document).ready(function() {
         submit();
         return false;
     });
+
+    // event on click refresh table
+    $('#refreshTable').on('click', function() {
+        refreshTable($(this), table_user_list);
+    });
+
+    // auto refresh every 1 minutes
+    setInterval( function () {
+        console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
+        table_user_list.ajax.reload(null, false);
+    }, 60000 );
 });
 
 /**

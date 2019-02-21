@@ -42,29 +42,43 @@
                                             <!-- user image -->
                                             <img alt="image" src="<?= $_SESSION['sess_image'] ?>" width="75%%" class="rounded-circle mr-1">
                                             <div class="user-details">
-                                                <div class="user-name"><?= $_SESSION['sess_name'] ?></div>
-                                                <div class="text-job text-muted"><?= $_SESSION['sess_level'] ?></div>
+                                                <div class="user-name"><?= $_SESSION['sess_id'] ?></div>
+                                                <div class="text-job text-muted"><?= $_SESSION['sess_status'] ?></div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- grid span 8 -->
                                     <div class="col-md-8">
-                                    
                                         <div class="form-group">
+                                            <label for="user-name"><strong>Name</strong></label>
+                                            <div class="user-name"><?= $_SESSION['sess_name'] ?></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="user-username"><strong>Username</strong></label>
+                                            <div class="user-name"><?= $_SESSION['sess_id'] ?></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="user-level"><strong>Level</strong></label>
+                                            <div class="user-name"><?= $_SESSION['sess_level'] ?></div>
+                                        </div>
+
+                                        <!-- <div class="form-group">
                                             <label for="email"><strong>Email</strong></label>
-                                            <div class="user-email"><!-- <?= $_SESSION['sess_email'] ?> -->udin@i-systemasia.com</div>
+                                            <div class="user-email">udin@i-systemasia.com</div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="phone"><strong>Phone</strong></label>
-                                            <div class="user-phone"><!-- <?= $_SESSION['sess_phone'] ?> -->080989999</div>
+                                            <div class="user-phone">080989999</div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="birthday"><strong>Birthday</strong></label>
-                                            <div class="user-birthday"><!-- <?= $_SESSION['sess_birthday'] ?> -->01/02/2019</div>
-                                        </div>
+                                            <div class="user-birthday">01/02/2019</div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

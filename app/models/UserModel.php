@@ -92,16 +92,15 @@
 		 * @return result {array}
 		 */
 		public function update($data){
-			$query = "CALL update_user (:username, :name, :level, :status);";
+			$query = "CALL p_update_user (:username, :name, :modified_by);";
 			try{
 				$this->connection->beginTransaction();
 				$statement = $this->connection->prepare($query);
 				$statement->execute(
 					array(
-                        ':username' => $data['username'],
+						':username' => $data['username'],
                         ':name' => $data['name'],
-                        ':level' => $data['level'],
-						':status' => $data['status']
+						':modified_by' => $data['modified_by']
 					)
 				);
 				$statement->closeCursor();
