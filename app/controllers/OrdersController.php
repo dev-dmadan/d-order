@@ -113,9 +113,9 @@
         /**
          * 
          */
-        public function get_list_detail() {
-            if($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $order_number = (isset($_GET['order_number']) && !empty($_GET['order_number'])) ? strtoupper($_GET['order_number']) : false;
+        public function get_list_detail($order_number) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $order_number = strtoupper($order_number);
                 $mainData = $this->OrdersModel->getById($order_number);
                 $dataDetail = !empty($this->OrdersModel->getDetailById($order_number)) ? $this->OrdersModel->getDetailById($order_number) : false;
                 
@@ -640,15 +640,15 @@
                         $this->OrdersModel->getDetailById($id) : false;
 
                     if($order) { 
-                        $order['money'] = $this->helper->cetakRupiah($order['money']);
-                        $order['change_money'] = $this->helper->cetakRupiah($order['change_money']);
-                        $order['total'] = $this->helper->cetakRupiah($order['total']);
+                        $order['text_money'] = $this->helper->cetakRupiah($order['money']);
+                        $order['text_change_money'] = $this->helper->cetakRupiah($order['change_money']);
+                        $order['text_total'] = $this->helper->cetakRupiah($order['total']);
 
                         $temp = array();
                         foreach($detail as $item) {
                             $row = $item;
-                            $row['price_item'] = $this->helper->cetakRupiah($item['price_item']);
-                            $row['subtotal'] = $this->helper->cetakRupiah($item['subtotal']);
+                            $row['text_price_item'] = $this->helper->cetakRupiah($item['price_item']);
+                            $row['text_subtotal'] = $this->helper->cetakRupiah($item['subtotal']);
 
                             $temp[] = $row;
                         }

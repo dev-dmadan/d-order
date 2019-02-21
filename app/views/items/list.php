@@ -19,15 +19,15 @@
                 <div class="card-header">
                     <h4></h4>
                     <div class="card-header-action">
-                        <button id="exportExcel" class="btn btn-success"><i class=""></i> Export Excel</button>
-                        <button id="refreshTable" class="btn btn-info"><i class=""></i> Refresh</button>
+                        <button id="exportExcel" class="btn btn-success"><i class="far fa-file-excel"></i> Export Excel</button>
+                        <button id="refreshTable" class="btn btn-info"><i class="fas fa-sync-alt"></i> Refresh</button>
                     </div>
                 </div>
                 <form id="order-form">
                     <div class="card-body">
                         <!-- button add item -->                                        
                         <div class="btn-group mb-3" role="group">
-                            <button type="button" id="btn-add-item" class="btn btn-outline-success">Add Item</button>
+                            <button type="button" id="btn-add-item" class="btn btn-primary"><i class="fas fa-plus"></i> Add Item</button>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-md" id="table-item-list" style="width: 100%">

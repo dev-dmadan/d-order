@@ -50,8 +50,11 @@ $(document).ready(function() {
 
     // event on click btn edit profil
     $('#btn-edit-profile').on('click', function() {
-        // getProfile();
-        $('#modal-edit-profile').modal({backdrop: 'static'});
+        getProfile();
+    });
+
+    $('#btn-reset-profile').on('click', function() {
+        reset('edit-profile');
     });
 
     // event on click btn edit photo
@@ -87,6 +90,17 @@ $(document).ready(function() {
 
         return false;
     });
+
+    // event on click refresh table
+    $('#refreshTable').on('click', function() {
+        refreshTable($(this), table_order_history);
+    });
+
+    // auto refresh every 1 minutes
+    setInterval( function () {
+        console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
+        table_order_history.ajax.reload(null, false);
+    }, 60000 );
 });
 
 /**
@@ -147,7 +161,7 @@ function reset(form) {
  */
 function getProfile() {
     $.ajax({
-        url: BASE_URL+'profile/edit/'+USER_ID,
+        url: BASE_URL+'profile/get-edit-profile/'+USER_ID,
         type: 'POST',
         dataType: 'JSON',
         data: {},
@@ -158,7 +172,7 @@ function getProfile() {
             if(response.success) {
                 $('#btn-submit').prop('disabled', false);
                 showForm('edit-profile');
-                setValue(response.data);
+                $('#name').val(response.data.name);
             }
             else { setNotif(response.notif, 'swal'); }
         },

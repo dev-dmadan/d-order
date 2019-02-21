@@ -62,8 +62,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="btn-group" role="group">
-                        <button type="button" id="btn-reset" class="btn btn-outline-danger">Reset</button>
-                        <button type="submit" id="btn-submit" class="btn btn-outline-success" value="action-add">Add</button>
+                        <button type="button" id="btn-reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" id="btn-submit" class="btn btn-primary" value="action-add">Add</button>
                     </div>
                 </div>
             </form>

@@ -1,3 +1,5 @@
+let listDetail = [];
+let indexDetail = 0;
 var table_order_list = $("#table-order-list").DataTable({
     // "responsive": true,
     "lengthMenu": [ 10, 25, 75, 100 ],
@@ -26,7 +28,7 @@ var table_order_list = $("#table-order-list").DataTable({
             data: "name", 
             render: function(data) {
                 var split = data.split('|');
-                console.log(split);
+                // console.log(split);
                 return '<img alt="image" src="'+split[1]+'" class="rounded-circle" width="35" data-toggle="tooltip" title="" data-original-title="'+split[0]+'"><p>'+split[0]+'</p>';
             }
         },
@@ -87,10 +89,18 @@ $(document).ready(function() {
     });
 
     // auto refresh every 1 minutes
-    setInterval( function () {
-        console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
-        table_order_list.ajax.reload(null, false);
-    }, 60000 );
+    // setInterval( function () {
+    //     console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
+    //     table_order_list.ajax.reload(null, false);
+    // }, 60000 );
+
+    // submit
+    $('#form-edit-order').on('submit', function(e) {
+        e.preventDefault();
+        submit();
+
+        return false;
+    });
 
 });
 
@@ -123,12 +133,10 @@ function showDetailDataTable(data) {
         .text('Loading...');
  
     $.ajax({
-        url: BASE_URL+'orders/get-list-detail/',
-        type: 'get',
+        url: BASE_URL+'orders/get-list-detail/'+data.order_number.toLowerCase(),
+        type: 'post',
         dataType: 'json',
-        data: {
-            order_number: data.order_number
-        },
+        data: {},
         beforeSend: function() {
             console.log("%cRequest showDetailDataTable Loading...", "color: blue; font-style: italic");
         },
@@ -166,10 +174,10 @@ function renderTableDetail(data) {
                     '<h6 class="mb-1">Change Money</h6></div>' +
                     '<p class="mb-1">' +data.main.change_money_full+ '</p></a>';
 
-    var payment = '<div class="section-title">Payment</div>' + '<div class="list-group detail-orders">' + money + total + change_money + '</div>';
+    var payment = '<div class="section-title">Payment</div>' + '<div class="list-group">' + money + total + change_money + '</div>';
     var detail = 'Order doesnt have detail..';
     if(data.detail.length > 0) {
-        detail = '<div class="section-title">Order Detail</div><div class="list-group detail-orders">';
+        detail = '<div class="section-title">Order Detail</div><div class="list-group">';
         $.each(data.detail, function(index, item) {
             detail += '<a href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">' +
                         '<div class="d-flex w-100 justify-content-between">' +
@@ -216,7 +224,6 @@ function renderButtonAction(status, order_number) {
  * 
  */
 function showFormItem() {
-    reset();
     $('#modal-status-order').modal({backdrop: 'static'});
 }
 
@@ -224,21 +231,62 @@ function showFormItem() {
  * 
  */
 function setValue(value) {
-    $('#order_number').text(value.orders.order_number);
-    $('#name').text(value.orders.user_name);
-    $('#money').text(value.orders.money);
-    $('#status_name').text(value.orders.status_name);
-    $('#status_id').val(value.orders.status_id);
-
     var detail = '';
-
+    listDetail = [];
+    indexDetail = 0;
     $.each(value.detail, function(index, item) {
-        detail += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
-                item.order_item + ' &mdash; ' + item.subtotal + 
-                '<span class="badge badge-primary badge-pill">' + item.qty + '</span>';
+        var index = indexDetail++;
+        var temp = {
+            index: index,
+            id: item.id,
+            order_number: item.order_number,
+            price_item: item.price_item,
+            qty: item.qty,
+            subtotal: item.subtotal
+        };
+        listDetail.push(temp);
+        detail += '<a href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">' +
+                '<div class="d-flex w-100 justify-content-between">' +
+                '<h6 class="mb-1">' +item.order_item+ '</h6></div>' +
+                renderInputPriceQty(item, index) +
+                '<p class="mb-1 field-subtotal">' +item.subtotal_full+ '</p></a>';
     });
 
     $('.detail-orders').html(detail).text();
+    console.log('List Detail: ', listDetail);
+}
+
+/**
+ * 
+ */
+function renderInputPriceQty(data, index) { 
+    let input = '<div class="form-group">' +
+                '<div class="input-group">' +
+                '<input onchange="onChangePrice(\''+index+'\', this)" type="number" class="form-control field" value='+parseFloat(data.price_item)+'>' +
+                '<input onchange="onChangeQty(\''+index+'\', this)" type="number" class="form-control field" value='+data.qty+' min="1">' +
+                '</div></div>';          
+
+    return input;
+}
+
+/**
+ * 
+ */
+function onChangePrice(index, scope) {
+    listDetail[index].price_item = scope.value;
+    listDetail[index].subtotal = parseFloat(scope.value) * parseFloat(listDetail[index].qty);
+    console.log('onChange Price: ', {index: index, this: scope.parentNode.parentNode.parentNode.getElementsByClassName('field-subtotal').innerHTML = listDetail[index].subtotal});
+    console.log('Update listDetail: ', listDetail);
+}
+
+/**
+ * 
+ */
+function onChangeQty(index, scope) {
+    console.log('onChange Qty: ', {index: index, this: scope});
+    listDetail[index].qty = scope.value;
+    listDetail[index].subtotal = parseFloat(scope.value) * parseFloat(listDetail[index].price_item);
+    console.log('Update listDetail: ', listDetail);
 }
 
 /**
@@ -253,7 +301,7 @@ function getEdit(id) {
     if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
     else {
         $.ajax({
-            url: BASE_URL+'orders/edit/'+id.toLowerCase(),
+            url: BASE_URL+'orders/get-list-detail/'+id.toLowerCase(),
             type: 'POST',
             dataType: 'JSON',
             data: {},
@@ -266,7 +314,7 @@ function getEdit(id) {
                 if(response.success) {
                     $('#btn-submit').prop('disabled', false);
                     $('#btn-reset').prop('disabled', false);
-                    showFormItem('action-edit');
+                    showFormItem();
                     setValue(response.data);
                 }
                 else {
@@ -321,7 +369,7 @@ function setStatus(id, status) {
                     beforeSend: function() {
                     },
                     success: function(response) {
-                        console.log('%cResponse setDone: ', 'font-weight: bold; color: green;', response);
+                        console.log('%cResponse setStatus: ', 'font-weight: bold; color: green;', response);
                         if(response.success) {
                             table_order_list.ajax.reload();
                             setNotif(response.notif, 'toastr');
@@ -331,7 +379,7 @@ function setStatus(id, status) {
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('%cResponse Error setDone: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+                        console.log('%cResponse Error setStatus: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
                         setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
                     }
                 });
@@ -344,12 +392,5 @@ function setStatus(id, status) {
  * 
  */
 function submit() {
-
-}
-
-/**
- * 
- */
-function reset() {
-
+    console.log('List Detail Submit: ', listDetail);
 }

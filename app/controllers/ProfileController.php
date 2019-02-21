@@ -134,6 +134,112 @@
         /**
          * 
          */
+        public function get_edit_profile($username) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if($username == '' || empty($username) || !$username) { die(ACCESS_DENIED); }
+                else {
+                    $data = !empty($this->UserModel->getById($username)) ?
+                        $this->UserModel->getById($username) : false;
+
+                    if($data) { 
+                        $this->success = true;
+                        unset($data['password']);
+                        unset($data['level_id']);
+                        unset($data['level_name']);
+                        unset($data['status_id']);
+                        unset($data['status_name']);
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning message',
+                            'message' => "Sorry we can't find any data"
+                        );
+                    }
+
+                    $result = array(
+                        'success' => $this->success,
+                        'notif' => $this->notif,
+                        'data' => $data
+                    );
+
+                    echo json_encode($result);
+                }
+            }
+            else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
+        public function update_profile() {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = isset($_POST) ? $_POST : false;
+
+                if(!$data) {
+                    $this->notif = array(
+                        'type' => 'error',
+                        'title' => 'Error Message',
+                        'message' => 'Please try again'
+                    );
+                }
+                else {
+                    // data validation
+                    $validation = $this->set_validation($data);
+                    $cek = $validation['cek'];
+                    $this->error = $validation['error'];
+
+                    if($cek) {
+                        $dataUpdate = array(
+                            'name' => $data['name'],
+                            'modified_by' => $_SESSION['sess_id']
+                        );
+
+                        $update = $this->UserModel->update($dataUpdate);
+                        if($update['success']) {
+                            $this->success = true;
+                            $this->notif = array(
+                                'type' => 'success',
+                                'title' => 'Success Message',
+                                'message' => 'Success edit profile'
+                            );
+                        }
+                        else {
+                            $this->notif = array(
+                                'type' => 'error',
+                                'title' => 'Error Message',
+                                'message' => 'Please try again'
+                            );
+                            $this->message = $update['error'];
+                        }
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning Message',
+                            'message' => 'Please check your form'
+                        );
+                    }
+                }
+
+                $result = array(
+                    'success' => $this->success,
+                    'notif' => $this->notif,
+                    'error' => $this->error,
+                    'message' => $this->message,
+                    // 'data' => array(
+                    //     'post' => $data,
+                    // )
+                );
+
+                echo json_encode($result);
+            }
+            else { die(ACCESS_DENIED); }
+        }
+
+        /**
+         * 
+         */
         private function set_validation($data) {
 
         }

@@ -23,7 +23,7 @@
                         <div class="card-header">
                             <h4></h4>
                             <div class="card-header-action">
-                                <button class="btn btn-danger" onclick="goBack();">Back</button>
+                                <button class="btn btn-danger" onclick="goBack();"><i class="fas fa-undo"></i> Back</button>
                             </div>
                         </div>
                         <form id="user-profile">

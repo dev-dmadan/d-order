@@ -63,11 +63,13 @@ function showFormItem(action) {
     if(action == 'action-add') {
         $('#btn-submit').val('action-add');
         $('#btn-submit').text('Add');
+        $('#btn-submit').removeClass('btn-success').removeClass('btn-primary').addClass('btn-primary');
         $('#image').parent().css('display', 'block');
     }
     else if(action == 'action-edit') {
         $('#btn-submit').val('action-edit');
         $('#btn-submit').text('Edit');
+        $('#btn-submit').removeClass('btn-success').removeClass('btn-primary').addClass('btn-success');
         $('#image').parent().css('display', 'none');
     }
 

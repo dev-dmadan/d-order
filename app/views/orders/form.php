@@ -68,8 +68,8 @@
 
                         <!-- button add order detail and show menu -->                                        
                         <div class="btn-group mb-3" role="group">
-                            <button type="button" id="btn-add-order" class="btn btn-outline-success">Add Order</button>
-                            <button type="button" id="btn-show-menu" class="btn btn-outline-info">Show Menu</button>
+                            <button type="button" id="btn-add-order" class="btn btn-success"><i class="fas fa-plus"></i> Add Order</button>
+                            <button type="button" id="btn-show-menu" class="btn btn-info"><i class="far fa-list-alt"></i> Show Menu</button>
                         </div>
                         
                         <!-- table order detail -->
@@ -111,11 +111,11 @@
 
                         <!-- button back, submit and reset -->
                         <?php if($this->data['action'] == 'action-edit') { ?> 
-                            <a href="<?= BASE_URL."orders/history/" ?>" class="btn btn-secondary mb-3" role="button">Back</a> 
+                            <a href="<?= BASE_URL."orders/history/" ?>" class="btn btn-danger mb-3 btn-lg" role="button"><i class="fas fa-undo"></i> Back</a> 
                         <?php } ?>
                         <div class="btn-group float-right mb-3" role="group">
-                            <button id="btn-reset" class="btn btn-secondary" type="button">Reset</button>
-                            <button id="btn-submit" class="btn btn-primary" type="submit" value="<?= $this->data['action']; ?>">Order</button>
+                            <button id="btn-reset" class="btn btn-secondary btn-lg" type="button">Reset</button>
+                            <button id="btn-submit" class="btn btn-primary btn-lg" type="submit" value="<?= $this->data['action']; ?>">Order</button>
                         </div>
                         <!-- </div> -->
                     </div>
