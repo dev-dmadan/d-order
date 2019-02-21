@@ -107,8 +107,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="float-right mb-3">
-                                            <button id="exportExcel" class="btn btn-success"><i class=""></i> Export Excel</button>
-                                            <button id="refreshTable" class="btn btn-info"><i class=""></i> Refresh</button>
+                                            <button id="exportExcel" class="btn btn-success"><i class="far fa-file-excel"></i> Export Excel</button>
+                                            <button id="refreshTable" class="btn btn-info"><i class="fas fa-sync-alt"></i> Refresh</button>
                                         </div>
                                         <div class="table-responsive">
                                             <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
