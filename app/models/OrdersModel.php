@@ -206,6 +206,46 @@
 		/**
 		 * 
 		 */
+		public function update_admin($data) {
+			$dataOrder = $data['dataOrder'];
+			$dataDetail = $data['dataDetail'];
+			try{
+				$this->connection->beginTransaction();
+				$query = "UPDATE orders SET total = :total, change_money = :change_money, modified_by = :modified_by WHERE id = :id";
+
+				$statement = $this->connection->prepare($query);
+				$statement->execute(
+					array(
+						':id' => $dataOrder['id'],
+						':total' => $dataOrder['total'],
+						':change_money' => $dataOrder['change_money'],
+						':modified_by' => $dataOrder['modified_by']
+					)
+				);
+				$statement->closeCursor();
+
+				foreach($dataDetail as $index => $row) {
+					$this->update_detailOrder($row);
+				}
+
+				$this->connection->commit();
+				return array(
+					'success' => true,
+					'error' => null
+				);
+			}
+			catch(PDOException $e){
+				$this->connection->rollback();
+				return array(
+					'success' => false,
+					'error' => $e->getMessage()
+				);
+			}
+		}
+
+		/**
+		 * 
+		 */
 		private function update_order($data) {
 			$query = "CALL p_edit_order (:id, :date, :money, :total, :change_money, :notes, :status, :modified_by);";
 			$statement = $this->connection->prepare($query);

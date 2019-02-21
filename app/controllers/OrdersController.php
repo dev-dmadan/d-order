@@ -629,60 +629,68 @@
         /**
          * 
          */
-        public function get_edit_orders($id) {
-            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
-                if($id == '' || empty($id) || !$id) { die(ACCESS_DENIED); }
+        public function action_edit_orders() {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = isset($_POST) ? $_POST : false;
+
+                if(!$data) {
+                    $this->notif = array(
+                        'type' => 'error',
+                        'title' => 'Error Message',
+                        'message' => 'Please try again'
+                    );
+                }
                 else {
-                    $id = strtoupper($id);
-                    $order = !empty($this->OrdersModel->getById($id)) ?
-                        $this->OrdersModel->getById($id) : false;
-                    $detail = !empty($this->OrdersModel->getDetailById($id)) ? 
-                        $this->OrdersModel->getDetailById($id) : false;
+                    $dataOrder = $data['order'];
+                    $dataDetail = json_decode($data['detail'], true);
+                    $total = $this->helper->calculateSum($dataDetail, 'subtotal');
+                    
+                    $data_updateOrder = array(
+                        'id' => $dataOrder['order_number'],
+                        'change_money' => $dataOrder['money'] - $total,
+                        'total' => $total,
+                        'modified_by' => $_SESSION['sess_id']
+                    );
 
-                    if($order) { 
-                        $order['text_money'] = $this->helper->cetakRupiah($order['money']);
-                        $order['text_change_money'] = $this->helper->cetakRupiah($order['change_money']);
-                        $order['text_total'] = $this->helper->cetakRupiah($order['total']);
+                    $dataUpdate = array(
+                        'dataOrder' => $data_updateOrder,
+                        'dataDetail' => $dataDetail
+                    );
 
-                        $temp = array();
-                        foreach($detail as $item) {
-                            $row = $item;
-                            $row['text_price_item'] = $this->helper->cetakRupiah($item['price_item']);
-                            $row['text_subtotal'] = $this->helper->cetakRupiah($item['subtotal']);
-
-                            $temp[] = $row;
-                        }
-
+                    $update = $this->OrdersModel->update_admin($dataUpdate);
+                    if($update['success']) {
                         $this->success = true;
+                        $this->notif = array(
+                            'type' => 'success',
+                            'title' => 'Success Message',
+                            'message' => 'Success edit order'
+                        );
                     }
                     else {
                         $this->notif = array(
-                            'type' => 'warning',
-                            'title' => 'Warning message',
-                            'message' => "Sorry we can't find any data"
+                            'type' => 'error',
+                            'title' => 'Error Message',
+                            'message' => 'Please try again'
                         );
+                        $this->message = $update['error'];
                     }
-
-                    $result = array(
-                        'success' => $this->success,
-                        'notif' => $this->notif,
-                        'data' => array(
-                            'orders' => $order,
-                            'detail' => $temp
-                        )
-                    );
-
-                    echo json_encode($result);
                 }
+
+                $result = array(
+                    'success' => $this->success,
+                    'notif' => $this->notif,
+                    'error' => $this->error,
+                    'message' => $this->message,
+                    'data' => array(
+                        'post' => $data,
+                        'dataOrder' => $data['order'],
+                        'dataDetail' => $data['detail']
+                    )
+                );
+
+                echo json_encode($result);
             }
             else { die(ACCESS_DENIED); }
-        }
-
-        /**
-         * 
-         */
-        public function action_edit_orders() {
-
         }
 
         /**

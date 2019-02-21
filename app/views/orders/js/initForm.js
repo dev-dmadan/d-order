@@ -3,7 +3,6 @@ var listDetail = [];
 
 $(document).ready(function() {
     var table_detail_order = $("#table-order-detail").DataTable({
-        "responsive": true,
         "searching": false,
         "info": false,
         "columns": [

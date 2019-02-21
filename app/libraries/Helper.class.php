@@ -82,6 +82,20 @@
 		}
 
 		/**
+		 * 
+		 */
+		public function calculateSum($data, $column = false) {
+			$total = 0;
+
+			foreach($data as $row) {
+				if($column) { $total += $row[$column]; }
+				else { $total += $row; }
+			}
+
+			return $total;
+		}
+
+		/**
 		* Fungsi mengganti data yang kosong menjadi '-' (garis strip)
 		*/
 		public function setKosong($data) {

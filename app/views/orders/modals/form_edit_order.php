@@ -11,6 +11,8 @@
                 </button>
             </div>
             <form id="form-edit-order">
+                <input type="hidden" id="order_number">
+                <input type="hidden" id="money">
                 <div class="modal-body">
                     <!-- Detail Order -->
                     <div class="row">

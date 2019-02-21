@@ -234,13 +234,19 @@ function setValue(value) {
     var detail = '';
     listDetail = [];
     indexDetail = 0;
+
+    $('#order_number').val(value.main.order_number);
+    $('#money').val(parseFloat(value.main.money));
+
     $.each(value.detail, function(index, item) {
         var index = indexDetail++;
         var temp = {
             index: index,
             id: item.id,
             order_number: item.order_number,
-            price_item: item.price_item,
+            item: item.item_id,
+            order_item: item.order_item,
+            price: item.price_item,
             qty: item.qty,
             subtotal: item.subtotal
         };
@@ -273,9 +279,12 @@ function renderInputPriceQty(data, index) {
  * 
  */
 function onChangePrice(index, scope) {
+    console.log('onChange Price: ', {index: index, this: scope});
     listDetail[index].price_item = scope.value;
     listDetail[index].subtotal = parseFloat(scope.value) * parseFloat(listDetail[index].qty);
-    console.log('onChange Price: ', {index: index, this: scope.parentNode.parentNode.parentNode.getElementsByClassName('field-subtotal').innerHTML = listDetail[index].subtotal});
+    setRupiah(listDetail[index].subtotal, function(response) {
+        scope.parentNode.parentNode.parentNode.getElementsByClassName('field-subtotal')[0].innerHTML = response;
+    });
     console.log('Update listDetail: ', listDetail);
 }
 
@@ -285,8 +294,33 @@ function onChangePrice(index, scope) {
 function onChangeQty(index, scope) {
     console.log('onChange Qty: ', {index: index, this: scope});
     listDetail[index].qty = scope.value;
-    listDetail[index].subtotal = parseFloat(scope.value) * parseFloat(listDetail[index].price_item);
+    listDetail[index].subtotal = parseFloat(scope.value) * parseFloat(listDetail[index].price);
+    setRupiah(listDetail[index].subtotal, function(response) {
+        console.log(response);
+        scope.parentNode.parentNode.parentNode.getElementsByClassName('field-subtotal')[0].innerHTML = response;
+    });
     console.log('Update listDetail: ', listDetail);
+}
+
+/**
+ * 
+ */
+function setRupiah(value, callback) {
+    $.ajax({
+        url: BASE_URL+'orders/set-rupiah/'+value,
+        type: 'get',
+        dataType: 'json',
+        beforeSend: function() {},
+        success: function(response) {
+            console.log('%cResponse setRupiah: ', 'color: blue; font-weight: bold', response);
+			callback(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('%cResponse Error setRupiah: ', 'color: red; font-weight: bold', jqXHR, textStatus, errorThrown);
+            notif = {type: 'error', title: 'Error Message', message: 'Please try again'}
+            setNotif(notif, 'swal');
+        }
+    });
 }
 
 /**
@@ -331,13 +365,6 @@ function getEdit(id) {
             }
         });
     }
-}
-
-/**
- * 
- */
-function getView(id) {
-    
 }
 
 /**
@@ -393,4 +420,41 @@ function setStatus(id, status) {
  */
 function submit() {
     console.log('List Detail Submit: ', listDetail);
+    var data = {
+        order: {
+            order_number: $('#order_number').val().trim(),
+            money: $('#money').val().trim()
+        },
+        detail: JSON.stringify(listDetail)
+    };
+	$.ajax({
+		url: BASE_URL+'orders/action-edit-orders',
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		beforeSend: function() {
+            $('#btn-submit-edit-order').addClass('disabled btn-progress');
+            $('.detail-orders input').prop('disabled', true);
+		},
+		success: function(response) {
+			console.log('%cResponse submit: ', 'font-weight: bold; color: green;', response);
+
+            $('#btn-submit-edit-order').removeClass('disabled btn-progress');
+            $('.detail-orders input').prop('disabled', false);
+
+            if(response.success) {
+                setNotif(response.notif, 'toastr');
+                $('#modal-status-order').modal('hide');
+                table_order_list.ajax.reload();
+            }
+            else { setNotif(response.notif, 'swal'); }
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log('%cResponse Error submit: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+            setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
+            $('#btn-submit-edit-order').removeClass('disabled btn-progress');
+            $('.detail-orders input').prop('disabled', false);
+		}
+
+	});
 }
