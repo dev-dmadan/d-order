@@ -45,40 +45,50 @@
                                         </div>
                                         <hr>
 
-                                        <!-- Row 1 -->
                                         <div class="row">
-                                            <div class="col-sm-12 text-md-right">
+                                            <div class="col-md-6">
                                                 <address>
-                                                <strong>For:</strong><br>
-                                                <?= $orders['user_name'] ?>
+                                                    <strong>Notes:</strong><br>
+                                                    <?= $orders['notes'] ?>
                                                 </address>
                                             </div>
-                                        </div>
+                                            <div class="col-md-6">
+                                                <!-- Row 1 -->
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-md-right">
+                                                        <address>
+                                                        <strong>For:</strong><br>
+                                                        <?= $orders['user_name'] ?>
+                                                        </address>
+                                                    </div>
+                                                </div>
 
-                                        <!-- Row 2 -->
-                                        <div class="row">
-                                            <div class="col-md-12 text-md-right">
-                                                <address>
-                                                    <strong>Order Date:</strong><br>
-                                                    <?= $orders['created_on'] ?> 
-                                                </address>
+                                                <!-- Row 2 -->
+                                                <div class="row">
+                                                    <div class="col-md-12 text-md-right">
+                                                        <address>
+                                                            <strong>Order Date:</strong><br>
+                                                            <?= $orders['created_on'] ?> 
+                                                        </address>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 3 -->
+                                                <div class="row">
+                                                    <div class="col-md-12 text-md-right">
+                                                        <address>
+                                                            <strong>Status:</strong><br>
+                                                            <?= $orders['status_name'] ?>
+                                                        </address>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <!-- Row 3 -->
-                                        <div class="row">
-                                            <div class="col-md-12 text-md-right">
-                                                <address>
-                                                    <strong>Status:</strong><br>
-                                                    <?= $orders['status_name'] ?>
-                                                </address>
-                                            </div>
-                                        </div>
-
                                         
                                         <!-- End Invoice -->
 
                                         <!-- table view order -->
+                                        <div class="section-title">Order Detail</div>
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover table-md" id="table-order-detail" style="width: 100%">
                                                 <thead>
@@ -107,21 +117,22 @@
                                                 </tbody>
                                             </table>
                                         </div>
-
+                                        
+                                        <div class="section-title">Payment</div>
                                         <!-- Money, Total, and Change Money -->
                                         <div class="text-right">
                                             <div style="margin-bottom: 15px;">
                                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Money</div>
-                                                <div id="text_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= $orders['money'] ?></div>
+                                                <div style="font-size: 18px; color: #34395e; font-weight: 700;"><?= $orders['money'] ?></div>
                                             </div>
                                             <div style="margin-bottom: 15px;">
                                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Change Money</div>
-                                                <div id="text_change_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= $orders['change_money'] ?></div>
+                                                <div style="font-size: 18px; color: #34395e; font-weight: 700;"><?= $orders['change_money'] ?></div>
                                             </div>
                                             <hr class="mt-2 mb-2">
                                             <div style="margin-bottom: 15px;">
                                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Total</div>
-                                                <div id="text_total" style="font-size: 24px; color: #34395e; font-weight: 700;"><?= $orders['total'] ?></div>
+                                                <div style="font-size: 24px; color: #34395e; font-weight: 700;"><?= $orders['total'] ?></div>
                                             </div>
                                         </div>
                                         <!-- End Money, Total, and Change Money -->

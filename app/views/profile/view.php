@@ -181,16 +181,23 @@
                                                                 <ul class="list-unstyled list-unstyled-border">
 
                                                                     <?php
-                                                                        foreach($top_orders as $item) {
-                                                                            ?>
-                                                                            <li class="media">
-                                                                                <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
-                                                                                <div class="media-body">
-                                                                                    <div class="media-right"><?= $item['total_order'] ?></div>
-                                                                                    <div class="media-title"><a href=""> <?= $item['item_name'] ?></a></div>
-                                                                                </div>
-                                                                            </li>
-                                                                            <?php
+                                                                        if($top_orders) {
+                                                                            foreach($top_orders as $item) {
+                                                                                ?>
+                                                                                <li class="media">
+                                                                                    <a href="javascript:void(0)">
+                                                                                        <img class="mr-3 rounded" alt="image" src="<?= $item['image'] ?>" width="50">
+                                                                                    </a>
+                                                                                    <div class="media-body">
+                                                                                        <div class="media-right"><span class="badge badge-primary badge-pill"><?= $item['total_order'] ?></span></div>
+                                                                                        <div class="media-title"><a href="javascript:void(0)"> <?= $item['item_name'] ?></a></div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <?php
+                                                                            }
+                                                                        }
+                                                                        else {
+
                                                                         }
                                                                     ?>
 
@@ -207,7 +214,7 @@
                                     <div class="col-md-4">
                                         <div class="card" style="box-shadow: 0 4px 8px rgba(0.2, 0.2, 0.2, 0.2);">
                                             <div class="card-header">
-                                                <h4>Status List</h4>
+                                                <h4>Total Order Status</h4>
                                             </div>
                                             <div class="card-body">
                                                 <div class="summary">
@@ -215,34 +222,30 @@
                                                         <ul class="list-unstyled list-unstyled-border">
                                                             
                                                             <li class="media">
-                                                                <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right"><?= $total_status['DONE'] ?></div>
-                                                                    <div class="media-title"><a href="#">Done</a></div>
+                                                                    <div class="media-right"><span class="badge badge-primary badge-pill"><?= $total_status['DONE'] ?></span></div>
+                                                                    <div class="media-title"><div class="badge badge-success">DONE</div></div>
                                                                 </div>
                                                             </li>
                                                             
                                                             <li class="media">
-                                                                <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right"><?= $total_status['PROCESS'] ?></div>
-                                                                    <div class="media-title"><a href="#">Process</a></div>
+                                                                    <div class="media-right"><span class="badge badge-primary badge-pill"><?= $total_status['PROCESS'] ?></span></div>
+                                                                    <div class="media-title"><div class="badge badge-info">PROCESS</div></div>
                                                                 </div>
                                                             </li>
 
                                                             <li class="media">
-                                                                <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right"><?= $total_status['PENDING'] ?></div>
-                                                                    <div class="media-title"><a href="#">Pending</a></div>
+                                                                    <div class="media-right"><span class="badge badge-primary badge-pill"><?= $total_status['PENDING'] ?></span></div>
+                                                                    <div class="media-title"><div class="badge badge-primary">PENDING</div></div>
                                                                 </div>
                                                             </li>
 
                                                             <li class="media">
-                                                                <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right"><?= $total_status['REJECT'] ?></div>
-                                                                    <div class="media-title"><a href="#">Reject</a></div>
+                                                                    <div class="media-right"><span class="badge badge-primary badge-pill"><?= $total_status['REJECT'] ?></span></div>
+                                                                    <div class="media-title"><div class="badge badge-danger">REJECT</div></div>
                                                                 </div>
                                                             </li>
 
@@ -259,26 +262,26 @@
                                     <div class="col-md-12">
                                         <div class="card" style="box-shadow: 0 4px 8px rgba(0.2, 0.2, 0.2, 0.2);">
                                             <div class="card-header">
-                                                <h4>Statistics</h4>
+                                                <h4>Statistics Amount Spend</h4>
                                                 <div class="card-header-action">
                                                     <div class="btn-group">
-                                                    <a href="#" class="btn btn-primary">Week</a>
-                                                    <a href="#" class="btn">Month</a>
+                                                        <a href="#" class="btn btn-primary">Week</a>
+                                                        <a href="#" class="btn">Month</a>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                                    <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
                                                     </div>
+                                                    <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                                                            <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                                                <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                                                            </div>
-                                                            <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                                                <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                                                            </div>
-                                                        </div>
-                                                    <canvas id="myChart" height="286" width="472" class="chartjs-render-monitor" style="display: block; width: 472px; height: 286px;">
-                                                    </canvas>
-                                                    <div class="statistic-details mt-sm-4">
+                                                </div>
+                                                <canvas id="myChart" height="286" width="472" class="chartjs-render-monitor" style="display: block; width: 472px; height: 286px;">
+                                                </canvas>
+                                                <div class="statistic-details mt-sm-4">
                                                     <div class="statistic-details-item">
                                                     
                                                     </div>

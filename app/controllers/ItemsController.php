@@ -374,51 +374,43 @@
         /**
          * 
          */
-        public function detail($id) {
-            $data_detail = !empty($this->ItemsModel->getById($id)) 
-                ? $this->ItemsModel->getById($id) : false;
+        public function get_detail($id) {
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['sess_level'] === 'ADMIN') {
+                if(empty($id) || !$id) { die(ACCESS_DENIED); }
+                else {
+                    $data = $this->ItemsModel->getById($id) ?
+                        $this->ItemsModel->getById($id) : false;
 
-            if(!$data_detail || (empty($id) || $id == "")) { $this->redirect(BASE_URL."items/"); }
-            
-            $config = array(
-                'title' => 'Detail Item',
-                'property' => array(
-                    'main' => 'Detail Item', 'sub' => ''
-                ),
-                'css' => array(
-                    "assets/dist/modules/datatables/datatables.min.css",
-                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
-                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
-                ),
-                'js' => array(
-                    "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
-                    "assets/dist/modules/datatables/datatables.min.js",
-                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
-                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"
-                ),
-            );
-            
-            if(!empty($data_detail['image'])) {
-                $filename = ROOT.DS.'assets'.DS.'images'.DS.'items'.DS.$data_detail['image'];
-                if(!file_exists($filename)) { $image = BASE_URL.'assets/images/items/default.jpg'; }
-                else { $image = BASE_URL.'assets/images/items/'.$data_detail['image']; }
+                    if($data) { 
+                        $this->success = true;
+                        $data['price'] = $this->helper->cetakRupiah($data['price']);
+                        if(!empty($data['image'])) {
+                            // cek foto di storage
+                            $filename = ROOT.DS.'assets'.DS.'images'.DS.'user'.DS.$data['image'];
+                            if(!file_exists($filename)) { $image = BASE_URL.'assets/images/user/default.jpg'; }
+                            else { $image = BASE_URL.'assets/images/user/'.$data['image']; }
+                        }
+                        else { $image = BASE_URL.'assets/images/user/default.jpg'; }
+                        $data['image'] = $image;
+                    }
+                    else {
+                        $this->notif = array(
+                            'type' => 'warning',
+                            'title' => 'Warning message',
+                            'message' => "Sorry we can't find any data"
+                        );
+                    }
+
+                    $result = array(
+                        'success' => $this->success,
+                        'notif' => $this->notif,
+                        'data' => $data
+                    );
+
+                    echo json_encode($result);
+                }
             }
-            else {$image = BASE_URL.'assets/images/items/default.jpg'; }
-
-            $status = ($data_detail['status_name'] == 'ACTIVE') ?
-                '<div class="badge badge-success">'.$data_detail['status_name'].'</span>' :
-                '<div class="badge badge-danger">'.$data_detail['status_name'].'</span>';
-
-            $data = array(
-                'id' => $data_detail['id'],
-                'name' => $data_detail['name'],
-                'price' => $data_detail['price'],
-                'description' => $data_detail['description'],
-                'image' => $image,
-                'status' => $status
-            );
-
-            $this->layout('items/view', $config, $data);
+            else { die(ACCESS_DENIED); }
         }
 
         /**

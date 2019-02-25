@@ -45,6 +45,8 @@ var table_order_history = $("#table-order-history").DataTable({
     }
 });
 
+var statistic_chart = document.getElementById('myChart').getContext('2d');
+
 $(document).ready(function() {
     init();
 
@@ -107,7 +109,65 @@ $(document).ready(function() {
  * 
  */
 function init() {
+    getData_chart(function(response) {
+        if(response.success) {
+            loadChart(response.data);
+        }
+    });
+}
 
+/**
+ * 
+ */
+function getData_chart(callback) {
+    $.ajax({
+        url: BASE_URL+'profile/get-chart/'+USER_ID,
+        type: 'POST',
+        dataType: 'JSON',
+        data: {},
+        beforeSend: function() {
+        },
+        success: function(response) {
+            callback(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('%cResponse Error getData_chart: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+            setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
+            callback({success: false});
+        }
+    });
+}
+
+/**
+ * 
+ */
+function loadChart(data) {
+    var myChart = new Chart(statistic_chart, {
+        type: 'line',
+        data: data,
+        option: {
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        stepSize: 150
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        color: '#fbfbfb',
+                        lineWidth: 2
+                    }
+                }]
+            }
+        }
+    });
 }
 
 /**

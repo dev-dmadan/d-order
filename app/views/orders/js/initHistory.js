@@ -94,12 +94,10 @@ function showDetailDataTable(data) {
         .text('Loading...');
  
     $.ajax({
-        url: BASE_URL+'orders/get-list-detail/',
-        type: 'get',
+        url: BASE_URL+'orders/get-list-detail/'+data.order_number.toLowerCase(),
+        type: 'post',
         dataType: 'json',
-        data: {
-            order_number: data.order_number
-        },
+        data: {},
         beforeSend: function() {
             console.log("%cRequest showDetailDataTable Loading...", "color: blue; font-style: italic");
         },
@@ -121,21 +119,21 @@ function showDetailDataTable(data) {
  * 
  */
 function renderTableDetail(data) {
+    var notes = '<div class="section-title">Notes</div>' + data.main.notes;
     var detail = 'Order doesnt have detail..';
-
-    if(data.length > 0) {
-        var table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-        $.each(data, function(index, item) {
-            table += '<tr>'+
-                        '<td>'+item.order_item+' ('+item.qty+') - '+item.subtotal_full+'</td>'+
-                    '</tr>';
+    if(data.detail.length > 0) {
+        detail = '<div class="section-title">Order Detail</div><div class="list-group">';
+        $.each(data.detail, function(index, item) {
+            detail += '<a href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">' +
+                        '<div class="d-flex w-100 justify-content-between">' +
+                        '<h6 class="mb-1">' +item.order_item+ '</h6>' +
+                        '<small class="text-muted"><span class="badge badge-primary badge-pill">' +item.qty+ '</span></small></div>' +
+                        '<p class="mb-1">' +item.subtotal_full+ '</p></a>';
         });
-    
-        table += '</table>';
-        detail = table;
+        detail += '</div>';
     }
 
-    return detail;
+    return notes + detail;
 }
 
 /**

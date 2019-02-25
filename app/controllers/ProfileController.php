@@ -52,6 +52,7 @@
                     "assets/dist/modules/datatables/datatables.min.js",
                     "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
                     "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                    "assets/dist/modules/chart.min.js",
                     "app/views/profile/js/initView.js"
                 ),
             );
@@ -63,11 +64,6 @@
                 'top_orders' => $getAnalytics['top_orders'],
                 'total_status' => $getAnalytics['total_status']
             );
-
-            // echo '<pre>';
-            // var_dump($data);
-            // echo '</pre>';
-            // die();
 
             $this->layout('profile/view', $config, $data);
         }
@@ -155,19 +151,35 @@
                 $this->OrdersModel->getTotalOrders_byId($_SESSION['sess_id'])['total_orders'] : 0;
             $amount_spend =  $this->OrdersModel->getAmountSpend_byId($_SESSION['sess_id']) ? 
                 $this->OrdersModel->getAmountSpend_byId($_SESSION['sess_id'])['amount_spend'] : 0;
-            $top_orders = $this->OrdersModel->getTopOrders_byId($_SESSION['sess_id']) ?
-                $this->OrdersModel->getTopOrders_byId($_SESSION['sess_id']) : NULL;
+            $top_orders = !empty($this->OrdersModel->getTopOrders_byId($_SESSION['sess_id'])) ?
+                $this->OrdersModel->getTopOrders_byId($_SESSION['sess_id']) : false;
             $total_status = array(
-                'DONE' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'DONE')) ? 
+                'DONE' => $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'DONE') ? 
                     $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'DONE')['total_status'] : 0,
-                'PROCESS' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PROCESS')) ? 
+                'PROCESS' => $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PROCESS') ? 
                     $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PROCESS')['total_status'] : 0,
-                'PENDING' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PENDING')) ? 
+                'PENDING' => $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PENDING') ? 
                     $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PENDING')['total_status'] : 0,
-                'REJECT' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'REJECT')) ? 
+                'REJECT' => $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'REJECT') ? 
                     $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'REJECT')['total_status'] : 0
             );
             
+            if($top_orders) {
+                $temp_top_orders = array();
+                foreach($top_orders as $item) {
+                    $temp = $item;
+                    if(!empty($item['image'])) {
+                        // cek foto di storage
+                        $filename = ROOT.DS.'assets'.DS.'images'.DS.'user'.DS.$item['image'];
+                        if(!file_exists($filename)) { $temp['image'] = BASE_URL.'assets/images/user/default.jpg'; }
+                        else { $temp['image'] = BASE_URL.'assets/images/user/'.$item['image']; }
+                    }
+                    else { $temp['image'] = BASE_URL.'assets/images/user/default.jpg'; }
+                    $temp_top_orders[] = $temp;
+                }
+                $top_orders = $temp_top_orders;
+            }
+
             $data = array(
                 'total_orders' => $total_orders,
                 'amount_spend' => $amount_spend,
@@ -176,6 +188,13 @@
             );
 
             return $data;
+        }
+
+        /**
+         * 
+         */
+        public function get_chart($username) {
+            
         }
 
         /**

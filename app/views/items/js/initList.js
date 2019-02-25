@@ -39,12 +39,7 @@ $(document).ready(function() {
     $('#refreshTable').on('click', function() {
         refreshTable($(this), table_item_list);
     });
-
-    // auto refresh every 1 minutes
-    setInterval( function () {
-        console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
-        table_item_list.ajax.reload(null, false);
-    }, 60000 );
+    
 });
 
 /**
@@ -59,8 +54,40 @@ function getView(id) {
     if(id == '' || id == undefined) { setNotif(notifError, 'swal'); }
     else {
         // setNotif({title: 'Message', message: 'Sorry, this feature still development :D', type: 'info'}, 'swal');
-        $('#modal-view-item').modal({backdrop: 'static'});
+        $.ajax({
+            url: BASE_URL+'items/get-detail/'+id,
+            type: 'post',
+            dataType: 'json',
+            data: {},
+            beforeSend: function() {
+            },
+            success: function(response) {
+                console.log("%cResponse getView: ", "color: green; font-weight: bold", response);
+                if(response.success) {
+                    setView(response.data);
+                }
+                else {
+                    setNotif(response.notif, 'swal');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('%cResponse Error actionDelete: ', 'font-weight: bold; color: red;', jqXHR, textStatus, errorThrown);
+                setNotif({type: 'error', title: 'Error Message', message: 'Please try again'}, 'swal');
+            }
+        });
     }
+}
+
+/**
+ * 
+ */
+function setView(data) {
+    $('#item_image').attr('src', data.image);
+    $('#item_price').html(data.price);
+    $('.item-name').html(data.name);
+    $('.item-status').html(data.status_name);
+    $('#item_description').html(data.description);
+    $('#modal-view-item').modal({backdrop: 'static'});
 }
 
 /**

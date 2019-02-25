@@ -394,7 +394,7 @@
 			 * 
 			 */
 			public function getTopOrders_byId($id) {
-				$query = "SELECT (CASE WHEN i.name IS NULL THEN 'Others' ELSE i.name END) item_name, ";
+				$query = "SELECT (CASE WHEN i.name IS NULL THEN 'Others' ELSE i.name END) item_name, i.image, ";
 				$query .= "COUNT(CASE WHEN i.id IS NULL THEN 0 ELSE i.id END) total_order FROM orders o ";
 				$query .= "LEFT JOIN order_status_lookup osl ON osl.id = o.status ";
 				$query .= "JOIN order_detail od ON od.order_id = o.id ";
