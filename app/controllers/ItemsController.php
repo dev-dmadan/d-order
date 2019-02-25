@@ -94,7 +94,7 @@
 
                     $dataRow = array();
                     $dataRow['no'] = $no_urut;
-                    $dataRow['name'] = $row['name'];
+                    $dataRow['name'] = ucwords($row['name']);
                     $dataRow['price'] = $this->helper->cetakRupiah($row['price']);
                     $dataRow['status'] = $status;
                     $dataRow['option'] = $btnAction;

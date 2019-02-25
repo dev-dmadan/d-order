@@ -98,7 +98,7 @@
                     $dataRow[] = null;
                     $dataRow['no'] = $no_urut;
                     $dataRow['username'] = $row['username'];
-                    $dataRow['name'] = $row['name'];
+                    $dataRow['name'] = ucwords($row['name']);
                     $dataRow['level'] = $level;
                     $dataRow['status'] = $status;
                     $dataRow['option'] = $option;
@@ -229,24 +229,53 @@
          * 
          */
         public function detail($username) {
-            $config = array(
-                'title' => 'User Detail',
-                'property' => array(
-                    'main' => 'User Detail', 'sub' => ''
-                ),
-                'css' => array(
-                    "assets/dist/modules/datatables/datatables.min.css",
-                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
-                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
-                ),
-                'js' => array(
-                    "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
-                    "assets/dist/modules/datatables/datatables.min.js",
-                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
-                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
-                ),
-            );        
-            $this->layout('user/view', $config);
+            if(!$username || $username == '') {
+                // redirect ke error / base url
+                die(ACCESS_DENIED);
+            }
+            else {
+
+                $config = array(
+                    'title' => 'User Detail',
+                    'property' => array(
+                        'main' => 'User Detail', 'sub' => ''
+                    ),
+                    'css' => array(
+                        "assets/dist/modules/datatables/datatables.min.css",
+                        "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                        "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                    ),
+                    'js' => array(
+                        "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
+                        "assets/dist/modules/datatables/datatables.min.js",
+                        "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                        "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                    ),
+                );   
+
+                $getUser = $this->UserModel->getById($username) ? $this->UserModel->getById($username) : false;
+                
+                if($getUser) {
+
+                    $data = array(
+                        'name' => $getUser['name'],
+                        'username' => $getUser['username'],
+                        'level_name' => $getUser['level_name'],
+                        'status_name' => $getUser['status_name']
+                    );
+
+                    $this->layout('user/view', $config, $data);
+                }
+                else {
+                    die(ACCESS_DENIED);
+                }
+
+                // echo '<pre>';
+                // var_dump($getUser);
+                // echo '</pre>';
+                // die();
+            }    
+            
         }
 
         /**

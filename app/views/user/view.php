@@ -1,4 +1,7 @@
-<?php Defined("BASE_PATH") or die(ACCESS_DENIED); ?>
+<?php 
+    Defined("BASE_PATH") or die(ACCESS_DENIED); 
+    $user = $this->data;
+?>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -35,8 +38,8 @@
                                             <!-- user image -->
                                             <img alt="image" src="<?= $_SESSION['sess_image'] ?>" width="75%%" class="rounded-circle mr-1">
                                             <div class="user-details">
-                                                <div class="user-name"><?= $_SESSION['sess_name'] ?></div>
-                                                <div class="text-job text-muted"><?= $_SESSION['sess_level'] ?></div>
+                                                <div class="user-name"><?= $user['name'] ?></div>
+                                                <div class="text-job text-muted"><?= $user['status_name'] ?></div>
                                             </div>
                                         </div>
                                     </div>
@@ -44,18 +47,18 @@
                                     <!-- grid span 8 -->
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label for="email"><strong>Email</strong></label>
-                                            <div class="user-email"><!-- <?= $_SESSION['sess_email'] ?> -->udin@i-systemasia.com</div>
+                                            <label for="name"><strong>Name</strong></label>
+                                            <div class="user-name"><?= $user['name'] ?></div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="phone"><strong>Phone</strong></label>
-                                            <div class="user-phone"><!-- <?= $_SESSION['sess_phone'] ?> -->080989999</div>
+                                            <label for="username"><strong>Username</strong></label>
+                                            <div class="user-username"><?= $user['username'] ?></div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="birthday"><strong>Birthday</strong></label>
-                                            <div class="user-birthday"><!-- <?= $_SESSION['sess_birthday'] ?> -->01/02/2019</div>
+                                            <label for="level"><strong>Level</strong></label>
+                                            <div class="user-level"><?= $user['level_name'] ?></div>
                                         </div>
                                     </div>
                                 </div>
