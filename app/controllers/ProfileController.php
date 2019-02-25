@@ -54,8 +54,22 @@
                     "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
                     "app/views/profile/js/initView.js"
                 ),
-            );        
-            $this->layout('profile/view', $config);
+            );
+            
+            $getAnalytics = $this->get_analytics_order();
+            $data = array(
+                'total_orders' => $getAnalytics['total_orders'],
+                'amount_spend' => $this->helper->cetakRupiah($getAnalytics['amount_spend']),
+                'top_orders' => $getAnalytics['top_orders'],
+                'total_status' => $getAnalytics['total_status']
+            );
+
+            // echo '<pre>';
+            // var_dump($data);
+            // echo '</pre>';
+            // die();
+
+            $this->layout('profile/view', $config, $data);
         }
 
         /**
@@ -83,19 +97,19 @@
 					
 					$option = '<div class="btn-group">'.$btnDetail.'</div>';
 
-                    switch ($row['status_id']) {
+                    switch ($row['status_name']) {
                         // pending
-                        case 1 :
+                        case 'PENDING' :
                             $status = '<div class="badge badge-primary">';
                             break;
                         
                         // process
-                        case 2 :
+                        case 'PROCESS' :
                             $status = '<div class="badge badge-info">';
                             break;
 
                         // delivered
-                        case 3 :
+                        case 'DONE' :
                             $status = '<div class="badge badge-success">';
                             break;
 
@@ -135,10 +149,42 @@
         /**
          * 
          */
+        private function get_analytics_order() {
+            $this->model('OrdersModel');
+            $total_orders = $this->OrdersModel->getTotalOrders_byId($_SESSION['sess_id']) ? 
+                $this->OrdersModel->getTotalOrders_byId($_SESSION['sess_id'])['total_orders'] : 0;
+            $amount_spend =  $this->OrdersModel->getAmountSpend_byId($_SESSION['sess_id']) ? 
+                $this->OrdersModel->getAmountSpend_byId($_SESSION['sess_id'])['amount_spend'] : 0;
+            $top_orders = $this->OrdersModel->getTopOrders_byId($_SESSION['sess_id']) ?
+                $this->OrdersModel->getTopOrders_byId($_SESSION['sess_id']) : NULL;
+            $total_status = array(
+                'DONE' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'DONE')) ? 
+                    $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'DONE')['total_status'] : 0,
+                'PROCESS' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PROCESS')) ? 
+                    $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PROCESS')['total_status'] : 0,
+                'PENDING' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PENDING')) ? 
+                    $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'PENDING')['total_status'] : 0,
+                'REJECT' => !empty($this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'REJECT')) ? 
+                    $this->OrdersModel->getTotalStatus_byId($_SESSION['sess_id'], 'REJECT')['total_status'] : 0
+            );
+            
+            $data = array(
+                'total_orders' => $total_orders,
+                'amount_spend' => $amount_spend,
+                'top_orders' => $top_orders,
+                'total_status' => $total_status
+            );
+
+            return $data;
+        }
+
+        /**
+         * 
+         */
         public function get_edit_profile($username) {
             if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if($username == '' || empty($username) || !$username) { die(ACCESS_DENIED); }
-                else {
+                else if($username === $_SESSION['sess_id']) {
                     $data = !empty($this->UserModel->getById($username)) ?
                         $this->UserModel->getById($username) : false;
 
@@ -166,6 +212,7 @@
 
                     echo json_encode($result);
                 }
+                else { die(ACCESS_DENIED); }
             }
             else { die(ACCESS_DENIED); }
         }

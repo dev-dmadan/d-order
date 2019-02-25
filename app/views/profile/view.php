@@ -1,4 +1,10 @@
-<?php Defined("BASE_PATH") or die(ACCESS_DENIED); ?>
+<?php 
+    Defined("BASE_PATH") or die(ACCESS_DENIED);
+    $total_orders = $this->data['total_orders'];
+    $amount_spend = $this->data['amount_spend'];
+    $top_orders = $this->data['top_orders'];
+    $total_status = $this->data['total_status'];
+?>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -146,7 +152,7 @@
                                                     </div>
                                                     <div class="card-wrap">
                                                         <div class="card-header"><h4>Total Orders</h4></div>
-                                                        <div class="card-body">75</div>
+                                                        <div class="card-body"><?= $total_orders ?></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,7 +163,7 @@
                                                     </div>
                                                     <div class="card-wrap">
                                                         <div class="card-header"><h4>Amount Spend</h4></div>
-                                                        <div class="card-body">Rp 9.750.000,00</div>
+                                                        <div class="card-body"><?= $amount_spend ?></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,45 +180,19 @@
                                                             <div class="summary-item">
                                                                 <ul class="list-unstyled list-unstyled-border">
 
-                                                                    <li class="media">
-                                                                        <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
-                                                                        <div class="media-body">
-                                                                            <div class="media-right">100</div>
-                                                                            <div class="media-title"><a href="#"> Warteg</a></div>
-                                                                        </div>
-                                                                    </li>
-
-                                                                    <li class="media">
-                                                                        <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
-                                                                        <div class="media-body">
-                                                                            <div class="media-right">77</div>
-                                                                            <div class="media-title"><a href="#"> Paket Ayam</a></div>
-                                                                        </div>
-                                                                    </li>
-
-                                                                    <li class="media">
-                                                                        <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
-                                                                        <div class="media-body">
-                                                                            <div class="media-right">54</div>
-                                                                            <div class="media-title"><a href="#"> Mie Aceh</a></div>
-                                                                        </div>
-                                                                    </li>
-
-                                                                    <li class="media">
-                                                                        <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
-                                                                        <div class="media-body">
-                                                                            <div class="media-right">32</div>
-                                                                            <div class="media-title"><a href="#"> Soto Betawi</a></div>
-                                                                        </div>
-                                                                    </li>
-
-                                                                    <li class="media">
-                                                                        <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
-                                                                        <div class="media-body">
-                                                                            <div class="media-right">12</div>
-                                                                            <div class="media-title"><a href="#"> Mc Donald's</a></div>
-                                                                        </div>
-                                                                    </li>
+                                                                    <?php
+                                                                        foreach($top_orders as $item) {
+                                                                            ?>
+                                                                            <li class="media">
+                                                                                <img alt="image" src="http://memoriacode.com/image/star.png" width="3%">
+                                                                                <div class="media-body">
+                                                                                    <div class="media-right"><?= $item['total_order'] ?></div>
+                                                                                    <div class="media-title"><a href=""> <?= $item['item_name'] ?></a></div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <?php
+                                                                        }
+                                                                    ?>
 
                                                                 </ul>
                                                             </div>
@@ -233,19 +213,19 @@
                                                 <div class="summary">
                                                     <div class="summary-item">
                                                         <ul class="list-unstyled list-unstyled-border">
-
+                                                            
                                                             <li class="media">
                                                                 <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right">10</div>
-                                                                    <div class="media-title"><a href="#">Pending</a></div>
+                                                                    <div class="media-right"><?= $total_status['DONE'] ?></div>
+                                                                    <div class="media-title"><a href="#">Done</a></div>
                                                                 </div>
                                                             </li>
-
+                                                            
                                                             <li class="media">
                                                                 <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right">25</div>
+                                                                    <div class="media-right"><?= $total_status['PROCESS'] ?></div>
                                                                     <div class="media-title"><a href="#">Process</a></div>
                                                                 </div>
                                                             </li>
@@ -253,16 +233,16 @@
                                                             <li class="media">
                                                                 <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right">50</div>
-                                                                    <div class="media-title"><a href="#">Reject</a></div>
+                                                                    <div class="media-right"><?= $total_status['PENDING'] ?></div>
+                                                                    <div class="media-title"><a href="#">Pending</a></div>
                                                                 </div>
                                                             </li>
 
                                                             <li class="media">
                                                                 <img alt="image" src="http://memoriacode.com/image/star.png" width="10%">
                                                                 <div class="media-body">
-                                                                    <div class="media-right">100</div>
-                                                                    <div class="media-title"><a href="#">Done</a></div>
+                                                                    <div class="media-right"><?= $total_status['REJECT'] ?></div>
+                                                                    <div class="media-title"><a href="#">Reject</a></div>
                                                                 </div>
                                                             </li>
 

@@ -362,6 +362,69 @@
 			}
 		}
 		
+		// =========================== Dashboard Analytic =========================== //
+
+			/**
+			 * 
+			 */
+			public function getTotalOrders_byId($id) {
+				$query = "SELECT COUNT(*) total_orders FROM v_orders WHERE user = :user AND (status_name = 'PENDING' OR status_name = 'PROCESS' OR status_name = 'DONE');";
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getAmountSpend_byId($id) {
+				$query = "SELECT SUM(total) amount_spend FROM v_orders WHERE user = :user AND status_name = 'DONE';";
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getTopOrders_byId($id) {
+				$query = "SELECT (CASE WHEN i.name IS NULL THEN 'Others' ELSE i.name END) item_name, ";
+				$query .= "COUNT(CASE WHEN i.id IS NULL THEN 0 ELSE i.id END) total_order FROM orders o ";
+				$query .= "LEFT JOIN order_status_lookup osl ON osl.id = o.status ";
+				$query .= "JOIN order_detail od ON od.order_id = o.id ";
+				$query .= "LEFT JOIN items i ON i.id = od.item ";
+				$query .= "WHERE o.user = :user AND osl.name = 'DONE' GROUP BY i.id ORDER BY total_order DESC LIMIT 5";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getTotalStatus_byId($id, $status) {
+				$query = "SELECT COUNT(status_id) total_status FROM v_orders WHERE user = :user AND status_name = :status;";
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->bindParam(':status', $status);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+		// ========================= End Dashboard Analytic ========================= //
+
 		/**
 		 * Method __destruct
 		 * Close connection to DB
