@@ -1,4 +1,8 @@
-<?php Defined("BASE_PATH") or die(ACCESS_DENIED); ?>
+<?php 
+    Defined("BASE_PATH") or die(ACCESS_DENIED);
+    $orders = $this->data['orders'];
+    $detail = $this->data['detail'];
+?>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -37,7 +41,7 @@
                                     <div class="col-lg-12">
                                         <!-- Head Invoice -->
                                         <div class="invoice-title">
-                                            <h2>Order #12345</h2>
+                                            <h2><?= $orders['order_number'] ?></h2>
                                         </div>
                                         <hr>
 
@@ -46,7 +50,7 @@
                                             <div class="col-sm-12 text-md-right">
                                                 <address>
                                                 <strong>For:</strong><br>
-                                                Alibaba
+                                                <?= $orders['user_name'] ?>
                                                 </address>
                                             </div>
                                         </div>
@@ -56,7 +60,7 @@
                                             <div class="col-md-12 text-md-right">
                                                 <address>
                                                     <strong>Order Date:</strong><br>
-                                                    12:00 19 September 2018 
+                                                    <?= $orders['created_on'] ?> 
                                                 </address>
                                             </div>
                                         </div>
@@ -66,7 +70,7 @@
                                             <div class="col-md-12 text-md-right">
                                                 <address>
                                                     <strong>Status:</strong><br>
-                                                    Lunas
+                                                    <?= $orders['status_name'] ?>
                                                 </address>
                                             </div>
                                         </div>
@@ -87,6 +91,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <?php
+                                                        $no = 0;
+                                                        foreach($detail as $row) {
+                                                            $no++;
+                                                            echo '<tr>';
+                                                            echo '<td>'.$no.'</td>';
+                                                            echo '<td>'.$row['order_item'].'</td>';
+                                                            echo '<td class="text-right">'.$row['price_item'].'</td>';
+                                                            echo '<td class="text-right">'.$row['qty'].'</td>';
+                                                            echo '<td class="text-right">'.$row['subtotal'].'</td>';
+                                                            echo '<tr>';
+                                                        }
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -95,18 +112,16 @@
                                         <div class="text-right">
                                             <div style="margin-bottom: 15px;">
                                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Money</div>
-                                                <div id="text_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= (isset($this->data['text_money'])) ? $this->data['text_money'] : 'Rp 0,00'; ?></div>
+                                                <div id="text_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= $orders['money'] ?></div>
                                             </div>
                                             <div style="margin-bottom: 15px;">
                                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Change Money</div>
-                                                <div id="text_change_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= (isset($this->data['text_change_money'])) ? $this->data['text_change_money'] : 'Rp 0,00'; ?></div>
-                                                <input type="hidden" id="change_money" value="<?= (isset($this->data['change_money'])) ? $this->data['change_money'] : 0; ?>">
+                                                <div id="text_change_money" style="font-size: 18px; color: #34395e; font-weight: 700;"><?= $orders['change_money'] ?></div>
                                             </div>
                                             <hr class="mt-2 mb-2">
                                             <div style="margin-bottom: 15px;">
                                                 <div style="letter-spacing: .3px; color: #98a6ad; margin-bottom: 4px;">Total</div>
-                                                <div id="text_total" style="font-size: 24px; color: #34395e; font-weight: 700;"><?= (isset($this->data['text_total'])) ? $this->data['text_total'] : 'Rp 0,00'; ?></div>
-                                                <input type="hidden" id="total" value="<?= (isset($this->data['total'])) ? $this->data['total'] : 0; ?>">
+                                                <div id="text_total" style="font-size: 24px; color: #34395e; font-weight: 700;"><?= $orders['total'] ?></div>
                                             </div>
                                         </div>
                                         <!-- End Money, Total, and Change Money -->

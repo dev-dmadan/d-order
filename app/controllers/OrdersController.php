@@ -697,25 +697,92 @@
          * 
          */
         public function detail($id) {
-            $config = array(
-                'title' => 'View Order',
-                'property' => array(
-                    'main' => 'View Order', 'sub' => ''
-                ),
-                'css' => array(
-                    "assets/dist/modules/datatables/datatables.min.css",
-                    "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
-                    "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
-                ),
-                'js' => array(
-                    "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
-                    "assets/dist/modules/datatables/datatables.min.js",
-                    "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
-                    "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
-                    "app/views/orders/js/initView.js"
-                ),
-            );        
-            $this->layout('orders/view', $config);
+            if(!$id || $id == '') {
+                // redirect ke error / base url
+                die(ACCESS_DENIED);
+            }
+            else {
+                $id = strtoupper($id);
+
+                $config = array(
+                    'title' => 'View Order',
+                    'property' => array(
+                        'main' => 'View Order', 'sub' => ''
+                    ),
+                    'css' => array(
+                        "assets/dist/modules/datatables/datatables.min.css",
+                        "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
+                        "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
+                    ),
+                    'js' => array(
+                        "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
+                        "assets/dist/modules/datatables/datatables.min.js",
+                        "assets/dist/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js",
+                        "assets/dist/modules/datatables/Select-1.2.4/js/dataTables.select.min.js",
+                        "app/views/orders/js/initView.js"
+                    ),
+                );
+
+                $getOrder = $this->OrdersModel->getById($id) ? $this->OrdersModel->getById($id) : false;
+                $getDetailOrder = $this->OrdersModel->getDetailById($id) ? $this->OrdersModel->getDetailById($id) : false;
+                
+                $data = array();
+                if($getOrder) {
+                    $data['orders'] = $getOrder;
+                    $data['detail'] = $getDetailOrder ? $getDetailOrder : NULL;
+
+                    // $status = '';
+                    $data['orders']['money'] = $this->helper->cetakRupiah($data['orders']['money']);
+                    $data['orders']['change_money'] = $this->helper->cetakRupiah($data['orders']['change_money']);
+                    $data['orders']['total'] = $this->helper->cetakRupiah($data['orders']['total']);
+
+                    switch ($getOrder['status_name']) {
+                        case 'PENDING':
+                            $status = '<div class="badge badge-primary">'.$getOrder['status_name'].'</div>';
+                            break;
+
+                        case 'PROGRESS':
+                            $status = '<div class="badge badge-info">'.$getOrder['status_name'].'</div>';
+                            break;
+
+                        case 'DONE':
+                            $status = '<div class="badge badge-success">'.$getOrder['status_name'].'</div>';
+                            break;
+                        
+                        default: // reject
+                            $status = '<div class="badge badge-danger">'.$getOrder['status_name'].'</div>';
+                            break;
+                    }
+
+                    $data['orders']['status_name'] = $status;
+
+                    if($getDetailOrder) {
+                        $detail = array();
+                        foreach($getDetailOrder as $row) {
+                            $temp = $row;
+                            $temp['price_item'] = $this->helper->cetakRupiah($row['price_item']);
+                            $temp['subtotal'] = $this->helper->cetakRupiah($row['subtotal']);
+                            $detail[] = $temp;
+                        }
+                        $data['detail'] = $detail;
+                    }
+
+                    $this->layout('orders/view', $config, $data);
+                }
+                else {
+                    die(ACCESS_DENIED);
+                }
+
+                // echo '<pre>';
+                // echo 'Data Orders: </br>';
+                // var_dump($getOrder);
+                // echo 'Data Detail Orders: </br>';
+                // var_dump($getDetailOrder);
+                // echo '</pre>';
+                // die();
+
+            }
+                
         }
 
         /**
