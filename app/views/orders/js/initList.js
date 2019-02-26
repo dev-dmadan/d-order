@@ -29,7 +29,7 @@ var table_order_list = $("#table-order-list").DataTable({
             render: function(data) {
                 var split = data.split('|');
                 // console.log(split);
-                return '<img alt="image" src="'+split[1]+'" class="rounded-circle" width="35" data-toggle="tooltip" title="" data-original-title="'+split[0]+'"><p>'+split[0]+'</p>';
+                return '<img alt="image" src="'+split[1]+'" class="rounded-circle" width="35" data-toggle="tooltip" title="" data-original-title="'+split[0]+'"><p class="text-danger"><strong>'+split[0]+'</strong></p>';
             }
         },
         { 
@@ -87,12 +87,6 @@ $(document).ready(function() {
     $('#refreshTable').on('click', function() {
         refreshTable($(this), table_order_list);
     });
-
-    // auto refresh every 1 minutes
-    // setInterval( function () {
-    //     console.log('%cAutomatically refresh table..', 'color: blue; font-style: italic');
-    //     table_order_list.ajax.reload(null, false);
-    // }, 60000 );
 
     // submit
     $('#form-edit-order').on('submit', function(e) {
@@ -188,7 +182,7 @@ function renderTableDetail(data) {
         detail += '</div>';
     }
 
-    return action + notes + detail + payment;
+    return data.main.order_date_full + action + notes + detail + payment;
 }
 
 /**
@@ -201,7 +195,8 @@ function renderButtonAction(status, order_number) {
 
         switch (status) {
             case 'PENDING':
-                button += '<a href="#" onclick="setStatus(\''+order_number+'\', \'process\')" class="dropdown-item has-icon"><i class="fas fa-truck"></i> Process Order</a>';
+                button += '<a href="#" onclick="setStatus(\''+order_number+'\', \'process\')" class="dropdown-item has-icon"><i class="fas fa-truck"></i> Process Order</a>' + 
+                        '<a href="#" onclick="setStatus(\''+order_number+'\', \'reject\')" class="dropdown-item has-icon text-danger"><i class="fas fa-times-circle"></i> Reject Order</a>';
                 button += '</div></div>';
                 break;
             case 'PROCESS':

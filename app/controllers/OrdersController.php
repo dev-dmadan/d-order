@@ -73,7 +73,7 @@
 					'kolomOrder' => array('user_name', 'status_id'),
 					'kolomCari' => array('order_number', 'user', 'user_name', 'order_date', 'total', 'money', 'change_money', 'status_name'),
 					'orderBy' => array('order_number' => 'desc', 'status_id' => 'asc'),
-                    'kondisi' => "WHERE order_date = CURDATE()",
+                    'kondisi' => "WHERE order_date = CURDATE() OR (status_name = 'PENDING' OR status_name = 'PROCESS')",
 				);
 
 				$dataOrder = $this->DataTableModel->getAllDataTable($config);
@@ -123,15 +123,28 @@
                 else {
                     $this->success = true;
                     
+                    $mainData['order_date_full'] = $this->helper->cetakTgl($mainData['order_date'], 'full'); 
                     $mainData['money_full'] = $this->helper->cetakRupiah($mainData['money']);
                     $mainData['total_full'] = $this->helper->cetakRupiah($mainData['total']);
                     $mainData['change_money_full'] = $this->helper->cetakRupiah($mainData['change_money']);
                     unset($mainData['image']);
+                    unset($mainData['created_by']);
+                    unset($mainData['created_by_name']);
+                    unset($mainData['modified_by']);
+                    unset($mainData['modified_by_name']);
+                    unset($mainData['created_on']);
+                    unset($mainData['modified_on']);
 
                     $data = array();
                     foreach($dataDetail as $row) {
                         $temp = $row;
                         $temp['subtotal_full'] = $this->helper->cetakRupiah($row['subtotal']);
+                        unset($temp['created_by']);
+                        unset($temp['created_by_name']);
+                        unset($temp['modified_by']);
+                        unset($temp['modified_by_name']);
+                        unset($temp['created_on']);
+                        unset($temp['modified_on']);
                         $data[] = $temp;
                     }
 
@@ -741,7 +754,7 @@
                             $status = '<div class="badge badge-primary">'.$getOrder['status_name'].'</div>';
                             break;
 
-                        case 'PROGRESS':
+                        case 'PROCESS':
                             $status = '<div class="badge badge-info">'.$getOrder['status_name'].'</div>';
                             break;
 
