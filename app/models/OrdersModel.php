@@ -423,6 +423,96 @@
 				return $result;
 			}
 
+			/**
+			 * 
+			 */
+			public function getOrder_currentWeek_byId($id) {
+				$query = "SELECT order_date, SUM(total) total FROM v_orders ";
+				$query .= "WHERE YEARWEEK(order_date, 1) = YEARWEEK(CURRENT_DATE(), 1) AND user = :user AND status_name = 'DONE' ";
+				$query .= "GROUP BY order_date;";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getOrder_currentMonth_byId($id) {
+				$query = "SELECT order_date, SUM(total) total FROM v_orders ";
+				$query .= "WHERE YEAR(order_date) = YEAR(CURRENT_DATE()) AND user = :user AND status_name = 'DONE' ";
+				$query .= "GROUP BY MONTH(order_date);";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getAmountSpend_todayById($id, $interval) {
+				$query = "SELECT * FROM v_average_amount_spend_day WHERE ";
+				$query .= "user = :user AND order_date = SUBDATE(CURDATE(), :interval);";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->bindParam(':interval', $interval, PDO::PARAM_INT);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getaverage_amountSpend_weekById($id) {
+				$query = "SELECT * FROM v_average_amount_spend_week WHERE user = :user";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getaverage_amountSpend_monthById($id) {
+				$query = "SELECT * FROM v_average_amount_spend_month WHERE user = :user";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
+			/**
+			 * 
+			 */
+			public function getaverage_amountSpend_yearById($id) {
+				$query = "SELECT * FROM v_average_amount_spend_year WHERE user = :user";
+				
+				$statement = $this->connection->prepare($query);
+				$statement->bindParam(':user', $id);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				
+				return $result;
+			}
+
 		// ========================= End Dashboard Analytic ========================= //
 
 		/**

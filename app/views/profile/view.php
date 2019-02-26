@@ -4,6 +4,7 @@
     $amount_spend = $this->data['amount_spend'];
     $top_orders = $this->data['top_orders'];
     $total_status = $this->data['total_status'];
+    $average = $this->data['average'];
 ?>
 
 <!-- Main Content -->
@@ -16,7 +17,7 @@
             </h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item"><a href="<?= BASE_URL; ?>">D'Order</a></div>
-                <div class="breadcrumb-item active">Menu Item List</div>
+                <div class="breadcrumb-item active">Profile</div>
             </div>
         </div>
 
@@ -70,21 +71,6 @@
                                             <label for="user-level"><strong>Level</strong></label>
                                             <div class="user-name"><?= $_SESSION['sess_level'] ?></div>
                                         </div>
-
-                                        <!-- <div class="form-group">
-                                            <label for="email"><strong>Email</strong></label>
-                                            <div class="user-email">udin@i-systemasia.com</div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="phone"><strong>Phone</strong></label>
-                                            <div class="user-phone">080989999</div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="birthday"><strong>Birthday</strong></label>
-                                            <div class="user-birthday">01/02/2019</div>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -117,14 +103,13 @@
                                             <button id="refreshTable" class="btn btn-info"><i class="fas fa-sync-alt"></i> Refresh</button>
                                         </div>
                                         <div class="table-responsive">
-                                            <!-- <table class="table table-bordered table-hover table-md dt-responsive nowrap" id="table-order-list" style="width: 100%"> -->
                                             <table class="table table-bordered table-hover table-md" id="table-order-history" style="width: 100%">
                                                 <thead>
                                                     <tr>
                                                         <th></th>
                                                         <th style="width: 5%" class="text-right">No</th>
                                                         <th>Order Number</th>
-                                                        <th class="text-right">Money</th>
+                                                        <th class="text-righst">Money</th>
                                                         <th class="text-right">Total</th>
                                                         <th class="text-right">Change Money</th>
                                                         <th>Status</th>
@@ -265,25 +250,33 @@
                                                 <h4>Statistics Amount Spend</h4>
                                                 <div class="card-header-action">
                                                     <div class="btn-group">
-                                                        <a href="#" class="btn btn-primary">Week</a>
-                                                        <a href="#" class="btn">Month</a>
+                                                        <a href="javascript:void(0);" id="get_week" class="btn btn-primary">Week</a>
+                                                        <a href="javascript:void(0);" id="get_month" class="btn">Month</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                                                    <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                                                    </div>
-                                                    <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                                                    </div>
-                                                </div>
-                                                <canvas id="myChart" height="286" width="472" class="chartjs-render-monitor" style="display: block; width: 472px; height: 286px;">
-                                                </canvas>
+                                                <canvas id="myChart" height="182"></canvas>
                                                 <div class="statistic-details mt-sm-4">
                                                     <div class="statistic-details-item">
-                                                    
+                                                        <span class="text-muted"><span class="<?= $average['today']['color'] ?>"><i class="<?= $average['today']['icon'] ?>"></i></span> <?= $average['today']['percent'] ?></span>
+                                                        <div class="detail-value"><?= $average['today']['value'] ?></div>
+                                                        <div class="detail-name">Total This Today's</div>
+                                                    </div>
+                                                    <div class="statistic-details-item">
+                                                        <span class="text-muted"><span class="<?= $average['week']['color'] ?>"><i class="<?= $average['week']['icon'] ?>"></i></span> <?= $average['week']['percent'] ?></span>
+                                                        <div class="detail-value"><?= $average['week']['value'] ?></div>
+                                                        <div class="detail-name">This Week's average</div>
+                                                    </div>
+                                                    <div class="statistic-details-item">
+                                                        <span class="text-muted"><span class="<?= $average['month']['color'] ?>"><i class="<?= $average['month']['icon'] ?>"></i></span> <?= $average['month']['percent'] ?></span>
+                                                        <div class="detail-value"><?= $average['month']['value'] ?></div>
+                                                        <div class="detail-name">This Month's average</div>
+                                                    </div>
+                                                    <div class="statistic-details-item">
+                                                        <span class="text-muted"><span class="<?= $average['year']['color'] ?>"><i class="<?= $average['year']['icon'] ?>"></i></span> <?= $average['year']['percent'] ?></span>
+                                                        <div class="detail-value"><?= $average['year']['value'] ?></div>
+                                                        <div class="detail-name">This Year's average</div>
                                                     </div>
                                                 </div>
                                             </div>

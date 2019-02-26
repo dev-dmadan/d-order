@@ -45,7 +45,7 @@
                     "assets/dist/modules/datatables/datatables.min.css",
                     "assets/dist/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css",
                     "assets/dist/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css",
-                    // "app/views/profile/css/cardCustom.css"
+                    "app/views/orders/css/dataTable_detail.css"
                 ),
                 'js' => array(
                     "assets/dist/modules/input-mask/jquery.inputmask.bundle.js",
@@ -58,12 +58,19 @@
             );
             
             $getAnalytics = $this->get_analytics_order();
+            $getAverage = $this->get_average_amount_spend($_SESSION['sess_id']);
             $data = array(
                 'total_orders' => $getAnalytics['total_orders'],
                 'amount_spend' => $this->helper->cetakRupiah($getAnalytics['amount_spend']),
                 'top_orders' => $getAnalytics['top_orders'],
-                'total_status' => $getAnalytics['total_status']
+                'total_status' => $getAnalytics['total_status'],
+                'average' => $getAverage
             );
+
+            // echo '<pre>';
+            // var_dump($data);
+            // echo '</pre>';
+            // die();
 
             $this->layout('profile/view', $config, $data);
         }
@@ -184,7 +191,69 @@
                 'total_orders' => $total_orders,
                 'amount_spend' => $amount_spend,
                 'top_orders' => $top_orders,
-                'total_status' => $total_status
+                'total_status' => $total_status,
+            );
+
+            return $data;
+        }
+
+        /**
+         * 
+         */
+        private function get_average_amount_spend($username) {
+            $this->model('OrdersModel');
+            // get today
+            $interval = ($this->helper->getDate(date('Y-m-d'), 'day', 'english') == 'Monday') ? 3 : 1;
+            $getYesterday = $this->OrdersModel->getAmountSpend_todayById($username, $interval) ? 
+                $this->OrdersModel->getAmountSpend_todayById($username, $interval)['average'] : 0;
+            $getToday = $this->OrdersModel->getAmountSpend_todayById($username, 0) ? 
+                $this->OrdersModel->getAmountSpend_todayById($username, 0)['average'] : 0;
+            $percentToday = ($getYesterday == 0) ? 
+                0 : ($getToday - $getYesterday) / $getYesterday * 100;
+
+            // get week
+            $getWeek = $this->OrdersModel->getaverage_amountSpend_weekById($username) ? 
+                $this->OrdersModel->getaverage_amountSpend_weekById($username) : array('average_current_week' => 0, 'average_last_week' => 0);
+            $percentWeek = ($getWeek['average_last_week'] == 0) ? 
+                0 : ($getWeek['average_current_week'] - $getWeek['average_last_week']) / $getWeek['average_last_week'] * 100;
+
+            // get month
+            $getMonth = $this->OrdersModel->getaverage_amountSpend_monthById($username) ? 
+                $this->OrdersModel->getaverage_amountSpend_monthById($username) : array('average_current_month' => 0, 'average_last_month' => 0);
+            $percentMonth = ($getMonth['average_last_month'] == 0) ? 
+                0 : ($getMonth['average_current_month'] - $getMonth['average_last_month']) / $getMonth['average_last_month'] * 100;
+
+            // get year
+            $getYear = $this->OrdersModel->getaverage_amountSpend_yearById($username) ? 
+                $this->OrdersModel->getaverage_amountSpend_yearById($username) : array('average_current_year' => 0, 'average_last_year' => 0);
+            $percentYear = ($getYear['average_last_year'] == 0) ? 
+                0 : ($getYear['average_current_year'] - $getYear['average_last_year']) / $getYear['average_last_year'] * 100;
+
+            $data = array(
+                'today' => array(
+                    'color' => ($percentToday == 0) ? '' : (($percentToday < 0) ? 'text-success' : 'text-danger'),
+                    'icon' => ($percentToday == 0) ? '' : (($percentToday < 0) ? 'fas fa-caret-down' : 'fas fa-caret-up'),
+                    'value' => $this->helper->cetakRupiah($getToday),
+                    'percent' => $this->helper->cetakAngka($percentToday).' %'
+                ),
+                'week' => array(
+                    'color' => ($percentWeek == 0) ? '' : (($percentWeek < 0) ? 'text-success' : 'text-danger'),
+                    'icon' => ($percentWeek == 0) ? '' : (($percentWeek < 0) ? 'fas fa-caret-down' : 'fas fa-caret-up'),
+                    'value' => $this->helper->cetakRupiah($getWeek['average_current_week']),
+                    'percent' => $this->helper->cetakAngka($percentWeek).' %'
+                ),
+                'month' => array(
+                    'color' => ($percentMonth == 0) ? '' : (($percentMonth < 0) ? 'text-success' : 'text-danger'),
+                    'icon' => ($percentMonth == 0) ? '' : (($percentMonth < 0) ? 'fas fa-caret-down' : 'fas fa-caret-up'),
+                    'value' => $this->helper->cetakRupiah($getMonth['average_current_month']),
+                    'percent' => $this->helper->cetakAngka($percentMonth).' %'
+                ),
+                'year' => array(
+                    'color' => ($percentYear == 0) ? '' : (($percentYear < 0) ? 'text-success' : 'text-danger'),
+                    'icon' => ($percentYear == 0) ? '' : (($percentYear < 0) ? 'fas fa-caret-down' : 'fas fa-caret-up'),
+                    'value' => $this->helper->cetakRupiah($getYear['average_current_year']),
+                    'percent' => $this->helper->cetakAngka($percentYear).' %'
+                )
             );
 
             return $data;
@@ -194,7 +263,50 @@
          * 
          */
         public function get_chart($username) {
-            
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && $username === $_SESSION['sess_id']) {
+                $action = isset($_POST['action']) ? $_POST['action'] : 'week';
+                $this->model('OrdersModel');
+                if($action == 'week') {
+                    $getData = !empty($this->OrdersModel->getOrder_currentWeek_byId($username)) ? 
+                        $this->OrdersModel->getOrder_currentWeek_byId($username) : false;
+                    $steps = 20000;
+                }
+                else if($action == 'month') {
+                    $getData = !empty($this->OrdersModel->getOrder_currentMonth_byId($username)) ? 
+                        $this->OrdersModel->getOrder_currentMonth_byId($username) : false;
+                    $steps = 50000;
+                }
+                else { die(ACCESS_DENIED); }
+
+                if($getData) {
+                    $this->success = true;
+                    $labels = $data = array();
+                    foreach($getData as $item) {
+                        if($action == 'month') { $labels[] = $this->helper->getDate($item['order_date'], 'month', 'english'); }
+                        else { $labels[] = $this->helper->getDate($item['order_date'], 'day', 'english'); }
+                        $data[] = $item['total'];
+                    }
+
+                    $datasets = array(
+                        'data' => $data,
+                    );
+                }
+                else {
+                    
+                }
+
+                $result = array(
+                    'success' => $this->success,
+                    'data' => array(
+                        'labels' => $labels,
+                        'datasets' => $datasets,
+                        'steps' => $steps
+                    )
+                );
+                
+                echo json_encode($result);
+            }
+            else { die(ACCESS_DENIED); }
         }
 
         /**

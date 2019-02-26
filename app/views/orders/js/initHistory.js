@@ -133,7 +133,7 @@ function renderTableDetail(data) {
         detail += '</div>';
     }
 
-    return notes + detail;
+    return data.main.order_date_full + notes + detail;
 }
 
 /**
